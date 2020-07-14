@@ -62,7 +62,7 @@ $this->title = Yii::t('app', 'Unit Kerjas');
                             },
                         ],
 
-                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}&nbsp;{delete}'],
+                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
                     ],
                 ]); ?>
 

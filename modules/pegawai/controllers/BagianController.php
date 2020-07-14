@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * BagianController implements the CRUD actions for Bagian model.
@@ -118,6 +119,23 @@ class BagianController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetidbagian(){
+        $direktorat = $_GET['direktorat'];
+
+        $bagian = Bagian::find()->where(['id_direktorat'=>$direktorat])->orderBy('id_bagian DESC')->one();
+
+        if($bagian != null){
+            $str = str_split($bagian->id_bagian);
+            $arr_reverse = array_reverse($str);
+            $new_number = $arr_reverse[0] + 1;
+            $rows['id_bag'] = $direktorat.$new_number;
+        }else{
+            $rows['id_bag'] = $direktorat.'0';
+        }
+
+        echo Json::encode($rows);
     }
 
     /**

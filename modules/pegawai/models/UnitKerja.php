@@ -53,7 +53,7 @@ class UnitKerja extends \yii\db\ActiveRecord
             'id_bagian' => Yii::t('app', 'Bagian'),
             'nama_unit_kerja' => Yii::t('app', 'Nama Unit Kerja'),
             'status_unit' => Yii::t('app', 'Status Unit'),
-            'tmt_aktif' => Yii::t('app', 'Tmt Aktif'),
+            'tmt_aktif' => Yii::t('app', 'Tanggal Aktif'),
         ];
     }
 
@@ -94,5 +94,18 @@ class UnitKerja extends \yii\db\ActiveRecord
     public static function find()
     {
         return new UnitKerjaQuery(get_called_class());
+    }
+
+    public function beforeValidate(){
+        if(parent::beforeValidate()){
+            if($this->tmt_aktif != null){
+                $this->tmt_aktif = date('Y-m-d', strtotime($this->tmt_aktif));
+            }
+            
+
+            return true;
+        }
+
+        return false;
     }
 }

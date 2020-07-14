@@ -31,7 +31,7 @@ $action = Yii::$app->controller->action->id;
                 ]
             ]); ?>
 
-            <?= Html::errorSummary($model, ['encode' => false]) ?>
+            <?= Html::errorSummary($model, ['encode' => false, 'class'=>'callout callout-danger']) ?>
 
             <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 

@@ -88,9 +88,7 @@ class Bagian extends \yii\db\ActiveRecord
 
     public function beforeValidate(){
         if(parent::beforeValidate()){
-           /* $authkey = md5(time());
-            $this->password = md5($this->password.$authkey);
-            $this->authkey = $authkey;*/
+           
             if($this->tmt_aktif != null){
                 $this->tmt_aktif = date('Y-m-d', strtotime($this->tmt_aktif));
             }

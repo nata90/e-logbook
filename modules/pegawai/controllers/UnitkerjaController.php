@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * UnitkerjaController implements the CRUD actions for UnitKerja model.
@@ -71,7 +72,9 @@ class UnitkerjaController extends Controller
         $listData=ArrayHelper::map(Bagian::find()->all(),'id_bagian','nama_bagian');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_unit_kerja]);
+             Yii::$app->session->setFlash('success', "Unit kerja ".$model->nama_unit_kerja." berhasil ditambahkan");
+
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -91,12 +94,16 @@ class UnitkerjaController extends Controller
     {
         $model = $this->findModel($id);
 
+        $listData=ArrayHelper::map(Bagian::find()->all(),'id_bagian','nama_bagian');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_unit_kerja]);
+            Yii::$app->session->setFlash('success', "Unit kerja ".$model->nama_unit_kerja." berhasil diupdate");
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'listData'=>$listData
         ]);
     }
 
@@ -112,6 +119,33 @@ class UnitkerjaController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetidunit(){
+        $bagian = $_GET['bagian'];
+
+        $unit_kerja = UnitKerja::find()->where(['id_bagian'=>$bagian])->orderBy('id_unit_kerja DESC')->one();
+
+        if($unit_kerja != null){
+
+            $str = str_split($unit_kerja->id_unit_kerja);
+            $arr_reverse = array_reverse($str);
+
+            $last_number = $arr_reverse[1].$arr_reverse[0];
+            $new_number = (int)$last_number + 1;
+
+            if(strlen($new_number) == 1){
+                $return = $bagian.'0'.$new_number;
+            }else{
+                $return = $bagian.$new_number;
+            }
+
+            $rows['id_unit'] = $return;
+        }else{
+            $rows['id_unit'] = $bagian.'00';
+        }
+
+        echo Json::encode($rows);
     }
 
     /**

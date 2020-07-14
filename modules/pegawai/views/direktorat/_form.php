@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
         ]); ?>
 
 		<div class="box-body">
-            <?= Html::errorSummary($model, ['encode' => false]) ?>
+            <?= Html::errorSummary($model, ['encode' => false, 'class'=>'callout callout-danger']) ?>
             
 		    <?= $form->field($model, 'id_direktorat')->textInput(['maxlength' => true]) ?>
 

@@ -28,7 +28,7 @@ use yii\helpers\Json;
         ]); ?>
 
         <div class="box-body">
-            <?= Html::errorSummary($model, ['encode' => false]) ?>
+            <?= Html::errorSummary($model, ['encode' => false, 'class'=>'callout callout-danger']) ?>
             
             <?= $form->field($model, 'nip')->textInput(['maxlength' => true]) ?>
 
