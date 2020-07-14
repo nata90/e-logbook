@@ -6,11 +6,14 @@ use Yii;
 use app\modules\pegawai\models\UnitKerja;
 use app\modules\pegawai\models\UnitKerjaSearch;
 use app\modules\pegawai\models\Bagian;
+use app\modules\pegawai\models\DataPegawai;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\helpers\Html;
+
 
 /**
  * UnitkerjaController implements the CRUD actions for UnitKerja model.
@@ -146,6 +149,21 @@ class UnitkerjaController extends Controller
         }
 
         echo Json::encode($rows);
+    }
+
+    public function actionListpegawai($id){
+
+        $model = $this->findModel($id);
+        $data = DataPegawai::find()
+        ->select(['nama as value', 'nama as label', 'id_pegawai as id'])
+        ->asArray()
+        ->all();
+
+        return $this->render('form_unit_kerja', [
+            'model' => $model,
+            'data'=>$data
+        ]);
+        
     }
 
     /**

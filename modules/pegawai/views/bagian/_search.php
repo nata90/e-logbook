@@ -20,7 +20,7 @@ use yii\helpers\Url;
     ]); ?>
 
     <div class="form-group">
-        <a class="btn btn-success" href="<?php echo Url::to(['/pegawai/bagian/create']);?>">Tambah Bagian</a>
+        <a class="btn btn-success btn-flat" href="<?php echo Url::to(['/pegawai/bagian/create']);?>">Tambah Bagian</a>
     </div>
 
     <?php ActiveForm::end(); ?>

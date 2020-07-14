@@ -19,6 +19,7 @@ use Yii;
  */
 class UnitKerja extends \yii\db\ActiveRecord
 {
+    public $list_pegawai;
     /**
      * {@inheritdoc}
      */
@@ -35,7 +36,7 @@ class UnitKerja extends \yii\db\ActiveRecord
         return [
             [['id_unit_kerja', 'id_bagian', 'nama_unit_kerja', 'status_unit', 'tmt_aktif'], 'required'],
             [['status_unit'], 'integer'],
-            [['tmt_aktif'], 'safe'],
+            [['tmt_aktif','list_pegawai'], 'safe'],
             [['id_unit_kerja', 'id_bagian'], 'string', 'max' => 5],
             [['nama_unit_kerja'], 'string', 'max' => 250],
             [['id_unit_kerja'], 'unique'],
@@ -54,6 +55,7 @@ class UnitKerja extends \yii\db\ActiveRecord
             'nama_unit_kerja' => Yii::t('app', 'Nama Unit Kerja'),
             'status_unit' => Yii::t('app', 'Status Unit'),
             'tmt_aktif' => Yii::t('app', 'Tanggal Aktif'),
+            'list_pegawai' => Yii::t('app', 'Pegawai'),
         ];
     }
 

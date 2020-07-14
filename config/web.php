@@ -21,6 +21,9 @@ $config = [
             'app' => [
                 'class' => 'app\modules\app\app',
             ],
+            'logbook' => [
+                'class' => 'app\modules\logbook\logbook',
+            ],
         ],
     'components' => [
         'request' => [

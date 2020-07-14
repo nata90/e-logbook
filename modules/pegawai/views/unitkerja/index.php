@@ -3,11 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\pegawai\models\UnitKerjaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Unit Kerjas');
+$this->title = Yii::t('app', 'Unit Kerja');
+$this->registerJs(<<<JS
+    
+JS
+);
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -32,6 +37,7 @@ $this->title = Yii::t('app', 'Unit Kerjas');
 
                         'id_unit_kerja',
                         //'id_bagian',
+                        'nama_unit_kerja',
                         [
                             'label'=>'Bagian',
                             'format'=>'raw',
@@ -39,7 +45,7 @@ $this->title = Yii::t('app', 'Unit Kerjas');
                                 return $model->bagian->nama_bagian;
                             }
                         ],
-                        'nama_unit_kerja',
+                        
                         //'status_unit',
                         [
                             'label'=>'Status Unit',
@@ -61,7 +67,13 @@ $this->title = Yii::t('app', 'Unit Kerjas');
                                 return date('d-m-Y', strtotime($model->tmt_aktif));
                             },
                         ],
-
+                        [
+                            'label'=>'',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                return '<a class="btn bg-purple margin btn-flat btn-xs" href="'.Url::to(['unitkerja/listpegawai', 'id'=>$model->id_unit_kerja]).'">Daftar Pegawai</a>';
+                            },
+                        ],
                         ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
                     ],
                 ]); ?>
