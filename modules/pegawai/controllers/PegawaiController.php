@@ -110,7 +110,7 @@ class PegawaiController extends Controller
     {
         $this->findModel($id)->delete();
 
-        Yii::$app->session->setFlash('error', "Data pegawai ".$model->nama." berhasil dihapus");
+        Yii::$app->session->setFlash('success', "Data pegawai ".$model->nama." berhasil dihapus");
 
         return $this->redirect(['index']);
     }

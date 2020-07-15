@@ -103,7 +103,7 @@ class DataPegawai extends \yii\db\ActiveRecord
      */
     public function getPegawaiUnitKerjas()
     {
-        return $this->hasMany(PegawaiUnitKerja::className(), ['id_pegawai' => 'id_pegawai']);
+        return $this->hasMany(PegawaiUnitKerja::className(), ['id_pegawai' => 'id_pegawai'])->onCondition(['status_peg' => 1]);
     }
 
     /**

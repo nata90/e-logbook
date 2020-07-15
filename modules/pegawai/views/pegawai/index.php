@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\pegawai\models\DataPegawaiSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -36,27 +37,27 @@ $this->title = Yii::t('app', 'Data Pegawai');
                         //'id_pegawai',
                         'nip',
                         'nama',
-                        [
+                        /*[
                             'label'=>'PIN',
                             'format'=>'raw',
                             'value'=>function($model){
                                 return $model->pin;
                             },
-                        ],
-                        [
+                        ],*/
+                        /*[
                             'label'=>'Tempat Lahir',
                             'format'=>'raw',
                             'value'=>function($model){
                                 return $model->tmp_lahir;
                             },
-                        ],
-                        [
+                        ],*/
+                        /*[
                             'label'=>'Tanggal Lahir',
                             'format'=>'raw',
                             'value'=>function($model){
                                 return date('d-m-Y', strtotime($model->tgl_lahir));
                             },
-                        ],
+                        ],*/
                         [
                             'label'=>'Jenis Pegawai',
                             'format'=>'raw',
@@ -85,7 +86,7 @@ $this->title = Yii::t('app', 'Data Pegawai');
                                 }
                             }
                         ],
-                        [
+                       /* [
                             'label'=>'Jenis Kelamin',
                             'format'=>'raw',
                             'value'=>function($model){
@@ -94,6 +95,23 @@ $this->title = Yii::t('app', 'Data Pegawai');
                                 }elseif($model->gender == 1){
                                     return 'Wanita';
                                 }
+                            }
+                        ],*/
+                        [
+                            'label'=>'Unit Kerja',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                $html = '<ul>';
+                                if($model->pegawaiUnitKerjas != null){
+                                    foreach($model->pegawaiUnitKerjas as $val){
+                                        $html .= '<li><a href="'.Url::to(['unitkerja/listpegawai', 'id'=>$val->id_unit_kerja]).'">'.$val->unitKerja->nama_unit_kerja.'</a></li>';
+                                    }
+                                }else{
+                                    $html .= '<li>-</li>';
+                                }
+                                $html .= '</ul>';
+
+                                return $html;
                             }
                         ],
 

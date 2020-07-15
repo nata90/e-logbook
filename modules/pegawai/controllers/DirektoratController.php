@@ -107,7 +107,7 @@ class DirektoratController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('error', "Direktorat ".$model->nama_direktorat." berhasil dihapus");
+        Yii::$app->session->setFlash('success', "Direktorat ".$model->nama_direktorat." berhasil dihapus");
 
         return $this->redirect(['index']);
     }

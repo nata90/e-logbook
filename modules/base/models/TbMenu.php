@@ -82,6 +82,10 @@ class TbMenu extends \yii\db\ActiveRecord
             }
         }
 
+        /*echo '<pre>';
+        print_r($menu);
+        echo '</pre>';*/
+
         return $menu;
     }
 

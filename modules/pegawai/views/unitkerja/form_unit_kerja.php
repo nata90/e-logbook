@@ -7,6 +7,7 @@
     use yii\widgets\Pjax;
     use yii\helpers\Url;
 
+$this->title = Yii::t('app', 'List pegawai unit kerja '.$model->nama_unit_kerja);
 $this->registerJs('var url = "' . Url::to(['unitkerja/addpegawai']) . '";');
 $this->registerJs('var update_grid = "' . Url::to(['unitkerja/listpegawai', 'id'=>$model->id_unit_kerja]) . '";');
 $this->registerJs(<<<JS
@@ -110,7 +111,15 @@ JS
                                     }
                                 ],
 
-                                ['class' => 'yii\grid\ActionColumn','template'=>'{delete}'],
+                                [
+                                    'class' => 'yii\grid\ActionColumn',
+                                    'template'=>'{delete}',
+                                    'urlCreator' => function( $action, $model, $key, $index ){
+                                        if ($action == "delete") {
+                                            return Url::to(['unitkerja/deletepegawai', 'id' => $key]);
+                                        }
+                                    }
+                                ],
                             ],
                         ]); ?>
 
@@ -118,6 +127,9 @@ JS
                 </div>
                     
 
+            </div>
+            <div class="box-footer">
+                <a id="add-pegawai" class="btn btn-info btn-sm btn-flat pull-right" href="<?php echo Url::to(['unitkerja/index'])?>">BACK</a>
             </div>
                 
                 <?php ActiveForm::end(); ?>
