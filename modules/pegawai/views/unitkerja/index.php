@@ -45,7 +45,13 @@ JS
                                 return $model->bagian->nama_bagian;
                             }
                         ],
-                        
+                        [
+                            'label'=>'Direktorat',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                return $model->bagian->direktorat->nama_direktorat;
+                            }
+                        ],
                         //'status_unit',
                         [
                             'label'=>'Status Unit',

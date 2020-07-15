@@ -13,7 +13,7 @@ $action = Yii::$app->controller->action->id;
 ?>
 
 <div class="col-md-8">
-    <div class="box box-danger">
+    <div class="box box-danger box-solid">
         <div class="box-header with-border">
             <h3 class="box-title">
                 <?php echo $this->title;?>

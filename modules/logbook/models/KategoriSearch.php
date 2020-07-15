@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\pegawai\models;
+namespace app\modules\logbook\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\pegawai\models\DataPegawai;
+use app\modules\logbook\models\Kategori;
 
 /**
- * DataPegawaiSearch represents the model behind the search form of `app\modules\pegawai\models\DataPegawai`.
+ * KategoriSearch represents the model behind the search form of `app\modules\logbook\models\Kategori`.
  */
-class DataPegawaiSearch extends DataPegawai
+class KategoriSearch extends Kategori
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class DataPegawaiSearch extends DataPegawai
     public function rules()
     {
         return [
-            [['id_pegawai', 'pin', 'jenis_peg', 'status_peg', 'gender'], 'integer'],
-            [['nip', 'nama', 'tmp_lahir', 'tgl_lahir', 'username', 'password'], 'safe'],
+            [['id_kategori', 'poin_kategori', 'status_kategori'], 'integer'],
+            [['nama_kategori'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class DataPegawaiSearch extends DataPegawai
      */
     public function search($params)
     {
-        $query = DataPegawai::find();
+        $query = Kategori::find();
 
         // add conditions that should always apply here
 
@@ -58,21 +58,12 @@ class DataPegawaiSearch extends DataPegawai
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_pegawai' => $this->id_pegawai,
-            'pin' => $this->pin,
-            //'tgl_lahir' => $this->tgl_lahir,
-            'jenis_peg' => $this->jenis_peg,
-            'status_peg' => $this->status_peg,
-            //'gender' => $this->gender,
+            'id_kategori' => $this->id_kategori,
+            'poin_kategori' => $this->poin_kategori,
+            'status_kategori' => $this->status_kategori,
         ]);
 
-        $query->andFilterWhere(['like', 'nip', $this->nip])
-            ->andFilterWhere(['like', 'nama', $this->nama])
-            ->andFilterWhere(['like', 'tmp_lahir', $this->tmp_lahir]);
-            //->andFilterWhere(['like', 'username', $this->username])
-            //->andFilterWhere(['like', 'password', $this->password]);
-
-        $query->orderBy('id_pegawai DESC');
+        $query->andFilterWhere(['like', 'nama_kategori', $this->nama_kategori]);
 
         return $dataProvider;
     }

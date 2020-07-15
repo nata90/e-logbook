@@ -66,10 +66,11 @@ $this->title = Yii::t('app', 'Data Pegawai');
                                     return 'PNS';
                                 }elseif($model->jenis_peg == 1){
                                     return 'NON PNS';
-                                }elseif($model->jenis_peg == 3){
+                                }elseif($model->jenis_peg == 2){
                                     return 'Kontrak';
                                 }
-                            }
+                            },
+                            'filter'=>Html::activeDropDownList($searchModel, 'jenis_peg',[0=>'PNS', 1=>'NON PNS', 2=>'Kontrak'],['class'=>'form-control','prompt'=>''])
                         ],
                         [
                             'label'=>'Status Pegawai',
@@ -79,12 +80,13 @@ $this->title = Yii::t('app', 'Data Pegawai');
                                     return 'Masih Bekerja';
                                 }elseif($model->status_peg == 1){
                                     return 'Pensiun';
-                                }elseif($model->status_peg == 3){
+                                }elseif($model->status_peg == 2){
                                     return 'Pindah ke Luar RS';
-                                }elseif($model->status_peg == 4){
+                                }elseif($model->status_peg == 3){
                                     return 'Meninggal';
                                 }
-                            }
+                            },
+                            'filter'=>Html::activeDropDownList($searchModel, 'status_peg',[0=>'Masih Bekerja', 1=>'Pensiun', 2=>'Pindah ke Luar RS', 3=>'Meninggal'],['class'=>'form-control','prompt'=>''])
                         ],
                        /* [
                             'label'=>'Jenis Kelamin',

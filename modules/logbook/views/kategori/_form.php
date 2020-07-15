@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\pegawai\models\Direktorat */
+/* @var $model app\modules\logbook\models\Kategori */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
             </h3>
         </div>
 
-		<?php $form = ActiveForm::begin([
+	    <?php $form = ActiveForm::begin([
             'options'=>[
                 'layout' => 'horizontal',
                 'class'=>'form-horizontal',
@@ -26,27 +26,22 @@ use yii\widgets\ActiveForm;
             ]
         ]); ?>
 
-		<div class="box-body">
-            <?= Html::errorSummary($model, ['encode' => false, 'class'=>'callout callout-danger']) ?>
-            
-		    <?= $form->field($model, 'id_direktorat')->textInput(['maxlength' => true]) ?>
+	    <div class="box-body">
+		    <?= $form->field($model, 'nama_kategori')->textInput(['maxlength' => true]) ?>
 
-		    <?= $form->field($model, 'nama_direktorat')->textInput(['maxlength' => true]) ?>
+		    <?= $form->field($model, 'poin_kategori')->textInput() ?>
 
-		    <?= $form->field($model, 'status')->radioList(
+		    <?= $form->field($model, 'status_kategori')->radioList(
                 [0=>'Non Aktif', 1=>'Aktif'],
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
-
-		    <?= $form->field($model, 'tmt_aktif')->widget(\yii\jui\DatePicker::class,[
-                        'options'=>['class'=>'form-control'],
-                        'clientOptions' => ['changeYear' => true, 'changeMonth'=>true]
-                    ]) ?>
 		</div>
-		<div class="box-footer">
+
+	   <div class="box-footer">
 	        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right']) ?>
 	    </div>
-		<?php ActiveForm::end(); ?>
+
+    	<?php ActiveForm::end(); ?>
 	</div>
 
 </div>
