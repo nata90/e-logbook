@@ -20,6 +20,7 @@ use Yii;
 class UnitKerja extends \yii\db\ActiveRecord
 {
     public $list_pegawai;
+    public $id_pegawai;
     /**
      * {@inheritdoc}
      */

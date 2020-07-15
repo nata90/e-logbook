@@ -7,6 +7,9 @@ use app\modules\pegawai\models\UnitKerja;
 use app\modules\pegawai\models\UnitKerjaSearch;
 use app\modules\pegawai\models\Bagian;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\PegawaiUnitKerjaSearch;
+use app\modules\pegawai\models\PegawaiUnitKerja;
+use app\modules\pegawai\models\PegawaiUnitKerjaQuery;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -159,13 +162,42 @@ class UnitkerjaController extends Controller
         ->asArray()
         ->all();
 
+        $searchModel = new PegawaiUnitKerjaSearch();
+        $searchModel->id_unit_kerja = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('form_unit_kerja', [
             'model' => $model,
-            'data'=>$data
+            'data'=>$data,
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
         ]);
         
     }
 
+    public function actionAddpegawai(){
+        $id_peg = $_GET['id_peg'];
+        $id_unit = $_GET['id_unit_ker'];
+
+        $model = PegawaiUnitKerja::find()->where(['id_pegawai'=>$id_peg,'status_peg'=>1])->one();
+
+        if($model != null){
+            $rows['error'] = 1;
+            $rows['msg'] = $model->pegawai->nama." masih aktif di unit kerja ".$model->unitKerja->nama_unit_kerja;
+        }else{
+            $model2 = new PegawaiUnitKerja;
+            $model2->id_unit_kerja = $id_unit;
+            $model2->id_pegawai = $id_peg;
+            $model2->status_peg = 1;
+            $model2->tmt_peg = date('Y-m-d');
+            $model2->save(false);
+
+            $rows['error'] = 0;
+            $rows['msg'] = $model2->pegawai->nama." berhasil ditambahkan di unit kerja ".$model2->unitKerja->nama_unit_kerja;
+        }
+
+        echo Json::encode($rows);
+    }
     /**
      * Finds the UnitKerja model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
