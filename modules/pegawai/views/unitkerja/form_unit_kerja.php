@@ -23,6 +23,10 @@ $this->registerJs(<<<JS
                 'id_peg':id_peg,
                 'id_unit_ker':id_unit_ker
             },
+            'beforeSend':function(json)
+            { 
+                SimpleLoading.start('gears'); 
+            },
             success: function(v){
                 if(v.error == 1){
                     notifikasi(v.msg,"error");
@@ -30,7 +34,11 @@ $this->registerJs(<<<JS
                     notifikasi(v.msg,"success");
                     $.pjax.reload({container: "#peg-unit-kerja", url: update_grid});
                 }
-            }
+            },
+            'complete':function(json)
+            {
+                SimpleLoading.stop();
+            },
         });
         
     });

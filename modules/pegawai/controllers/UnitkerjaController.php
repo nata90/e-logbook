@@ -131,7 +131,7 @@ class UnitkerjaController extends Controller
         $model = PegawaiUnitKerja::findOne($id);
         $id_unit_ker = $model->id_unit_kerja;
 
-        Yii::$app->session->setFlash('success', "Data pegawai ".$model->pegawai->nama." berhasil dihapus dari unit kerja ".$model->unitKerja->nama_unit_kerja);;
+        Yii::$app->session->setFlash('success', "Data pegawai ".$model->pegawai->nama." berhasil dihapus dari unit kerja ".$model->unitKerja->nama_unit_kerja);
         $model->status_peg = 0;
         $model->save(false);
 

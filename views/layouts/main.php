@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
+use edwinhaq\simpleloading\SimpleLoading;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -49,6 +50,7 @@ if (Yii::$app->controller->action->id === 'login') {
             Modal::end();
         ?>
     <?php $this->beginBody() ?>
+    <?php SimpleLoading::widget();?>
     <div class="wrapper">
 
         <?= $this->render(

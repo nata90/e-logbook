@@ -3,6 +3,7 @@
 namespace app\modules\logbook\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "{{%tugas}}".
@@ -32,9 +33,9 @@ class Tugas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_tugas', 'id_kategori', 'nama_tugas', 'akses', 'status_tugas'], 'required'],
+            [['id_tugas', 'id_kategori', 'nama_tugas', 'akses', 'status_tugas','id_unit_kerja'], 'required'],
             [['id_kategori', 'akses', 'status_tugas'], 'integer'],
-            [['id_tugas'], 'string', 'max' => 10],
+            [['id_tugas','id_unit_kerja'], 'string', 'max' => 10],
             [['nama_tugas'], 'string', 'max' => 250],
             [['id_tugas'], 'unique'],
             [['id_kategori'], 'exist', 'skipOnError' => true, 'targetClass' => Kategori::className(), 'targetAttribute' => ['id_kategori' => 'id_kategori']],
@@ -47,11 +48,12 @@ class Tugas extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_tugas' => Yii::t('app', 'Id Tugas'),
-            'id_kategori' => Yii::t('app', 'Id Kategori'),
+            'id_tugas' => Yii::t('app', 'ID Tugas'),
+            'id_kategori' => Yii::t('app', 'Kategori'),
             'nama_tugas' => Yii::t('app', 'Nama Tugas'),
             'akses' => Yii::t('app', 'Akses'),
             'status_tugas' => Yii::t('app', 'Status Tugas'),
+            'id_unit_kerja' => Yii::t('app', 'Unit Kerja'),
         ];
     }
 

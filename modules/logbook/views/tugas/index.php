@@ -3,27 +3,27 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\logbook\models\KategoriSearch */
+/* @var $searchModel app\modules\logbook\models\TugasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Kategori');
+$this->title = Yii::t('app', 'Tugas');
 ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-danger box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Kategori Tugas</h3>
+                <h3 class="box-title">Unit Kerja</h3>
             </div>
             <div class="box-body">
 
                 <?php Pjax::begin([
-                    'id'=>'grid-kategori',
-                    'timeout'=>false,
-                    'enablePushState'=>false,
-                    'clientOptions'=>['method'=>'GET']
-
-                ]); ?>
+                            'id'=>'grid-tugas',
+                            'timeout'=>false,
+                            'enablePushState'=>false,
+                            'clientOptions'=>['method'=>'GET']
+                        ]); ?>
                 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
                 <?= GridView::widget([
@@ -32,27 +32,40 @@ $this->title = Yii::t('app', 'Kategori');
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
-                        //'id_kategori',
-                        'nama_kategori',
+                        'id_tugas',
+                        'nama_tugas',
                         [
-                            'label'=>'Poin Kategori',
+                            'label'=>'Kategori',
                             'format'=>'raw',
                             'value'=>function($model){
-                                return $model->poin_kategori;
+                                return $model->kategori->nama_kategori;
                             }
                         ],
+                        //'id_kategori',
                         [
-                            'label'=>'Status Kategori',
+                            'label'=>'Akses',
                             'format'=>'raw',
                             'value'=>function($model){
-                                if($model->status_kategori == 1){
+                                if($model->akses == 0){
+                                    return 'Tertutup';
+                                }else{
+                                    return 'Terbuka';
+                                }
+                            },
+                            'filter'=>Html::activeDropDownList($searchModel, 'akses',[0=>'Tertutup',1=>'Terbuka'],['class'=>'form-control','prompt'=>''])
+                        ],
+                        [
+                            'label'=>'Status Tugas',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                if($model->status_tugas == 1){
                                     return '<img src="'.Yii::$app->request->baseUrl.'/images/active.png" alt="Active">';
                                 }else{
                                     return '<img src="'.Yii::$app->request->baseUrl.'/images/no-active.png" alt="No Active">';
                                 }
                             },
                             'contentOptions' => ['class' => 'text-center'],
-                            'filter'=>Html::activeDropDownList($searchModel, 'status_kategori',[0=>'Non Aktif',1=>'Aktif'],['class'=>'form-control','prompt'=>''])
+                            'filter'=>Html::activeDropDownList($searchModel, 'status_tugas',[0=>'Non Aktif',1=>'Aktif'],['class'=>'form-control','prompt'=>''])
                         ],
 
                         ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
@@ -66,3 +79,4 @@ $this->title = Yii::t('app', 'Kategori');
 
     </div>
 </div>
+
