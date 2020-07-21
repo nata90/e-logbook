@@ -39,6 +39,7 @@ class GradeJabatan extends \yii\db\ActiveRecord
             [['id_klp_jabatan', 'kode_grade', 'grade', 'deskripsi', 'nilai_jbt_max', 'nilai_jbt_min', 'nilai_jbt', 'status_grade'], 'required'],
             [['id_klp_jabatan', 'grade', 'nilai_jbt_max', 'nilai_jbt_min', 'nilai_jbt', 'status_grade'], 'integer'],
             [['deskripsi'], 'string'],
+            [['kode_grade'], 'unique'],
             [['kode_grade'], 'string', 'max' => 50],
             [['id_klp_jabatan'], 'exist', 'skipOnError' => true, 'targetClass' => KlpJabatan::className(), 'targetAttribute' => ['id_klp_jabatan' => 'id_klp_jabatan']],
         ];
@@ -51,13 +52,13 @@ class GradeJabatan extends \yii\db\ActiveRecord
     {
         return [
             'id_grade' => Yii::t('app', 'Id Grade'),
-            'id_klp_jabatan' => Yii::t('app', 'Id Klp Jabatan'),
+            'id_klp_jabatan' => Yii::t('app', 'Kelompok Jabatan'),
             'kode_grade' => Yii::t('app', 'Kode Grade'),
             'grade' => Yii::t('app', 'Grade'),
             'deskripsi' => Yii::t('app', 'Deskripsi'),
-            'nilai_jbt_max' => Yii::t('app', 'Nilai Jbt Max'),
-            'nilai_jbt_min' => Yii::t('app', 'Nilai Jbt Min'),
-            'nilai_jbt' => Yii::t('app', 'Nilai Jbt'),
+            'nilai_jbt_max' => Yii::t('app', 'Nilai Jabatan Max'),
+            'nilai_jbt_min' => Yii::t('app', 'Nilai Jabatan Min'),
+            'nilai_jbt' => Yii::t('app', 'Nilai Jabatan'),
             'status_grade' => Yii::t('app', 'Status Grade'),
         ];
     }
@@ -67,7 +68,7 @@ class GradeJabatan extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|KlpJabatanQuery
      */
-    public function getKlpJabatan()
+    public function getKlpjabatan()
     {
         return $this->hasOne(KlpJabatan::className(), ['id_klp_jabatan' => 'id_klp_jabatan']);
     }

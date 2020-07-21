@@ -4,6 +4,7 @@ namespace app\modules\logbook\models;
 
 use Yii;
 use yii\helpers\Json;
+use app\modules\pegawai\models\UnitKerja;
 
 /**
  * This is the model class for table "{{%tugas}}".
@@ -75,6 +76,11 @@ class Tugas extends \yii\db\ActiveRecord
     public function getKategori()
     {
         return $this->hasOne(Kategori::className(), ['id_kategori' => 'id_kategori']);
+    }
+
+    public function getUnitkerja()
+    {
+        return $this->hasOne(UnitKerja::className(), ['id_unit_kerja' => 'id_unit_kerja']);
     }
 
     /**

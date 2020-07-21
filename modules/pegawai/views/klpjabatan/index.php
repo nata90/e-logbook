@@ -16,7 +16,12 @@ $this->title = Yii::t('app', 'Kelompok Jabatan');
                 <h3 class="box-title">Kelompok Jabatan</h3>
             </div>
             <div class="box-body">
-                <?php Pjax::begin(); ?>
+                <?php Pjax::begin([
+                            'id'=>'grid-klpjabatan',
+                            'timeout'=>false,
+                            'enablePushState'=>false,
+                            'clientOptions'=>['method'=>'GET']
+                        ]); ?>
                 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
                 <?= GridView::widget([

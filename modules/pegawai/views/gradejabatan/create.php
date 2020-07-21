@@ -6,15 +6,13 @@ use yii\helpers\Html;
 /* @var $model app\modules\pegawai\models\GradeJabatan */
 
 $this->title = Yii::t('app', 'Create Grade Jabatan');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Grade Jabatans'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="grade-jabatan-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+?>
+<div class="row">
 
     <?= $this->render('_form', [
         'model' => $model,
+        'list_jabatan'=>$list_jabatan
     ]) ?>
 
 </div>

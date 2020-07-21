@@ -103,15 +103,15 @@ $this->title = Yii::t('app', 'Data Pegawai');
                             'label'=>'Unit Kerja',
                             'format'=>'raw',
                             'value'=>function($model){
-                                $html = '<ul>';
+                                $html = '';
                                 if($model->pegawaiUnitKerjas != null){
                                     foreach($model->pegawaiUnitKerjas as $val){
-                                        $html .= '<li><a href="'.Url::to(['unitkerja/listpegawai', 'id'=>$val->id_unit_kerja]).'">'.$val->unitKerja->nama_unit_kerja.'</a></li>';
+                                        $html .= '<span class="label label-success">'.$val->unitKerja->nama_unit_kerja.'</span>';
                                     }
                                 }else{
-                                    $html .= '<li>-</li>';
+                                    $html .= '<span class="label label-danger">Not Set</span>';
                                 }
-                                $html .= '</ul>';
+                                
 
                                 return $html;
                             }

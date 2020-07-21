@@ -1,24 +1,25 @@
 <?php
 
-namespace app\modules\logbook\models;
+namespace app\modules\pegawai\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\logbook\models\Tugas;
+use app\modules\pegawai\models\Jabatan;
 
 /**
- * TugasSearch represents the model behind the search form of `app\modules\logbook\models\Tugas`.
+ * JabatanSearch represents the model behind the search form of `app\modules\pegawai\models\Jabatan`.
  */
-class TugasSearch extends Tugas
+class JabatanSearch extends Jabatan
 {
+    public $id_klp_jabatan;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id_tugas', 'nama_tugas','id_unit_kerja'], 'safe'],
-            [['id_kategori', 'akses', 'status_tugas'], 'integer'],
+            [['id_jabatan', 'id_grade', 'level_jabatan', 'peer_grup', 'status_jabatan'], 'integer'],
+            [['nama_jabatan', 'tmt_jabatan','id_klp_jabatan'], 'safe'],
         ];
     }
 
@@ -40,7 +41,7 @@ class TugasSearch extends Tugas
      */
     public function search($params)
     {
-        $query = Tugas::find();
+        $query = Jabatan::find()->leftJoin('grade_jabatan','jabatan.id_grade = grade_jabatan.id_grade');
 
         // add conditions that should always apply here
 
@@ -50,6 +51,7 @@ class TugasSearch extends Tugas
             'pagination' => [
                 'pageSize' => 100,
             ]
+        
         ]);
 
         $this->load($params);
@@ -62,16 +64,16 @@ class TugasSearch extends Tugas
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_kategori' => $this->id_kategori,
-            'akses' => $this->akses,
-            'status_tugas' => $this->status_tugas,
-            'id_unit_kerja' => $this->id_unit_kerja,
+            'id_jabatan' => $this->id_jabatan,
+            'id_grade' => $this->id_grade,
+            'level_jabatan' => $this->level_jabatan,
+            'peer_grup' => $this->peer_grup,
+            'status_jabatan' => $this->status_jabatan,
+            'tmt_jabatan' => $this->tmt_jabatan,
+            'grade_jabatan.id_klp_jabatan' => $this->id_klp_jabatan,
         ]);
 
-        $query->andFilterWhere(['like', 'id_tugas', $this->id_tugas])
-            ->andFilterWhere(['like', 'nama_tugas', $this->nama_tugas]);
-
-        $query->orderBy('id_tugas DESC');
+        $query->andFilterWhere(['like', 'nama_jabatan', $this->nama_jabatan]);
 
         return $dataProvider;
     }

@@ -43,9 +43,14 @@ class TugasController extends Controller
         $searchModel = new TugasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $list_kategori = ArrayHelper::map(Kategori::find()->orderBy('nama_kategori ASC')->all(),'id_kategori','nama_kategori');
+        $list_unit_kerja = ArrayHelper::map(UnitKerja::find()->orderBy('nama_unit_kerja ASC')->all(),'id_unit_kerja','nama_unit_kerja');
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'list_kategori'=>$list_kategori,
+            'list_unit_kerja'=>$list_unit_kerja
         ]);
     }
 

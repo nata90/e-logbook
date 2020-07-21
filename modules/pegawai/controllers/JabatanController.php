@@ -3,8 +3,9 @@
 namespace app\modules\pegawai\controllers;
 
 use Yii;
+use app\modules\pegawai\models\Jabatan;
+use app\modules\pegawai\models\JabatanSearch;
 use app\modules\pegawai\models\GradeJabatan;
-use app\modules\pegawai\models\GradeJabatanSearch;
 use app\modules\pegawai\models\KlpJabatan;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -12,9 +13,9 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
 /**
- * GradejabatanController implements the CRUD actions for GradeJabatan model.
+ * JabatanController implements the CRUD actions for Jabatan model.
  */
-class GradejabatanController extends Controller
+class JabatanController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,25 +33,27 @@ class GradejabatanController extends Controller
     }
 
     /**
-     * Lists all GradeJabatan models.
+     * Lists all Jabatan models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new GradeJabatanSearch();
+        $searchModel = new JabatanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $list_jabatan = ArrayHelper::map(KlpJabatan::find()->orderBy('nama_klp_jabatan ASC')->all(),'id_klp_jabatan','nama_klp_jabatan');
+        $list_grade = ArrayHelper::map(GradeJabatan::find()->orderBy('kode_grade ASC')->all(),'id_grade','kode_grade');
+        $list_klp_jabatan = ArrayHelper::map(KlpJabatan::find()->orderBy('nama_klp_jabatan ASC')->all(),'id_klp_jabatan','nama_klp_jabatan');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'list_jabatan'=>$list_jabatan
+            'list_grade'=>$list_grade,
+            'list_klp_jabatan'=>$list_klp_jabatan
         ]);
     }
 
     /**
-     * Displays a single GradeJabatan model.
+     * Displays a single Jabatan model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,28 +66,34 @@ class GradejabatanController extends Controller
     }
 
     /**
-     * Creates a new GradeJabatan model.
+     * Creates a new Jabatan model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new GradeJabatan();
-        $list_jabatan = ArrayHelper::map(KlpJabatan::find()->orderBy('nama_klp_jabatan ASC')->all(),'id_klp_jabatan','nama_klp_jabatan');
+        $model = new Jabatan();
+
+        $list_grade = ArrayHelper::map(GradeJabatan::find()->orderBy('kode_grade ASC')->all(),'id_grade','kode_grade');
+
+        $list_level = Jabatan::getLevelJabatan();
+        $list_peer = Jabatan::getPeerGroup();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Grade jabatan ".$model->kode_grade." berhasil ditambahkan");
+            Yii::$app->session->setFlash('success', "Jabatan ".$model->nama_jabatan." berhasil ditambahkan");
             return $this->redirect(['index']);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'list_jabatan' => $list_jabatan
+            'list_grade'=>$list_grade,
+            'list_level'=>$list_level,
+            'list_peer'=>$list_peer
         ]);
     }
 
     /**
-     * Updates an existing GradeJabatan model.
+     * Updates an existing Jabatan model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,21 +103,26 @@ class GradejabatanController extends Controller
     {
         $model = $this->findModel($id);
 
-        $list_jabatan = ArrayHelper::map(KlpJabatan::find()->orderBy('nama_klp_jabatan ASC')->all(),'id_klp_jabatan','nama_klp_jabatan');
+         $list_grade = ArrayHelper::map(GradeJabatan::find()->orderBy('kode_grade ASC')->all(),'id_grade','kode_grade');
+
+        $list_level = Jabatan::getLevelJabatan();
+        $list_peer = Jabatan::getPeerGroup();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Grade jabatan ".$model->kode_grade." berhasil diupdate");
+            Yii::$app->session->setFlash('success', "Jabatan ".$model->nama_jabatan." berhasil diupdate");
             return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'list_jabatan'=>$list_jabatan
+            'list_grade'=>$list_grade,
+            'list_level'=>$list_level,
+            'list_peer'=>$list_peer
         ]);
     }
 
     /**
-     * Deletes an existing GradeJabatan model.
+     * Deletes an existing Jabatan model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,15 +136,15 @@ class GradejabatanController extends Controller
     }
 
     /**
-     * Finds the GradeJabatan model based on its primary key value.
+     * Finds the Jabatan model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return GradeJabatan the loaded model
+     * @return Jabatan the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = GradeJabatan::findOne($id)) !== null) {
+        if (($model = Jabatan::findOne($id)) !== null) {
             return $model;
         }
 

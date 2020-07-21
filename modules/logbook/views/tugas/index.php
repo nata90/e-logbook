@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+use app\modules\pegawai\models\UnitKerja;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\logbook\models\TugasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -35,11 +36,20 @@ $this->title = Yii::t('app', 'Tugas');
                         'id_tugas',
                         'nama_tugas',
                         [
+                            'label'=>'Unit Kerja',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                return $model->unitkerja->nama_unit_kerja;
+                            },
+                            'filter'=>Html::activeDropDownList($searchModel, 'id_unit_kerja',$list_unit_kerja,['class'=>'form-control','prompt'=>''])
+                        ],
+                        [
                             'label'=>'Kategori',
                             'format'=>'raw',
                             'value'=>function($model){
                                 return $model->kategori->nama_kategori;
-                            }
+                            },
+                            'filter'=>Html::activeDropDownList($searchModel, 'id_kategori',$list_kategori,['class'=>'form-control','prompt'=>''])
                         ],
                         //'id_kategori',
                         [

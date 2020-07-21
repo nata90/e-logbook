@@ -4,10 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\pegawai\models\GradeJabatan */
+/* @var $model app\modules\pegawai\models\Jabatan */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="col-md-8">
     <div class="box box-danger box-solid">
         <div class="box-header with-border">
@@ -28,28 +27,34 @@ use yii\widgets\ActiveForm;
 
         <div class="box-body">
             <?= Html::errorSummary($model, ['encode' => false, 'class'=>'callout callout-danger']) ?>
-            
-            <?= $form->field($model, 'id_klp_jabatan')->dropDownList(
-                $list_jabatan,
+
+            <?= $form->field($model, 'id_grade')->dropDownList(
+                $list_grade,
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
 
-            <?= $form->field($model, 'kode_grade')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'grade')->textInput() ?>
+            <?= $form->field($model, 'nama_jabatan')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'deskripsi')->textarea(['rows' => 6]) ?>
+            <?= $form->field($model, 'level_jabatan')->dropDownList(
+                $list_level,
+                ['prompt'=>'Pilih Salah Satu']
+            ) ?>
 
-            <?= $form->field($model, 'nilai_jbt_max')->textInput() ?>
+            <?= $form->field($model, 'peer_grup')->dropDownList(
+                $list_peer,
+                ['prompt'=>'Pilih Salah Satu']
+            ) ?>
 
-            <?= $form->field($model, 'nilai_jbt_min')->textInput() ?>
-
-            <?= $form->field($model, 'nilai_jbt')->textInput() ?>
-
-            <?= $form->field($model, 'status_grade')->radioList(
+            <?= $form->field($model, 'status_jabatan')->radioList(
                 [0=>'Non Aktif', 1=>'Aktif'],
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
+
+            <?= $form->field($model, 'tmt_jabatan')->widget(\yii\jui\DatePicker::class,[
+                        'options'=>['class'=>'form-control'],
+                        'clientOptions' => ['changeYear' => true, 'changeMonth'=>true]
+                    ]) ?>
         </div>
 
         <div class="box-footer">
