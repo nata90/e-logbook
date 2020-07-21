@@ -73,7 +73,7 @@ class DataPegawai extends \yii\db\ActiveRecord
      */
     public function getJabatanPegawais()
     {
-        return $this->hasMany(JabatanPegawai::className(), ['id_pegawai' => 'id_pegawai']);
+        return $this->hasMany(JabatanPegawai::className(), ['id_pegawai' => 'id_pegawai'])->onCondition(['status_jbt' => 1]);
     }
 
     /**

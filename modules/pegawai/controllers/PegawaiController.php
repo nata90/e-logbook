@@ -5,9 +5,14 @@ namespace app\modules\pegawai\controllers;
 use Yii;
 use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\DataPegawaiSearch;
+use app\modules\pegawai\models\JabatanPegawai;
+use app\modules\pegawai\models\Jabatan;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 /**
  * PegawaiController implements the CRUD actions for DataPegawai model.
@@ -113,6 +118,58 @@ class PegawaiController extends Controller
         Yii::$app->session->setFlash('success', "Data pegawai ".$model->nama." berhasil dihapus");
 
         return $this->redirect(['index']);
+    }
+
+    public function actionSetjabatan($id){
+        $model = new JabatanPegawai;
+        $model->id_pegawai = $id;
+
+        $jabatan_aktif = JabatanPegawai::find()->where(['id_pegawai'=>$id, 'status_jbt'=>1])->one();
+
+        $pegawai = $this->findModel($id);
+        $list_jabatan=ArrayHelper::map(Jabatan::find()->all(),'id_jabatan','nama_jabatan');
+
+        $rows['title'] = 'SET JABATAN '.$pegawai->nama;
+        $rows['html'] = $this->renderPartial('form_set_jabatan', [
+            'model' => $model,
+            'list_jabatan'=>$list_jabatan,
+            'jabatan_aktif'=>$jabatan_aktif
+        ]);
+        $rows['footer'] = Html::button(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right', 'id'=>'set-jab-pegawai']);
+
+        echo Json::encode($rows);
+    }
+
+    public function actionSimpanjabatan(){
+        $id_jabatan = $_GET['id_jabatan'];
+        $status = $_GET['status'];
+        $id_peg = $_GET['id_peg'];
+
+        $model = JabatanPegawai::find()->where(['id_pegawai'=>$id_peg])->one();
+
+            if($model != null){
+                $model->status_jbt = 0;
+                $model->save(false);
+            }
+
+            $new_model = new JabatanPegawai;
+            $new_model->id_jabatan = $id_jabatan;
+            $new_model->id_pegawai = $id_peg;
+            $new_model->status_jbt = $status;
+            $new_model->tmt_jbt = date('Y-m-d');
+            if($new_model->save()){
+                $transaction->commit();
+                $rows['msg'] = "Jabatan ".$new_model->jabatan->nama_jabatan." berhasil ditambahkan";
+                $rows['success'] = 1;
+            }else{
+                $rows['msg'] = "Jabatan gagal diupdate ! semua field harus diisi";
+                $rows['success'] = 0;
+            }
+
+        
+
+        echo Json::encode($rows);
+
     }
 
     /**

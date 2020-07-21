@@ -46,6 +46,10 @@ class DataPegawaiSearch extends DataPegawai
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' =>false,
+            'pagination' => [
+                'pageSize' => 100,
+            ]
         ]);
 
         $this->load($params);

@@ -9,7 +9,10 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Data Pegawai');
-
+$this->registerJs(<<<JS
+    
+JS
+);
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -31,6 +34,9 @@ $this->title = Yii::t('app', 'Data Pegawai');
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
+                    'options'=>[
+                        'style'=>'overflow-x:scroll',
+                    ],
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
@@ -116,8 +122,26 @@ $this->title = Yii::t('app', 'Data Pegawai');
                                 return $html;
                             }
                         ],
+                        [
+                            'label'=>'Jabatan',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                $html = '';
+                                if($model->jabatanPegawais != null){
+                                    foreach($model->jabatanPegawais as $val){
+                                        $html .= '<span class="label label-info">'.$val->jabatan->nama_jabatan.'</span>';
+                                    }
+                                }else{
+                                    //$html .= '<button rel="'.$model->id_pegawai.'" type="button" class="btn bg-maroon btn-flat margin btn-xs set-jabatan">Set Jabatan</button>';
+                                    $html .= '<span class="label label-danger">Not Set</span>';
+                                }
+                                
 
-                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}&nbsp;{delete}'],
+                                return $html;
+                            }
+                        ],
+
+                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
                     ],
                 ]); ?>
 

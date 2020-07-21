@@ -6,10 +6,14 @@
     use yii\grid\GridView;
     use yii\widgets\Pjax;
     use yii\helpers\Url;
+    use yii\helpers\ArrayHelper;
 
 $this->title = Yii::t('app', 'List pegawai unit kerja '.$model->nama_unit_kerja);
 $this->registerJs('var url = "' . Url::to(['unitkerja/addpegawai']) . '";');
 $this->registerJs('var update_grid = "' . Url::to(['unitkerja/listpegawai', 'id'=>$model->id_unit_kerja]) . '";');
+
+$this->registerJs('var url_set = "' . Url::to(['pegawai/setjabatan']) . '";');
+$this->registerJs('var url_tambah_jabatan = "' . Url::to(['pegawai/simpanjabatan']) . '";');
 $this->registerJs(<<<JS
     $(document).on("click", "#add-pegawai", function () {
         var id_peg = $('#unitkerja-id_pegawai').val();
@@ -42,6 +46,45 @@ $this->registerJs(<<<JS
         });
         
     });
+
+    $(document).on("click", ".set-jabatan", function () {
+        var id_peg = $(this).attr('rel');
+        $.ajax({
+            type: 'get',
+            url: url_set,
+            dataType: 'json',
+            data:{'id':id_peg},
+            success: function(v){
+                show_modal("<strong>"+v.title+"</strong>",v.html,v.footer);
+            }
+        });
+        
+    });
+
+    $(document).on("click", "#set-jab-pegawai", function () {
+        var id_jabatan = $('#jabatanpegawai-id_jabatan').val();
+        var status = $('#jabatanpegawai-status_jbt').val();
+        var id_peg = $('#jabatanpegawai-id_pegawai').val();
+
+        $.ajax({
+            type: 'get',
+            url: url_tambah_jabatan,
+            dataType: 'json',
+            data: {'id_jabatan':id_jabatan, 'status':status, 'id_peg':id_peg},
+            success: function(v){
+                
+                if(v.success == 1){
+                    $('#modal').modal('hide');
+                    notifikasi(v.msg,"success");
+                    $.pjax.reload({container: "#peg-unit-kerja", url: update_grid});
+                }else{
+                    notifikasi(v.msg,"error");
+                }
+            }
+        });
+        
+    });
+
 JS
 );
 ?>
@@ -118,7 +161,23 @@ JS
                                         return $model->pegawai->nama;
                                     }
                                 ],
+                                [
+                                    'label'=>'Jabatan',
+                                    'format'=>'raw',
+                                    'value'=>function($model){
+                                        $html = '';
+                                        if($model->pegawai->jabatanPegawais != null){
+                                            foreach($model->pegawai->jabatanPegawais as $val){
+                                                $html .= '<button rel="'.$model->id_pegawai.'" type="button" class="btn bg-olive btn-flat margin btn-xs set-jabatan">'.$val->jabatan->nama_jabatan.'</button>';
+                                            }
+                                        }else{
+                                            $html .= '<button rel="'.$model->id_pegawai.'" type="button" class="btn bg-maroon btn-flat margin btn-xs set-jabatan">Set Jabatan</button>';
+                                        }
+                                        
 
+                                        return $html;
+                                    }
+                                ],
                                 [
                                     'class' => 'yii\grid\ActionColumn',
                                     'template'=>'{delete}',
