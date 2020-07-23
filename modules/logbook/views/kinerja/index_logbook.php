@@ -201,7 +201,7 @@ JS
 		<div class="box box-danger box-solid">
 			<div class="box-header with-border">
 				<h3 class="box-title">
-					Logbook
+					Input Kinerja Pegawai
 				</h3>
 			</div>
 			<div class="box-body">
@@ -232,7 +232,7 @@ JS
 					</div>	
 				</div>
 
-				<div id="data-trans" style="margin:auto !important;">
+				<div id="data-trans" class="col-xs-8">
 
 				</div>
 			</div>

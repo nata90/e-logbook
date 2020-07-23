@@ -1,5 +1,7 @@
 <?php 
     use app\modules\base\models\TbMenu;
+    use app\modules\app\models\AppUser;
+    use app\modules\pegawai\models\DataPegawai;
 ?>
 
 <aside class="main-sidebar">
@@ -9,10 +11,20 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?= $directoryAsset ?>/img/avatar5.png" class="img-circle" alt="User Image"/>
+                <?php 
+                $id_user = Yii::$app->user->id;
+                $model = AppUser::findOne($id_user);
+
+                if($model->pegawai->gender == 0){
+                    echo '<img src="'.$directoryAsset.'/img/avatar5.png" class="img-circle" alt="User Image"/>';
+                }else{
+                    echo '<img src="'.$directoryAsset.'/img/avatar3.png" class="img-circle" alt="User Image"/>';
+                }
+                ?>
+                
             </div>
             <div class="pull-left info">
-                <p>Backlog</p>
+                <p><?php echo $model->username;?></p>
 
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>

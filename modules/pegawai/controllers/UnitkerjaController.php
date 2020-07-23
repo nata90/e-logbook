@@ -138,8 +138,11 @@ class UnitkerjaController extends Controller
 
         //non aktifkan jabatan
         $pegawai_jabatan = JabatanPegawai::find()->where(['id_pegawai'=>$model->id_pegawai, 'status_jbt'=>1])->one();
-        $pegawai_jabatan->status_jbt = 0;
-        $pegawai_jabatan->save(false);
+        if($pegawai_jabatan != null){
+            $pegawai_jabatan->status_jbt = 0;
+            $pegawai_jabatan->save(false);
+        }
+        
 
         return $this->redirect(['listpegawai','id'=>$id_unit_ker]);
     }

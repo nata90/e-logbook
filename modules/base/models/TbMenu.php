@@ -31,7 +31,7 @@ class TbMenu extends \yii\db\ActiveRecord
     {
         return [
             [['menu_name', 'url', 'active'], 'required'],
-            [['parent_id', 'active', 'type'], 'integer'],
+            [['parent_id', 'active', 'type','order'], 'integer'],
             [['menu_name','module'], 'string', 'max' => 200],
             [['url'], 'string', 'max' => 300],
             [['icon'], 'string', 'max' => 30],
@@ -58,6 +58,7 @@ class TbMenu extends \yii\db\ActiveRecord
     public static function getMenu($parent = 0){
         $model = TbMenu::find()
         ->where(['active'=>1, 'type'=>1, 'parent_id'=>$parent])
+        ->orderBy('order ASC')
         ->all();
 
         $menu = array();

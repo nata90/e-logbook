@@ -146,7 +146,7 @@ class PegawaiController extends Controller
         $status = $_GET['status'];
         $id_peg = $_GET['id_peg'];
 
-        $model = JabatanPegawai::find()->where(['id_pegawai'=>$id_peg])->one();
+        $model = JabatanPegawai::find()->where(['id_pegawai'=>$id_peg, 'status_jbt'=>1])->one();
 
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
