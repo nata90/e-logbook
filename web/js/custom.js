@@ -5,7 +5,7 @@ function notifikasi(message, icon){
 	  icon: icon,
 	  textColor : '#eee',  
 	  allowToastClose : false,  
-	  hideAfter : 10000,             
+	  hideAfter : 7000,             
 	  stack : 5,                     
 	  textAlign : 'left',            
 	  position : 'top-right'       

@@ -2,6 +2,10 @@
 
 namespace app\models;
 
+use app\modules\app\models\AppUser;
+use app\modules\app\models\AppUserQuery;
+use app\modules\app\models\AppUserSearch;
+
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
     public $id;
@@ -10,7 +14,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $authKey;
     public $accessToken;
 
-    private static $users = [
+    /*private static $users = [
         '100' => [
             'id' => '100',
             'username' => 'admin',
@@ -25,47 +29,26 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             'authKey' => 'test101key',
             'accessToken' => '101-token',
         ],
-    ];
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentity($id)
-    {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
-    }
+    ];*/
 
     /**
      * {@inheritdoc}
+     * @return AppUserQuery the active query used by this AR class.
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function find()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return new AppUserQuery(get_called_class());
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
 
-        return null;
+     public static function findIdentity($id){
+        return AppUser::findOne($id);
     }
+
+    public static function findByUsername($username){
+        return AppUser::findOne(['username'=>$username]);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -97,8 +80,13 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
+    public function validatePassword($password, $authkey)
     {
-        return $this->password === $password;
+        return $this->password === md5($password.$authkey);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return AppUser::findOne(['accessToken'=>$token]);
     }
 }

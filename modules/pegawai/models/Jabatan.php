@@ -2,6 +2,8 @@
 
 namespace app\modules\pegawai\models;
 
+use app\modules\logbook\models\Target;
+
 use Yii;
 
 /**
@@ -110,6 +112,16 @@ class Jabatan extends \yii\db\ActiveRecord
     public function getTargets()
     {
         return $this->hasMany(Target::className(), ['id_jabatan' => 'id_jabatan']);
+    }
+
+    /**
+     * Gets query for [[Targets]].
+     *
+     * @return \yii\db\ActiveQuery|TargetQuery
+     */
+    public function getOnetarget()
+    {
+        return $this->hasOne(Target::className(), ['id_jabatan' => 'id_jabatan'])->onCondition(['status_target'=>1]);
     }
 
     /**

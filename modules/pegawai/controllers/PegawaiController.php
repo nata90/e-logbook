@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use yii\db\Query;
 
 /**
  * PegawaiController implements the CRUD actions for DataPegawai model.
@@ -147,6 +148,10 @@ class PegawaiController extends Controller
 
         $model = JabatanPegawai::find()->where(['id_pegawai'=>$id_peg])->one();
 
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+        try {
             if($model != null){
                 $model->status_jbt = 0;
                 $model->save(false);
@@ -165,8 +170,13 @@ class PegawaiController extends Controller
                 $rows['msg'] = "Jabatan gagal diupdate ! semua field harus diisi";
                 $rows['success'] = 0;
             }
+        }catch(\Exception $e) {
 
-        
+            $transaction->rollBack();
+
+            throw $e;
+
+        }
 
         echo Json::encode($rows);
 

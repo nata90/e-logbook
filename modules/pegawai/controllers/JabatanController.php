@@ -7,10 +7,16 @@ use app\modules\pegawai\models\Jabatan;
 use app\modules\pegawai\models\JabatanSearch;
 use app\modules\pegawai\models\GradeJabatan;
 use app\modules\pegawai\models\KlpJabatan;
+use app\modules\logbook\models\Target;
+use app\modules\logbook\models\TargetSearch;
+use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\UnitKerja;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * JabatanController implements the CRUD actions for Jabatan model.
@@ -121,6 +127,50 @@ class JabatanController extends Controller
         ]);
     }
 
+    public function actionSettarget($id){
+
+        $jabatan = Jabatan::findOne($id);
+        $model = Target::find()->where(['id_jabatan'=>$id, 'status_target'=>1])->one();
+        if($model == null){
+            $model = new Target;
+        }
+        $model->id_jabatan = $id;
+        $rows['title'] = 'SET TARGET '.$jabatan->nama_jabatan;
+        $rows['html'] = $this->renderPartial('form_set_target', [
+            'model' => $model
+        ]);
+        $rows['footer'] = Html::button(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right', 'id'=>'set-target-jabatan']);
+
+        echo Json::encode($rows);
+    }
+
+    public function actionListtarget($id){
+
+        $model = Jabatan::findOne($id);
+
+        $data = DataPegawai::find()
+        ->select(['nama as value', 'nama as label', 'id_pegawai as id'])
+        ->asArray()
+        ->all();
+
+        $list_unit_kerja = ArrayHelper::map(UnitKerja::find()->orderBy('nama_unit_kerja ASC')->all(),'id_unit_kerja','nama_unit_kerja');
+
+        $searchModel = new TargetSearch();
+        $searchModel->id_jabatan = $id;
+        $searchModel->status_target = 1;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+
+        return $this->render('form_list_target', [
+            'model' => $model,
+            'data'=>$data,
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider,
+            'list_unit_kerja'=>$list_unit_kerja
+        ]);
+        
+    }
+
     /**
      * Deletes an existing Jabatan model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -133,6 +183,47 @@ class JabatanController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionSimpantarget(){
+        $id_jabatan = $_POST['id_jabatan'];
+        $id_unit_kerja = $_POST['id_unit_kerja'];
+        $target = $_POST['target'];
+
+        $model = Target::find()->where(['id_jabatan'=>$id_jabatan, 'id_unit_kerja'=>$id_unit_kerja, 'status_target'=>1])->one();
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+
+        try {
+            if($model != null){
+                $model->status_target = 0;
+                $model->save(false);
+            }
+
+            $new_model = new Target;
+            $new_model->id_jabatan = $id_jabatan;
+            $new_model->id_unit_kerja = $id_unit_kerja;
+            $new_model->nilai_target = $target;
+            $new_model->status_target = 1;
+            if($new_model->save()){
+                $transaction->commit();
+                $rows['msg'] = "Target ".$new_model->jabatan->nama_jabatan." berhasil ditambahkan";
+                $rows['success'] = 1;
+            }else{
+                $rows['msg'] = "Target gagal diupdate ! semua field harus diisi";
+                $rows['success'] = 0;
+            }
+        }catch(\Exception $e) {
+
+            $transaction->rollBack();
+
+            throw $e;
+
+        }
+
+        echo Json::encode($rows);
     }
 
     /**

@@ -89,6 +89,8 @@ $config = [
         */
     ],
     'params' => $params,
+    'defaultRoute'=>'site/login',
+    'timeZone' => 'Asia/Jakarta',
 ];
 
 if (YII_ENV_DEV) {

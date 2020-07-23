@@ -1,24 +1,26 @@
 <?php
 
-namespace app\modules\pegawai\models;
+namespace app\modules\logbook\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\pegawai\models\GradeJabatan;
+use app\modules\logbook\models\Target;
 
 /**
- * GradeJabatanSearch represents the model behind the search form of `app\modules\pegawai\models\GradeJabatan`.
+ * TargetSearch represents the model behind the search form of `app\modules\logbook\models\Target`.
  */
-class GradeJabatanSearch extends GradeJabatan
+class TargetSearch extends Target
 {
+    public $nama_jabatan;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id_grade', 'id_klp_jabatan', 'grade', 'nilai_jbt_max', 'nilai_jbt_min', 'nilai_jbt', 'status_grade'], 'integer'],
-            [['kode_grade', 'deskripsi'], 'safe'],
+            [['id_target', 'id_jabatan', 'nilai_target', 'status_target'], 'integer'],
+            [['id_unit_kerja','nama_jabatan'], 'safe'],
         ];
     }
 
@@ -40,7 +42,7 @@ class GradeJabatanSearch extends GradeJabatan
      */
     public function search($params)
     {
-        $query = GradeJabatan::find();
+        $query = Target::find();
 
         // add conditions that should always apply here
 
@@ -58,19 +60,13 @@ class GradeJabatanSearch extends GradeJabatan
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_grade' => $this->id_grade,
-            'id_klp_jabatan' => $this->id_klp_jabatan,
-            'grade' => $this->grade,
-            'nilai_jbt_max' => $this->nilai_jbt_max,
-            'nilai_jbt_min' => $this->nilai_jbt_min,
-            'nilai_jbt' => $this->nilai_jbt,
-            'status_grade' => $this->status_grade,
+            'id_target' => $this->id_target,
+            'id_jabatan' => $this->id_jabatan,
+            'nilai_target' => $this->nilai_target,
+            'status_target' => $this->status_target,
         ]);
 
-        $query->andFilterWhere(['like', 'kode_grade', $this->kode_grade])
-            ->andFilterWhere(['like', 'deskripsi', $this->deskripsi]);
-
-        $query->orderBy('id_grade DESC');
+        $query->andFilterWhere(['like', 'id_unit_kerja', $this->id_unit_kerja]);
 
         return $dataProvider;
     }

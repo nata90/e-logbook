@@ -36,7 +36,7 @@ class KlpJabatan extends \yii\db\ActiveRecord
             [['status_klp_jabatan'], 'integer'],
             [['kode_klp_jabatan'], 'unique'],
             [['kode_klp_jabatan'], 'string', 'max' => 5],
-            [['nama_klp_jabatan'], 'string', 'max' => 20],
+            [['nama_klp_jabatan'], 'string', 'max' => 50],
         ];
     }
 

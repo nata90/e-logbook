@@ -15,7 +15,7 @@ use app\modules\pegawai\models\DataPegawai;
  * @property int $active
  * @property int $pegawai_id
  */
-class AppUser extends \yii\db\ActiveRecord
+class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     public $pegawai_nama;
     public $new_password;
@@ -52,6 +52,7 @@ class AppUser extends \yii\db\ActiveRecord
             [['username'], 'unique'],
             [['password', 'authkey','new_password'], 'string', 'max' => 100],
             [['pegawai_nama'], 'string', 'max' => 300],
+            [['accessToken'], 'string', 'max' => 100],
         ];
     }
 
@@ -69,6 +70,7 @@ class AppUser extends \yii\db\ActiveRecord
             'active' => Yii::t('app', 'Aktif'),
             'pegawai_id' => Yii::t('app', 'Pegawai ID'),
             'pegawai_nama' => Yii::t('app', 'Nama Pegawai'),
+            'accessToken' => Yii::t('app', 'Akses Token'),
 
         ];
     }
@@ -105,5 +107,34 @@ class AppUser extends \yii\db\ActiveRecord
     public function getPegawai()
     {
         return $this->hasOne(DataPegawai::className(), ['id_pegawai' => 'pegawai_id']);
+    }
+
+    public static function findIdentity($id){
+        return AppUser::findOne($id);
+    }
+
+    public static function findByUsername($username){
+        return AppUser::findOne(['username'=>$username]);
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getAuthKey(){
+        return $this->authkey;
+    }
+
+    public function validateAuthKey($authKey){
+        return $this->authkey === $authKey;
+    }
+
+    public function validatePassword($password, $authkey){
+        return $this->password === md5($password.$authkey);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return AppUser::findOne(['accessToken'=>$token]);
     }
 }

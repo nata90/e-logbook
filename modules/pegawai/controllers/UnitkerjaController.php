@@ -10,6 +10,7 @@ use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\PegawaiUnitKerjaSearch;
 use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\pegawai\models\PegawaiUnitKerjaQuery;
+use app\modules\pegawai\models\JabatanPegawai;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -134,6 +135,11 @@ class UnitkerjaController extends Controller
         Yii::$app->session->setFlash('success', "Data pegawai ".$model->pegawai->nama." berhasil dihapus dari unit kerja ".$model->unitKerja->nama_unit_kerja);
         $model->status_peg = 0;
         $model->save(false);
+
+        //non aktifkan jabatan
+        $pegawai_jabatan = JabatanPegawai::find()->where(['id_pegawai'=>$model->id_pegawai, 'status_jbt'=>1])->one();
+        $pegawai_jabatan->status_jbt = 0;
+        $pegawai_jabatan->save(false);
 
         return $this->redirect(['listpegawai','id'=>$id_unit_ker]);
     }

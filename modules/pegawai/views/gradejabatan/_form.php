@@ -40,9 +40,9 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'deskripsi')->textarea(['rows' => 6]) ?>
 
-            <?= $form->field($model, 'nilai_jbt_max')->textInput() ?>
-
             <?= $form->field($model, 'nilai_jbt_min')->textInput() ?>
+
+            <?= $form->field($model, 'nilai_jbt_max')->textInput() ?>
 
             <?= $form->field($model, 'nilai_jbt')->textInput() ?>
 
