@@ -8,6 +8,7 @@ use app\modules\logbook\models\KinerjaSearch;
 use app\modules\logbook\models\Tugas;
 use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\PegawaiUnitKerja;
+use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\app\models\AppUser;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -41,13 +42,19 @@ class KinerjaController extends Controller
      */
     public function actionIndex()
     {
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+        $list_pegawai_dinilai = JabatanPegawai::find()->select(['data_pegawai.id_pegawai','data_pegawai.nama'])->leftJoin('data_pegawai','jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')->where(['jabatan_pegawai.id_penilai'=>$user->pegawai_id, 'jabatan_pegawai.status_jbt'=>1])->orderBy('data_pegawai.nama ASC')->all();
+
         $searchModel = new KinerjaSearch();
         $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $listData = ArrayHelper::map(Tugas::find()->all(),'id_tugas','nama_tugas');
-        $listPegawai = ArrayHelper::map(DataPegawai::find()->orderBy('nama ASC')->all(),'id_pegawai','nama');
+
+
+        $listPegawai = ArrayHelper::map($list_pegawai_dinilai,'id_pegawai','nama');
 
         return $this->render('index', [
             'searchModel' => $searchModel,

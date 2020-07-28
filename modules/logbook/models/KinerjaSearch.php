@@ -2,9 +2,13 @@
 
 namespace app\modules\logbook\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\logbook\models\Kinerja;
+use app\modules\pegawai\models\JabatanPegawai;
+use app\modules\app\models\AppUser;
+use yii\helpers\ArrayHelper;
 
 /**
  * KinerjaSearch represents the model behind the search form of `app\modules\logbook\models\Kinerja`.
@@ -45,6 +49,17 @@ class KinerjaSearch extends Kinerja
     {
         $query = Kinerja::find();
 
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+        $list_pegawai_dinilai = JabatanPegawai::find()
+        ->select(['data_pegawai.id_pegawai','data_pegawai.nama'])
+        ->leftJoin('data_pegawai','jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')
+        ->where(['jabatan_pegawai.id_penilai'=>$user->pegawai_id, 'jabatan_pegawai.status_jbt'=>1])
+        ->orderBy('data_pegawai.nama ASC')
+        ->all();
+
+        $listPegawai = ArrayHelper::map($list_pegawai_dinilai,'id_pegawai','id_pegawai');
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -72,7 +87,8 @@ class KinerjaSearch extends Kinerja
         ]);
 
 
-        $query->andFilterWhere(['like', 'id_tugas', $this->id_tugas])->andFilterWhere(['like', 'deskripsi', $this->deskripsi]);
+        $query->andFilterWhere(['like', 'id_tugas', $this->id_tugas])->andFilterWhere(['like', 'deskripsi', $this->deskripsi])->andFilterWhere(['IN', 'id_pegawai', $listPegawai]);
+
         if($this->range_date != null){
             $explode = explode('-',$this->range_date);
             $date_start = date('Y-m-d', strtotime(trim($explode[0])));

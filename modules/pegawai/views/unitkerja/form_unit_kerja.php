@@ -65,12 +65,13 @@ $this->registerJs(<<<JS
         var id_jabatan = $('#jabatanpegawai-id_jabatan').val();
         var status = $('#jabatanpegawai-status_jbt').val();
         var id_peg = $('#jabatanpegawai-id_pegawai').val();
+        var penilai = $('#jabatanpegawai-id_penilai').val();
 
         $.ajax({
             type: 'get',
             url: url_tambah_jabatan,
             dataType: 'json',
-            data: {'id_jabatan':id_jabatan, 'status':status, 'id_peg':id_peg},
+            data: {'id_jabatan':id_jabatan, 'status':status, 'id_peg':id_peg, 'penilai':penilai},
             success: function(v){
                 
                 if(v.success == 1){
@@ -172,6 +173,23 @@ JS
                                             }
                                         }else{
                                             $html .= '<button rel="'.$model->id_pegawai.'" type="button" class="btn bg-maroon btn-flat margin btn-xs set-jabatan">Set Jabatan</button>';
+                                        }
+                                        
+
+                                        return $html;
+                                    }
+                                ],
+                                [
+                                    'label'=>'Nama Penilai',
+                                    'format'=>'raw',
+                                    'value'=>function($model){
+                                        $html = '';
+                                        if($model->pegawai->jabatanPegawais != null){
+                                            foreach($model->pegawai->jabatanPegawais as $val){
+                                                $html .= $val->penilai->nama;
+                                            }
+                                        }else{
+                                            $html .= '-';
                                         }
                                         
 

@@ -129,12 +129,14 @@ class PegawaiController extends Controller
 
         $pegawai = $this->findModel($id);
         $list_jabatan=ArrayHelper::map(Jabatan::find()->all(),'id_jabatan','nama_jabatan');
+        $list_penilai=ArrayHelper::map(DataPegawai::find()->orderBy('nama ASC')->all(),'id_pegawai','nama');
 
         $rows['title'] = 'SET JABATAN '.$pegawai->nama;
         $rows['html'] = $this->renderPartial('form_set_jabatan', [
             'model' => $model,
             'list_jabatan'=>$list_jabatan,
-            'jabatan_aktif'=>$jabatan_aktif
+            'jabatan_aktif'=>$jabatan_aktif,
+            'list_penilai'=>$list_penilai
         ]);
         $rows['footer'] = Html::button(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right', 'id'=>'set-jab-pegawai']);
 
@@ -145,6 +147,7 @@ class PegawaiController extends Controller
         $id_jabatan = $_GET['id_jabatan'];
         $status = $_GET['status'];
         $id_peg = $_GET['id_peg'];
+        $id_penilai = $_GET['penilai'];
 
         $model = JabatanPegawai::find()->where(['id_pegawai'=>$id_peg, 'status_jbt'=>1])->one();
 
@@ -161,6 +164,7 @@ class PegawaiController extends Controller
             $new_model->id_jabatan = $id_jabatan;
             $new_model->id_pegawai = $id_peg;
             $new_model->status_jbt = $status;
+            $new_model->id_penilai = $id_penilai;
             $new_model->tmt_jbt = date('Y-m-d');
             if($new_model->save()){
                 $transaction->commit();
