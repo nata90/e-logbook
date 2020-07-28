@@ -6,6 +6,9 @@ use Yii;
 use app\modules\logbook\models\Kinerja;
 use app\modules\logbook\models\KinerjaSearch;
 use app\modules\logbook\models\Tugas;
+use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\PegawaiUnitKerja;
+use app\modules\app\models\AppUser;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -39,15 +42,18 @@ class KinerjaController extends Controller
     public function actionIndex()
     {
         $searchModel = new KinerjaSearch();
-        
+        $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $listData = ArrayHelper::map(Tugas::find()->all(),'id_tugas','nama_tugas');
+        $listPegawai = ArrayHelper::map(DataPegawai::find()->orderBy('nama ASC')->all(),'id_pegawai','nama');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'listData'=>$listData
+            'listData'=>$listData,
+            'listPegawai'=>$listPegawai
         ]);
     }
 
@@ -127,10 +133,14 @@ class KinerjaController extends Controller
 
     public function actionAutotugas(){
         $query = $_GET['query'];
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_peg'=>1])->one();
 
         $model = Tugas::find()
         ->select(['nama_tugas as nama_tugas','id_tugas as id_tugas'])
-        ->where(['id_unit_kerja'=>'03402'])
+        ->where(['id_unit_kerja'=>$unit_kerja->id_unit_kerja, 'status_tugas'=>1])
         ->andFilterWhere(['like', 'nama_tugas', $query])
         ->orderBY('nama_tugas ASC')
         ->asArray()
@@ -158,10 +168,12 @@ class KinerjaController extends Controller
         $date = $_POST['date'];
 
         $explode_tugas = explode("|",$tugas);
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
 
-        $last_row = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d'), 'id_pegawai'=>3])->orderBy('row DESC')->one();
+        $last_row = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d'), 'id_pegawai'=>$user->pegawai_id])->orderBy('row DESC')->one();
 
-        $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>3, 'row'=>$rows])->one();
+        $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id, 'row'=>$rows])->one();
 
          
         if($last_row != null){
@@ -170,7 +182,12 @@ class KinerjaController extends Controller
             if($next_row == $rows){
                 $rows = $rows;
             }else{
-                $rows = $next_row;
+                if($model != null){ //jika posisi update
+                    $rows = $rows;
+                }else{
+                    $rows = $next_row;
+                }
+                
             }
         }
 
@@ -181,7 +198,7 @@ class KinerjaController extends Controller
         $return['success'] = 0;
 
         $model->tanggal_kinerja = date('Y-m-d', strtotime($date));
-        $model->id_pegawai = 3;
+        $model->id_pegawai = $user->pegawai_id;
         $model->id_tugas = trim($explode_tugas[1]);
         $model->jumlah = $jumlah;
         $model->deskripsi = $deskripsi;
@@ -193,14 +210,27 @@ class KinerjaController extends Controller
             $return['msg'] = '"'.$model->deskripsi.'" berhasil disimpan';
         }
 
+        $load_kinerja = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id])->all();
+
+        $arr_data = array();
+        if($load_kinerja != null){
+            foreach($load_kinerja as $val){
+                $arr_data[] = ['tugas'=>$val->tugas->nama_tugas.' | '.$val->id_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
+            }
+        }
+
+        $return['data'] = $arr_data;
+
         echo Json::encode($return);
         
     }
 
     public function actionGetdatakinerja(){
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
 
         $tgl = $_GET['tgl'];
-        $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($tgl)), 'id_pegawai'=>3])->all();
+        $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($tgl)), 'id_pegawai'=>$user->pegawai_id])->all();
 
         $arr_data = array();
         if($model != null){
@@ -219,11 +249,14 @@ class KinerjaController extends Controller
         $row = $_POST['rows'];
         $date = $_POST['date'];
 
-        $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>3, 'row'=>$row])->one();
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id, 'row'=>$row])->one();
 
         $return['suceess'] = 0;
         if($model->delete()){
-            $models = Kinerja::find()->where('row > '.$row)->andFilterWhere(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>3])->all();
+            $models = Kinerja::find()->where('row > '.$row)->andFilterWhere(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id])->all();
             if($models != null){
                foreach ($models as $model_2) {
                     $model_2->row = $model_2->row - 1;
@@ -235,7 +268,57 @@ class KinerjaController extends Controller
             $return['msg'] = '"'.$model->deskripsi.'" berhasil dihapus';
         }
 
+        $load_kinerja = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id])->all();
+
+        $arr_data = array();
+        if($load_kinerja != null){
+            foreach($load_kinerja as $val){
+                $arr_data[] = ['tugas'=>$val->tugas->nama_tugas.' | '.$val->id_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
+            }
+        }
+
+        $return['data'] = $arr_data;
+
         echo Json::encode($return);
+    }
+
+    public function actionApprove(){
+        $id = $_GET['id'];
+        $return['success'] = 0;
+        $model = Kinerja::findOne($id);
+        $id_user = Yii::$app->user->id;
+        if($model->approval == 0){
+            $model->approval = 1;
+            $model->user_approval = $id_user;
+            $model->tgl_approval = date('Y-m-d');
+            $model->save(false);
+
+            $return['success'] = 1;
+        }else{
+            $model->approval = 0;
+             $model->user_approval = null;
+             $model->tgl_approval = null;
+             $model->save(false);
+
+            $return['success'] = 1;
+        }
+
+        echo Json::encode($return);
+    }
+
+    public function actionSearchkinerja(){
+        $range_date = $_GET['tgl'];
+
+        $date = explode('-',$range_date);
+        $date_start = trim($date[0]);
+        $date_end = trim($date[1]);
+
+        $return['success'] = 1;
+        $return['datestart'] = $date_start;
+        $return['dateend'] = $date_end;
+
+        echo Json::encode($return);
+
     }
 
     /**

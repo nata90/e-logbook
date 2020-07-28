@@ -105,13 +105,22 @@ JS
                             'filter'=>Html::activeTextInput($searchModel, 'pegawai_nama',['class'=>'form-control'])
                         ],
                         [
+                            'label'=>'Group',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                return ucfirst($model->group->nama_group);
+                            },
+                            'filter'=>Html::activeDropDownList($searchModel, 'id_group',$list_group,['class'=>'form-control','prompt'=>''])
+                        ],
+                        [
                             'label'=>'',
                             'format'=>'raw',
                             'value'=>function($model){
                                 return '<button class="btn bg-olive margin btn-flat btn-xs update-pass" url="'.Url::to(['user/updatepassword', 'id'=>$model->id]).'">Ganti Password</button>';
                             },
                         ],
-                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}&nbsp;{delete}'],
+                        //['class' => 'yii\grid\ActionColumn','template'=>'{update}&nbsp;{delete}'],
+                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
                     ],
                 ]); ?>
 

@@ -49,6 +49,11 @@ $action = Yii::$app->controller->action->id;
                 []
             ) ?>
 
+            <?= $form->field($model, 'id_group')->dropDownList(
+                $list_group,
+                ['prompt'=>'Pilih Salah Satu']
+            )->label('Group') ?>
+
             <?= $form->field($model, 'pegawai_nama')->widget(\yii\jui\AutoComplete::classname(), [
                 'options' => ['class' => 'form-control input-sm'],
                 'clientOptions' => [

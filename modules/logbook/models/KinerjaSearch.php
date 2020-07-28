@@ -11,6 +11,9 @@ use app\modules\logbook\models\Kinerja;
  */
 class KinerjaSearch extends Kinerja
 {
+    public $date_start;
+    public $date_end;
+    public $range_date;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,7 @@ class KinerjaSearch extends Kinerja
     {
         return [
             [['id_kinerja', 'id_pegawai', 'jumlah', 'approval', 'user_approval'], 'integer'],
-            [['tanggal_kinerja', 'id_tugas', 'deskripsi', 'tgl_approval', 'create_date'], 'safe'],
+            [['tanggal_kinerja', 'id_tugas', 'deskripsi', 'tgl_approval', 'create_date','date_start','date_end','range_date'], 'safe'],
         ];
     }
 
@@ -68,8 +71,16 @@ class KinerjaSearch extends Kinerja
             'create_date' => $this->create_date,
         ]);
 
-        $query->andFilterWhere(['like', 'id_tugas', $this->id_tugas])
-            ->andFilterWhere(['like', 'deskripsi', $this->deskripsi]);
+
+        $query->andFilterWhere(['like', 'id_tugas', $this->id_tugas])->andFilterWhere(['like', 'deskripsi', $this->deskripsi]);
+        if($this->range_date != null){
+            $explode = explode('-',$this->range_date);
+            $date_start = date('Y-m-d', strtotime(trim($explode[0])));
+            $date_end = date('Y-m-d', strtotime(trim($explode[1])));
+            $query->andFilterWhere(['between', 'tanggal_kinerja', $date_start, $date_end]);
+        }
+
+        $query->orderBy('tanggal_kinerja ASC');
 
         return $dataProvider;
     }

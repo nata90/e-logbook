@@ -23,12 +23,14 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/handsontable.min.css',
         'css/jquery.toast.min.css',
+        'css/daterangepicker.css',
     ];
     public $js = [
         'js/jquery-sortable.js',
         'js/handsontable.full.min.js',
         'js/jquery.toast.min.js',
         'js/custom.js',
+        'js/daterangepicker.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

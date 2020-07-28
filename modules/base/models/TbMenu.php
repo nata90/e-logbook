@@ -3,6 +3,9 @@
 namespace app\modules\base\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use app\modules\app\models\AppUser;
+use app\modules\base\models\AppGroupMenu;
 
 /**
  * This is the model class for table "tb_menu".
@@ -16,6 +19,7 @@ use Yii;
  */
 class TbMenu extends \yii\db\ActiveRecord
 {
+    public $id_group;
     /**
      * {@inheritdoc}
      */
@@ -31,7 +35,7 @@ class TbMenu extends \yii\db\ActiveRecord
     {
         return [
             [['menu_name', 'url', 'active'], 'required'],
-            [['parent_id', 'active', 'type','order'], 'integer'],
+            [['parent_id', 'active', 'type','order','id_group'], 'integer'],
             [['menu_name','module'], 'string', 'max' => 200],
             [['url'], 'string', 'max' => 300],
             [['icon'], 'string', 'max' => 30],
@@ -56,10 +60,19 @@ class TbMenu extends \yii\db\ActiveRecord
     }
 
     public static function getMenu($parent = 0){
-        $model = TbMenu::find()
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $model = AppGroupMenu::find()
+        ->leftJoin('tb_menu', 'tb_menu.id = app_group_menu.id_menu')
+        ->where(['id_group'=>$user->id_group, 'tb_menu.active'=>1, 'tb_menu.type'=>1, 'tb_menu.parent_id'=>$parent])
+        ->orderBy('tb_menu.order ASC')
+        ->all();
+
+        /*$model = TbMenu::find()
         ->where(['active'=>1, 'type'=>1, 'parent_id'=>$parent])
         ->orderBy('order ASC')
-        ->all();
+        ->all();*/
 
         $menu = array();
 
@@ -67,27 +80,58 @@ class TbMenu extends \yii\db\ActiveRecord
  
             foreach($model as $val){
 
-                if($val->url != '#'){
-                    $url = [$val->url];
+                if($val->menu->url != '#'){
+                    $url = [$val->menu->url];
                 }else{
                     $url = '#';
                 }
 
                 $menu[] = [
-                    'label'=>$val->menu_name, 
-                    'icon' => $val->icon, 
+                    'label'=>$val->menu->menu_name, 
+                    'icon' => $val->menu->icon, 
                     'url' => $url,
-                    'items' => TbMenu::getMenu($val->id)
+                    'items' => TbMenu::getMenu($val->menu->id)
                 ];
 
             }
         }
 
-        /*echo '<pre>';
-        print_r($menu);
-        echo '</pre>';*/
-
         return $menu;
+    }
+
+    public static function getListMenu($parent = 0){
+        $model = TbMenu::find()
+        ->where(['active'=>1, 'type'=>1, 'parent_id'=>$parent])
+        ->orderBy('order ASC')
+        ->all();
+
+        if($parent === 0){
+            $class = 'class="tree-structure"';
+        }else{
+            $class = '';
+        }
+
+        
+
+        if($model != null){
+            $html = '<ol '.$class.'>';
+            $no = 1;
+            foreach($model as $val){
+                
+
+                $html .= '<li>
+                         <span class="num"><input type="checkbox" id="'.$val->id.'" class="set-menu"></span>
+                         <a href="#">'.$val->menu_name.'</a>'.TbMenu::getListMenu($val->id).'
+                      </li>';
+
+                $no++;
+            }
+            $html .= '</ol>';
+        }
+
+        
+
+        return $html;
     }
 
     /**

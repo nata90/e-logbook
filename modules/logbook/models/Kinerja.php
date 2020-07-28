@@ -25,6 +25,7 @@ use app\modules\pegawai\models\DataPegawai;
  */
 class Kinerja extends \yii\db\ActiveRecord
 {
+    public $range_date;
     /**
      * {@inheritdoc}
      */
@@ -40,7 +41,7 @@ class Kinerja extends \yii\db\ActiveRecord
     {
         return [
             [['tanggal_kinerja', 'create_date', 'id_pegawai', 'jumlah','deskripsi','id_tugas'], 'required'],
-            [['tanggal_kinerja', 'tgl_approval', 'create_date','row'], 'safe'],
+            [['tanggal_kinerja', 'tgl_approval', 'create_date','row','range_date'], 'safe'],
             [['id_pegawai', 'jumlah', 'approval', 'user_approval'], 'integer'],
             [['deskripsi'], 'string'],
             [['id_tugas'], 'string', 'max' => 10],

@@ -99,10 +99,10 @@ $this->registerJs(<<<JS
 		  	var rows = explode[0];
 		  	var name_column = explode[1];
 
-
 	  		var tugas = this.getDataAtCell(rows,0);
 	  		var deskripsi = this.getDataAtCell(rows,1);
 	  		var jumlah = this.getDataAtCell(rows,2);
+	  		var that = this;
 
 
 			$.ajax({
@@ -119,12 +119,14 @@ $this->registerJs(<<<JS
 	          success: function (v) {
 	          	if(v.success == 1){
 		          	notifikasi(v.msg,"success");
+		          	that.loadData(v.data);
 		        }
 	          }
 		    });
 		  },
 	    afterRemoveRow(index, amount, physicalRows, source) {
 	      var date_delete = $('#kinerja-tanggal_kinerja').val();
+	      var that = this;
 
 	      $.ajax({
 	  		  type: 'post',
@@ -142,6 +144,7 @@ $this->registerJs(<<<JS
 
 	          	if(v.success == 1){
 	          		notifikasi(v.msg,"info");
+	          		that.loadData(v.data);
 	          	}
 	          	
 	          },

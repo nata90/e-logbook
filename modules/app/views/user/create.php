@@ -12,7 +12,8 @@ $this->title = Yii::t('app', 'Buat User');
 
     <?= $this->render('_form', [
         'model' => $model,
-        'data'=>$data
+        'data'=>$data,
+        'list_group'=>$list_group
     ]) ?>
 
 </div>

@@ -2,46 +2,52 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\logbook\models\KinerjaSearch */
 /* @var $form yii\widgets\ActiveForm */
-
+$this->registerJs('var url_search = "' . Url::to(['kinerja/searchkinerja']) . '";');
 $this->registerJs(<<<JS
-    $(document).on("change", "#kinerjasearch-tanggal_kinerja", function () {
-        var tgl = $(this).val();
-        
-        alert(tgl);
-    });
 
 JS
 );
 
 ?>
 
-<div class="kinerja-search">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'tanggal_kinerja')->widget(\yii\jui\DatePicker::class,[
-                'options'=>['class'=>'form-control'],
-                'clientOptions' => ['changeYear' => true, 'changeMonth'=>true]
-            ]) ?>
-
-    <?= $form->field($model, 'id_tugas')->dropDownList(
-                $listData,
-                ['prompt'=>'Pilih Salah Satu']
-            ) ?>
-
-    <?= $form->field($model, 'deskripsi')->textArea() ?>
-
-    <?= $form->field($model, 'jumlah') ?>
 
 
-    <div class="box-footer">
-        <?= Html::button(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right']) ?>
+    <?php $form = ActiveForm::begin([
+                'options'=>[
+                    'layout' => 'horizontal',
+                    'class'=>'form-horizontal',
+                    'data-pjax' => 1
+                ],
+                'fieldConfig' => [
+                    'template' => '<label class="col-sm-2 control-label">{label}</label><div class="col-xs-8">{input}</div>',
+                ],
+                'action' => ['index'],
+                'method' => 'get'
+            ]); ?>
+
+    <div class="form-group col-xs-4">
+        <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <input type="text" id="reservation" class="form-control pull-right" name="KinerjaSearch[range_date]">
+        </div>
     </div>
+    <div class="form-group col-xs-4">
+        <?= $form->field($model, 'id_pegawai')->dropDownList(
+                $listPegawai,
+                ['prompt'=>'Pilih Salah Satu']
+            )->label(false) ?>
+    </div>
+    <div class="col-xs-1">
+         <button type="submit" class="btn btn-block btn-success btn-sm" id="search-kinerja">Cari</button>
+     </div>
+
 
     <?php ActiveForm::end(); ?>
 
-</div>

@@ -6,6 +6,8 @@ use Yii;
 use app\modules\app\models\AppUser;
 use app\modules\app\models\AppUserSearch;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\app\models\AppUserGroup;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,10 +42,12 @@ class UserController extends Controller
     {
         $searchModel = new AppUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $list_group = ArrayHelper::map(AppUserGroup::find()->orderBy('nama_group ASC')->all(),'id','nama_group');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'list_group'=>$list_group
         ]);
     }
 
@@ -76,6 +80,8 @@ class UserController extends Controller
         ->asArray()
         ->all();
 
+        $list_group = ArrayHelper::map(AppUserGroup::find()->orderBy('nama_group ASC')->all(),'id','nama_group');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "User ".$model->username." berhasil ditambahkan");
             return $this->redirect(['index']);
@@ -83,7 +89,8 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'data'=>$data
+            'data'=>$data,
+            'list_group'=>$list_group
         ]);
     }
 
@@ -100,6 +107,7 @@ class UserController extends Controller
         $model->scenario = AppUser::SCENARIO_UPDATE;
 
         $model->pegawai_nama = $model->pegawai->nama;
+        $list_group = ArrayHelper::map(AppUserGroup::find()->orderBy('nama_group ASC')->all(),'id','nama_group');
 
         $data = DataPegawai::find()
         ->select(['nama as value', 'nama as label', 'id_pegawai as id'])
@@ -113,7 +121,8 @@ class UserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'data'=>$data
+            'data'=>$data,
+            'list_group'=>$list_group
         ]);
     }
 

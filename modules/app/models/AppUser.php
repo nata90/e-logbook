@@ -34,8 +34,8 @@ class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function scenarios()
     {
         return [
-            self::SCENARIO_ADD => ['username', 'password', 'authkey', 'pegawai_id','active','pegawai_nama'],
-            self::SCENARIO_UPDATE => ['username', 'pegawai_id','active','pegawai_nama'],
+            self::SCENARIO_ADD => ['username', 'password', 'authkey', 'pegawai_id','active','pegawai_nama','id_group'],
+            self::SCENARIO_UPDATE => ['username', 'pegawai_id','active','pegawai_nama','id_group'],
         ];
     }
 
@@ -45,9 +45,9 @@ class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'authkey', 'pegawai_id','pegawai_nama'], 'required','on' => self::SCENARIO_ADD],
-            [['username', 'pegawai_id','pegawai_nama'], 'required','on' => self::SCENARIO_UPDATE],
-            [['active', 'pegawai_id'], 'integer'],
+            [['username', 'password', 'authkey', 'pegawai_id','pegawai_nama','id_group'], 'required','on' => self::SCENARIO_ADD],
+            [['username', 'pegawai_id','pegawai_nama','id_group'], 'required','on' => self::SCENARIO_UPDATE],
+            [['active', 'pegawai_id','id_group'], 'integer'],
             [['username'], 'string', 'max' => 20],
             [['username'], 'unique'],
             [['password', 'authkey','new_password'], 'string', 'max' => 100],
@@ -109,12 +109,20 @@ class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasOne(DataPegawai::className(), ['id_pegawai' => 'pegawai_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(AppUserGroup::className(), ['id' => 'id_group']);
+    }
+
     public static function findIdentity($id){
         return AppUser::findOne($id);
     }
 
     public static function findByUsername($username){
-        return AppUser::findOne(['username'=>$username]);
+        return AppUser::findOne(['username'=>$username,'active'=>1]);
     }
 
     public function getId(){
