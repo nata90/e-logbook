@@ -24,7 +24,8 @@ JS
                     'data-pjax' => 1
                 ],
                 'fieldConfig' => [
-                    'template' => '<label class="col-sm-2 control-label">{label}</label><div class="col-xs-8">{input}</div>',
+                    //'template' => '<label class="col-sm-2 control-label">{label}</label><div class="col-xs-8">{input}</div>',
+                    'template' => '{input}',
                 ],
                 'action' => ['index'],
                 'method' => 'get'
@@ -35,14 +36,20 @@ JS
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
-              <input type="text" id="reservation" class="form-control pull-right" name="KinerjaSearch[range_date]">
+              <?php /*<input type="text" id="reservation" class="form-control pull-right" name="KinerjaSearch[range_date]">*/ ?>
+              <?= $form->field($model, 'range_date',['options'=>['tag' => false]])->textInput(['class'=>'form-control pull-right','id'=>'reservation'])->label(false) ?>
         </div>
     </div>
     <div class="form-group col-xs-4">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-xs-8">
         <?= $form->field($model, 'id_pegawai')->dropDownList(
                 $listPegawai,
-                ['prompt'=>'Pilih Salah Satu']
+                [
+                    'prompt'=>'Pilih Salah Satu',
+                ]
             )->label(false) ?>
+        </div>
     </div>
     <div class="col-xs-1">
          <button type="submit" class="btn btn-block btn-success btn-sm" id="search-kinerja">Cari</button>

@@ -11,6 +11,11 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\modules\base\models\Backlog;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
+use app\modules\logbook\models\KinerjaSearch;
+use app\modules\app\models\AppUser;
+use app\modules\logbook\models\Tugas;
+use app\modules\pegawai\models\JabatanPegawai;
 
 class SiteController extends Controller
 {
@@ -63,7 +68,46 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+
+        if($user->id_group == 2 || $user->id_group == 3){ //grup staff & admin unit kerja
+            $searchModel = new KinerjaSearch();
+            $searchModel->tanggal_kinerja = date('Y-m-d');
+            $searchModel->id_pegawai = $user->pegawai_id;
+
+            $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider
+            ]);
+        }elseif($user->id_group == 4){
+            $searchModel = new KinerjaSearch();
+            $searchModel->tanggal_kinerja = date('Y-m-d');
+
+            $list_pegawai_dinilai = JabatanPegawai::find()
+            ->select(['data_pegawai.id_pegawai','data_pegawai.nama'])
+            ->leftJoin('data_pegawai','jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')
+            ->where(['jabatan_pegawai.id_penilai'=>$user->pegawai_id, 'jabatan_pegawai.status_jbt'=>1])
+            ->orderBy('data_pegawai.nama ASC')
+            ->all();
+
+            $listPegawai = ArrayHelper::map($list_pegawai_dinilai,'id_pegawai','id_pegawai');
+
+            $searchModel->list_pegawai = $listPegawai;
+
+            $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider
+            ]);
+        }
+        
     }
 
     /**

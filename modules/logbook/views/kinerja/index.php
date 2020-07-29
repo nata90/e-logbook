@@ -17,7 +17,7 @@ $this->registerJs('var daysnow = "' . date('m/d/Y') . '";');
 $this->registerJs(<<<JS
     $(document).on("click", ".approve", function () {
         var id = $(this).attr('rel');
-        
+        var that = $(this);
         $.ajax({
               type: 'get',
               url: url_approve,
@@ -31,8 +31,8 @@ $this->registerJs(<<<JS
               },
               success: function (v) {
                 if(v.success == 1){
-
-                    $.pjax.reload({container: "#data-rekap-kinerja", url: update_grid});
+                    that.parents('td').html(v.button);
+                    //$.pjax.reload({container: "#data-rekap-kinerja", url: update_grid});
                 }
               },
               'complete':function(json)
@@ -43,7 +43,10 @@ $this->registerJs(<<<JS
     });
 
     //Date range picker
-    $('#reservation').daterangepicker();
+    $('#reservation').daterangepicker({
+        "startDate": daysago,
+        "endDate": daysnow
+    });
 
     $(document).on("pjax:success", function(){
         $('#reservation').daterangepicker();
@@ -67,7 +70,10 @@ JS
 
                 ]); ?>
                 
-                 <?php echo $this->render('_search', ['model' => $searchModel, 'listData'=>$listData,'listPegawai'=>$listPegawai]); ?>
+                
+                <?php echo $this->render('_search', ['model' => $searchModel, 'listData'=>$listData,'listPegawai'=>$listPegawai]); ?>
+
+                 
                 <div class="form-group">
                     <?= GridView::widget([
                     'dataProvider' => $dataProvider,

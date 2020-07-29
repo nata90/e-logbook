@@ -47,9 +47,10 @@ class KinerjaController extends Controller
         $list_pegawai_dinilai = JabatanPegawai::find()->select(['data_pegawai.id_pegawai','data_pegawai.nama'])->leftJoin('data_pegawai','jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')->where(['jabatan_pegawai.id_penilai'=>$user->pegawai_id, 'jabatan_pegawai.status_jbt'=>1])->orderBy('data_pegawai.nama ASC')->all();
 
         $searchModel = new KinerjaSearch();
-        $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
+        $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');       
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
 
         $listData = ArrayHelper::map(Tugas::find()->all(),'id_tugas','nama_tugas');
 
@@ -60,7 +61,8 @@ class KinerjaController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'listData'=>$listData,
-            'listPegawai'=>$listPegawai
+            'listPegawai'=>$listPegawai,
+            'date_range'=>$date_range
         ]);
     }
 
@@ -301,6 +303,7 @@ class KinerjaController extends Controller
             $model->save(false);
 
             $return['success'] = 1;
+            $return['button'] = '<button rel="'.$model->id_kinerja.'" type="button" class="btn bg-olive btn-flat margin approve"> Approved</button>';
         }else{
             $model->approval = 0;
              $model->user_approval = null;
@@ -308,6 +311,7 @@ class KinerjaController extends Controller
              $model->save(false);
 
             $return['success'] = 1;
+            $return['button'] = '<button rel="'.$model->id_kinerja.'" type="button" class="btn bg-maroon btn-flat margin approve">Not Approve</button>';
         }
 
         echo Json::encode($return);
