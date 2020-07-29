@@ -9,6 +9,7 @@ use app\modules\logbook\models\Kinerja;
 use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\app\models\AppUser;
 use yii\helpers\ArrayHelper;
+use yii\web\Session;
 
 /**
  * KinerjaSearch represents the model behind the search form of `app\modules\logbook\models\Kinerja`.
@@ -112,6 +113,8 @@ class KinerjaSearch extends Kinerja
     public function searchStaff($params)
     {
         $query = Kinerja::find();
+        $session = new Session;
+        $session->open();
 
         // add conditions that should always apply here
 
@@ -130,7 +133,6 @@ class KinerjaSearch extends Kinerja
         // grid filtering conditions
         $query->andFilterWhere([
             'id_kinerja' => $this->id_kinerja,
-            'tanggal_kinerja' => date('Y-m-d', strtotime($this->tanggal_kinerja)),
             'id_pegawai' => $this->id_pegawai,
             'jumlah' => $this->jumlah,
             'approval' => $this->approval,
@@ -142,9 +144,20 @@ class KinerjaSearch extends Kinerja
         if($this->list_pegawai != null){
             $query->andFilterWhere(['like', 'id_tugas', $this->id_tugas])->andFilterWhere(['like', 'deskripsi', $this->deskripsi])->andFilterWhere(['IN', 'id_pegawai', $this->list_pegawai]);
         }
+
+        if($this->range_date != null){
+            $explode = explode('-',$this->range_date);
+            $date_start = date('Y-m-d', strtotime(trim($explode[0])));
+            $date_end = date('Y-m-d', strtotime(trim($explode[1])));
+            $query->andFilterWhere(['between', 'tanggal_kinerja', $date_start, $date_end]);
+
+            $session['rangedate'] = $this->range_date;
+        }
         
 
         $query->orderBy('tanggal_kinerja ASC');
+
+
 
         return $dataProvider;
     }

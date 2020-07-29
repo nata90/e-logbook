@@ -16,6 +16,11 @@ use app\modules\logbook\models\KinerjaSearch;
 use app\modules\app\models\AppUser;
 use app\modules\logbook\models\Tugas;
 use app\modules\pegawai\models\JabatanPegawai;
+use app\modules\logbook\models\Kinerja;
+use yii2tech\spreadsheet\Spreadsheet;
+use yii\data\ArrayDataProvider;
+use yii\data\ActiveDataProvider;
+use yii\web\Session;
 
 class SiteController extends Controller
 {
@@ -74,19 +79,40 @@ class SiteController extends Controller
 
         if($user->id_group == 2 || $user->id_group == 3){ //grup staff & admin unit kerja
             $searchModel = new KinerjaSearch();
-            $searchModel->tanggal_kinerja = date('Y-m-d');
+            $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
             $searchModel->id_pegawai = $user->pegawai_id;
 
             $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
 
+            $searchModel->approval = 1;
+            $dataProvider2 = $searchModel->searchStaff(Yii::$app->request->queryParams);
 
-            return $this->render('index', [
+            $searchModel->approval = 0;
+            $dataProvider3 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+            $total_logbook = $dataProvider->getCount();
+            $approve_logbook = $dataProvider2->getCount();
+            $notapprove_logbook = $dataProvider3->getCount();
+
+            if($total_logbook == 0){
+                $pembagi = 1;
+            }else{
+                $pembagi = $total_logbook;
+            }
+            $persen = round(($approve_logbook/$pembagi)*100,2);
+
+
+            return $this->render('index_staff_admin', [
                 'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider
+                'dataProvider' => $dataProvider,
+                'total_logbook' => $total_logbook,
+                'approve_logbook'=> $approve_logbook,
+                'notapprove_logbook'=> $notapprove_logbook,
+                'persen'=>$persen
             ]);
-        }elseif($user->id_group == 4){
+        }else{
             $searchModel = new KinerjaSearch();
-            $searchModel->tanggal_kinerja = date('Y-m-d');
+            $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
 
             $list_pegawai_dinilai = JabatanPegawai::find()
             ->select(['data_pegawai.id_pegawai','data_pegawai.nama'])
@@ -95,9 +121,12 @@ class SiteController extends Controller
             ->orderBy('data_pegawai.nama ASC')
             ->all();
 
-            $listPegawai = ArrayHelper::map($list_pegawai_dinilai,'id_pegawai','id_pegawai');
+            if($list_pegawai_dinilai != null){
+                $listPegawai = ArrayHelper::map($list_pegawai_dinilai,'id_pegawai','id_pegawai');
 
-            $searchModel->list_pegawai = $listPegawai;
+                $searchModel->list_pegawai = $listPegawai;
+            }
+            
 
             $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
 
@@ -108,6 +137,73 @@ class SiteController extends Controller
             ]);
         }
         
+    }
+
+    public function actionExcelrekap(){
+        $session = new Session;
+        $session->open();
+        $range_date = $session['rangedate'];
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $explode = explode('-',$range_date);
+        $date_start = date('Y-m-d', strtotime(trim($explode[0])));
+        $date_end = date('Y-m-d', strtotime(trim($explode[1])));
+
+        $exporter = new Spreadsheet([
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Kinerja::find()
+                ->select(['kategori.nama_kategori AS nama_kategori','SUM(kinerja.jumlah) AS jumlah', 'kategori.poin_kategori AS poin_kategori'])
+                ->leftJoin('tugas', 'kinerja.id_tugas = tugas.id_tugas')
+                ->leftJoin('kategori', 'tugas.id_kategori = kategori.id_kategori')
+                ->andWhere(['kinerja.approval'=>1])
+                ->andWhere(['kinerja.id_pegawai'=>$user->pegawai_id])
+                ->andFilterWhere(['between', 'tanggal_kinerja', $date_start, $date_end])
+                ->groupBy('tugas.id_kategori')
+            ]),
+            'columns' => [
+                [
+                    'label'=>'Kategori',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->nama_kategori;
+                    },
+                ],
+                [
+                    'label'=>'Jumlah',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->jumlah;
+                    },
+                ],
+                [
+                    'label'=>'Poin',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->poin_kategori;
+                    },
+                ],
+                [
+                    'label'=>'Total',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->jumlah * $model->poin_kategori;
+                    },
+                ],
+            ],
+        ]);
+
+        $exporter->title = 'LAPORAN REKAP BACKLOG';
+        $exporter->headerColumnUnions = 
+        [
+            [
+                'header' => 'Rekap backlog '.$user->pegawai->nama.' '.date('d/m/Y', strtotime($date_start)).' - '.date('d/m/Y', strtotime($date_end)),
+                'offset' => 0,
+                'length' => 4,
+            ]
+        ];
+
+        return $exporter->send('rekap-backlog-'.$user->pegawai->nama.'.xls');
     }
 
     /**

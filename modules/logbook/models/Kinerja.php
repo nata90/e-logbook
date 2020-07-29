@@ -26,6 +26,8 @@ use app\modules\pegawai\models\DataPegawai;
 class Kinerja extends \yii\db\ActiveRecord
 {
     public $range_date;
+    public $nama_kategori;
+    public $poin_kategori;
     /**
      * {@inheritdoc}
      */
