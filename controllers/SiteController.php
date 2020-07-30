@@ -16,6 +16,8 @@ use app\modules\logbook\models\KinerjaSearch;
 use app\modules\app\models\AppUser;
 use app\modules\logbook\models\Tugas;
 use app\modules\pegawai\models\JabatanPegawai;
+use app\modules\pegawai\models\JabatanPegawaiSearch;
+use app\modules\pegawai\models\DataPegawai;
 use app\modules\logbook\models\Kinerja;
 use yii2tech\spreadsheet\Spreadsheet;
 use yii\data\ArrayDataProvider;
@@ -77,7 +79,7 @@ class SiteController extends Controller
         $user = AppUser::findOne($id_user);
 
 
-        if($user->id_group == 2 || $user->id_group == 3){ //grup staff & admin unit kerja
+        /*if($user->id_group == 2 || $user->id_group == 3){ //grup staff & admin unit kerja
             $searchModel = new KinerjaSearch();
             $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
             $searchModel->id_pegawai = $user->pegawai_id;
@@ -90,16 +92,13 @@ class SiteController extends Controller
             $searchModel->approval = 0;
             $dataProvider3 = $searchModel->searchStaff(Yii::$app->request->queryParams);
 
+            $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
+
             $total_logbook = $dataProvider->getCount();
             $approve_logbook = $dataProvider2->getCount();
             $notapprove_logbook = $dataProvider3->getCount();
 
-            if($total_logbook == 0){
-                $pembagi = 1;
-            }else{
-                $pembagi = $total_logbook;
-            }
-            $persen = round(($approve_logbook/$pembagi)*100,2);
+            $hari_kerja = $dataProvider4->getCount();
 
 
             return $this->render('index_staff_admin', [
@@ -108,7 +107,42 @@ class SiteController extends Controller
                 'total_logbook' => $total_logbook,
                 'approve_logbook'=> $approve_logbook,
                 'notapprove_logbook'=> $notapprove_logbook,
-                'persen'=>$persen
+                'hari_kerja'=>$hari_kerja
+            ]);
+        }else*/if($user->id_group == 2 || $user->id_group == 3 || $user->id_group == 4){ //kepala unit kerja
+            $searchModel = new KinerjaSearch();
+            $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
+            $searchModel->id_pegawai = $user->pegawai_id;
+
+            $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+            $searchModel->approval = 1;
+            $dataProvider2 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+            $searchModel->approval = 0;
+            $dataProvider3 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+            $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
+
+            $total_logbook = $dataProvider->getCount();
+            $approve_logbook = $dataProvider2->getCount();
+            $notapprove_logbook = $dataProvider3->getCount();
+
+            $hari_kerja = $dataProvider4->getCount();
+
+            $search_staff = new JabatanPegawaiSearch();
+            $search_staff->id_penilai = $user->pegawai_id;
+            $dataStaff = $search_staff->search(Yii::$app->request->queryParams);
+
+
+            return $this->render('index_staff_kaunit', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'total_logbook' => $total_logbook,
+                'approve_logbook'=> $approve_logbook,
+                'notapprove_logbook'=> $notapprove_logbook,
+                'hari_kerja'=>$hari_kerja,
+                'dataStaff'=>$dataStaff
             ]);
         }else{
             $searchModel = new KinerjaSearch();
@@ -143,8 +177,17 @@ class SiteController extends Controller
         $session = new Session;
         $session->open();
         $range_date = $session['rangedate'];
-        $id_user = Yii::$app->user->id;
-        $user = AppUser::findOne($id_user);
+        if (isset($_GET['id'])) {
+            $pegawai = DataPegawai::findOne($_GET['id']);
+            $id_pegawai = $_GET['id'];
+            $nama_pegawai = $pegawai->nama;
+        }else{
+            $id_user = Yii::$app->user->id;
+            $user = AppUser::findOne($id_user);
+            $id_pegawai = $user->pegawai_id;
+            $nama_pegawai = $user->pegawai->nama;
+        }
+        
 
         $explode = explode('-',$range_date);
         $date_start = date('Y-m-d', strtotime(trim($explode[0])));
@@ -157,7 +200,7 @@ class SiteController extends Controller
                 ->leftJoin('tugas', 'kinerja.id_tugas = tugas.id_tugas')
                 ->leftJoin('kategori', 'tugas.id_kategori = kategori.id_kategori')
                 ->andWhere(['kinerja.approval'=>1])
-                ->andWhere(['kinerja.id_pegawai'=>$user->pegawai_id])
+                ->andWhere(['kinerja.id_pegawai'=>$id_pegawai])
                 ->andFilterWhere(['between', 'tanggal_kinerja', $date_start, $date_end])
                 ->groupBy('tugas.id_kategori')
             ]),
@@ -197,13 +240,13 @@ class SiteController extends Controller
         $exporter->headerColumnUnions = 
         [
             [
-                'header' => 'Rekap backlog '.$user->pegawai->nama.' '.date('d/m/Y', strtotime($date_start)).' - '.date('d/m/Y', strtotime($date_end)),
+                'header' => 'Rekap backlog '.$nama_pegawai.' '.date('d/m/Y', strtotime($date_start)).' - '.date('d/m/Y', strtotime($date_end)),
                 'offset' => 0,
                 'length' => 4,
             ]
         ];
 
-        return $exporter->send('rekap-backlog-'.$user->pegawai->nama.'.xls');
+        return $exporter->send('rekap-backlog-'.$nama_pegawai.'.xls');
     }
 
     /**

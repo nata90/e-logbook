@@ -161,4 +161,45 @@ class KinerjaSearch extends Kinerja
 
         return $dataProvider;
     }
+
+    public function searchHarikerja($params)
+    {
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+        $query = Kinerja::find();
+        $query->select(['tanggal_kinerja']);
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id_pegawai' => $user->pegawai_id,
+        ]);
+
+        if($this->range_date != null){
+            $explode = explode('-',$this->range_date);
+            $date_start = date('Y-m-d', strtotime(trim($explode[0])));
+            $date_end = date('Y-m-d', strtotime(trim($explode[1])));
+            $query->andFilterWhere(['between', 'tanggal_kinerja', $date_start, $date_end]);
+        }
+        
+
+        $query->groupBy(['tanggal_kinerja']);
+
+
+
+        return $dataProvider;
+    }
+
 }

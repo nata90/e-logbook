@@ -17,6 +17,12 @@ $this->registerJs(<<<JS
         
     });
 
+    $(document).on("click", ".rekap-peg", function () {
+        var url = $(this).attr('url');
+        window.open(url);
+        
+    });
+
 JS
 );
 ?>

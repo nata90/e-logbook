@@ -73,16 +73,14 @@ use yii\widgets\Pjax;
 	</div>
 	
 	<div class="col-md-12">
-		<div class="box box-danger box-solid">
-			<div class="box-header with-border">
-				<h3 class="box-title">
-					DASHBOARD
-				</h3>
-			</div>
-			<div class="box-body">
-
-                <div class="form-group">
-                    <?= GridView::widget([
+		<div class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Logbook Pribadi</a></li>
+				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1">
+					<?= GridView::widget([
 	                    'dataProvider' => $dataProvider,
 	                    //'filterModel' => $searchModel,
 	                    'summary' => '',
@@ -137,12 +135,36 @@ use yii\widgets\Pjax;
 	                        ],
 	                    ],
 	                ]); ?>
- 				</div>
-                
-
-                
+				</div>
+				<div class="tab-pane" id="tab_2">
+					<?= GridView::widget([
+	                    'dataProvider' => $dataStaff,
+	                    //'filterModel' => $searchModel,
+	                    'summary' => '',
+	                    'emptyText' => 'Anda tidak memiliki staff !!',
+	                    'columns' => [
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        
+	                        [
+	                            'label'=>'Nama Staff',
+	                            'format'=>'raw',
+	                            'value'=>function($model){
+	                                return $model->pegawai->nama;
+	                            }
+	                        ],
+	                        [
+	                        	'label'=>'',
+	                        	'format'=>'raw',
+	                            'value'=>function($model){
+	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs">Logbook (.xls)</button>';
+	                            }
+	                        ]
+	                    ],
+	                ]); ?>
+				</div>
 			</div>
 		</div>
+		
 	</div>
 	<?php Pjax::end(); ?>
 </div>
