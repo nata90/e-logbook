@@ -3,6 +3,7 @@
 namespace app\modules\base\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
 use app\modules\base\models\TbMenu;
 use app\modules\base\models\TbMenuSearch;
 use app\modules\base\models\AppGroupMenuSearch;
@@ -20,18 +21,33 @@ use yii\helpers\Url;
  */
 class MenuController extends Controller
 {
-    /**
+   /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['setgroupmenu','simpansetting','loadsetting','deletesetting'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
+                },
+                'rules' => [
+                    [
+                        //'actions' => ['logout','index','excelrekap'],
+                        'actions' => TbMenu::getAksesUser(),
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
+            
         ];
     }
 

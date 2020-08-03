@@ -28,7 +28,7 @@ class GradejabatanController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['index','create','update'],
                 'denyCallback' => function ($rule, $action) {
-                    throw new \Exception('You are not authorized to access this page');
+                    throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
                 },
                 'rules' => [
                     [

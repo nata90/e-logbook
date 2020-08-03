@@ -153,7 +153,7 @@ class TbMenu extends \yii\db\ActiveRecord
         $menu = AppGroupMenu::find()->where(['id_group'=>$user->id_group, 'active'=>1])->all();
         $controller = Yii::$app->controller->id;
 
-        $arr_return = [];
+        $arr_return = [''];
         if($menu != null){
             foreach($menu as $val){
                 $explode = explode('/',$val->menu->url);
@@ -166,7 +166,7 @@ class TbMenu extends \yii\db\ActiveRecord
                     if($explode[2] == $controller){
                         $action = $explode[3];
                         $arr_return[] = $action;
-                    }
+                   }
                     
                 }
 

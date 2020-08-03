@@ -32,12 +32,12 @@ class PegawaiController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['index','create','update'],
                 'denyCallback' => function ($rule, $action) {
-                    throw new \Exception('You are not authorized to access this page');
+                    throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
                 },
                 'rules' => [
                     [
                         //'actions' => ['logout','index','excelrekap'],
-                        'actions' => TbMenu::getAksesUser(),
+                        'actions' => TbMenu::getAksesUser('pegawai'),
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,6 +58,7 @@ class PegawaiController extends Controller
      */
     public function actionIndex()
     {
+        print_r(TbMenu::getAksesUser());
         $searchModel = new DataPegawaiSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
