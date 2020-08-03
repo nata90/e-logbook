@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\modules\pegawai\models\DirektoratSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Direktorats');
+$this->title = Yii::t('app', 'Direktorat');
 ?>
 <div class="row">
     <div class="col-md-12">

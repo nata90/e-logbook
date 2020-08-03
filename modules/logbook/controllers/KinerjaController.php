@@ -3,6 +3,7 @@
 namespace app\modules\logbook\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
 use app\modules\logbook\models\Kinerja;
 use app\modules\logbook\models\KinerjaSearch;
 use app\modules\logbook\models\Tugas;
@@ -10,6 +11,7 @@ use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\app\models\AppUser;
+use app\modules\base\models\TbMenu;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,12 +29,27 @@ class KinerjaController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['createlogbook','simpanbacklog','deletebacklog','autotugas','getdatakinerja','approve'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \Exception('You are not authorized to access this page');
+                },
+                'rules' => [
+                    [
+                        //'actions' => ['logout','index','excelrekap'],
+                        'actions' => TbMenu::getAksesUser(),
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
+            
         ];
     }
 

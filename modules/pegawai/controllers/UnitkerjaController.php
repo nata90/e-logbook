@@ -3,6 +3,8 @@
 namespace app\modules\pegawai\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
+use app\modules\base\models\TbMenu;
 use app\modules\pegawai\models\UnitKerja;
 use app\modules\pegawai\models\UnitKerjaSearch;
 use app\modules\pegawai\models\Bagian;
@@ -30,12 +32,27 @@ class UnitkerjaController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index','create','update','listpegawai','addpegawai','getidunit','deletepegawai','getidunit'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \Exception('You are not authorized to access this page');
+                },
+                'rules' => [
+                    [
+                        //'actions' => ['logout','index','excelrekap'],
+                        'actions' => TbMenu::getAksesUser(),
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
+            
         ];
     }
 

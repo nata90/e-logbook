@@ -3,6 +3,8 @@
 namespace app\modules\logbook\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
+use app\modules\base\models\TbMenu;
 use app\modules\logbook\models\Kategori;
 use app\modules\logbook\models\KategoriSearch;
 use yii\web\Controller;
@@ -20,12 +22,27 @@ class KategoriController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index','create','update'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \Exception('You are not authorized to access this page');
+                },
+                'rules' => [
+                    [
+                        //'actions' => ['logout','index','excelrekap'],
+                        'actions' => TbMenu::getAksesUser(),
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
+            
         ];
     }
 

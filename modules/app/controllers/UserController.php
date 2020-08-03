@@ -3,6 +3,8 @@
 namespace app\modules\app\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
+use app\modules\base\models\TbMenu;
 use app\modules\app\models\AppUser;
 use app\modules\app\models\AppUserSearch;
 use app\modules\pegawai\models\DataPegawai;
@@ -25,12 +27,27 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index','create','update','updatepassword','savenewpassword'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \Exception('You are not authorized to access this page');
+                },
+                'rules' => [
+                    [
+                        //'actions' => ['logout','index','excelrekap'],
+                        'actions' => TbMenu::getAksesUser(),
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
+            
         ];
     }
 

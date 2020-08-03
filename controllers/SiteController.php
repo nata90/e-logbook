@@ -19,6 +19,7 @@ use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\pegawai\models\JabatanPegawaiSearch;
 use app\modules\pegawai\models\DataPegawai;
 use app\modules\logbook\models\Kinerja;
+use app\modules\base\models\TbMenu;
 use yii2tech\spreadsheet\Spreadsheet;
 use yii\data\ArrayDataProvider;
 use yii\data\ActiveDataProvider;
@@ -34,21 +35,25 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout','index','excelrekap','login'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \Exception('You are not authorized to access this page');
+                },
                 'rules' => [
                     [
-                        'actions' => ['logout','simpanbacklog'],
+                        //'actions' => ['logout','index','excelrekap'],
+                        'actions' => TbMenu::getAksesUser(),
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
-            /*'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],*/
+            
         ];
     }
 
@@ -78,38 +83,7 @@ class SiteController extends Controller
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);
 
-
-        /*if($user->id_group == 2 || $user->id_group == 3){ //grup staff & admin unit kerja
-            $searchModel = new KinerjaSearch();
-            $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
-            $searchModel->id_pegawai = $user->pegawai_id;
-
-            $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
-
-            $searchModel->approval = 1;
-            $dataProvider2 = $searchModel->searchStaff(Yii::$app->request->queryParams);
-
-            $searchModel->approval = 0;
-            $dataProvider3 = $searchModel->searchStaff(Yii::$app->request->queryParams);
-
-            $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
-
-            $total_logbook = $dataProvider->getCount();
-            $approve_logbook = $dataProvider2->getCount();
-            $notapprove_logbook = $dataProvider3->getCount();
-
-            $hari_kerja = $dataProvider4->getCount();
-
-
-            return $this->render('index_staff_admin', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'total_logbook' => $total_logbook,
-                'approve_logbook'=> $approve_logbook,
-                'notapprove_logbook'=> $notapprove_logbook,
-                'hari_kerja'=>$hari_kerja
-            ]);
-        }else*/if($user->id_group == 2 || $user->id_group == 3 || $user->id_group == 4){ //kepala unit kerja
+        if($user->id_group == 2 || $user->id_group == 3 || $user->id_group == 4){ //kepala unit kerja
             $searchModel = new KinerjaSearch();
             $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
             $searchModel->id_pegawai = $user->pegawai_id;
@@ -233,6 +207,9 @@ class SiteController extends Controller
                         return $model->jumlah * $model->poin_kategori;
                     },
                 ],
+                [],
+                [],
+                [],
             ],
         ]);
 
@@ -240,10 +217,11 @@ class SiteController extends Controller
         $exporter->headerColumnUnions = 
         [
             [
-                'header' => 'Rekap backlog '.$nama_pegawai.' '.date('d/m/Y', strtotime($date_start)).' - '.date('d/m/Y', strtotime($date_end)),
+                'header' => 'REKAP BACKLOG : '.strtoupper($nama_pegawai).' PERIODE : '.date('d/m/Y', strtotime($date_start)).' - '.date('d/m/Y', strtotime($date_end)),
                 'offset' => 0,
-                'length' => 4,
-            ]
+                'length' => 7,
+            ],
+            
         ];
 
         return $exporter->send('rekap-backlog-'.$nama_pegawai.'.xls');
@@ -313,44 +291,10 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    public function actionSimpanbacklog(){
-        $return['suceess'] = 0;
-
-        $butir_keg = $_POST['butir_keg'];
-        $deskripsi = $_POST['deskripsi'];
-        $jumlah = $_POST['jumlah'];
-        $rows = $_POST['rows'];
-
-        $model = Backlog::find()->where(['tgl_entri'=>date('Y-m-d'), 'row'=>$rows])->one();
-
-        if($model == null){
-            $model = new Backlog;
-        }
-        
-        $model->butir_kegiatan = $butir_keg;
-        $model->deskripsi = $deskripsi;
-        $model->tgl_entri = date('Y-m-d');
-        $model->jumlah = $jumlah;
-        $model->row = $rows;
-        if($model->save()){
-            $return['success'] = 1;
-            $return['msg'] = '"'.$model->deskripsi.'" berhasil ditambahkan';
-        }
-
-        echo Json::encode($return);
-
+    public function actionTes()
+    {
+        print_r(TbMenu::getAksesUser());
     }
 
-    public function actionDeletebacklog(){
-        $row = $_POST['rows'];
 
-        $model = Backlog::find()->where(['tgl_entri'=>date('Y-m-d'), 'row'=>$row])->one();
-        $return['suceess'] = 0;
-        if($model->delete()){
-            $return['success'] = 1;
-            $return['msg'] = '"'.$model->deskripsi.'" berhasil dihapus';
-        }
-
-        echo Json::encode($return);
-    }
 }

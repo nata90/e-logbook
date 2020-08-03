@@ -101,7 +101,7 @@ class TbMenu extends \yii\db\ActiveRecord
 
     public static function getListMenu($parent = 0){
         $model = TbMenu::find()
-        ->where(['active'=>1, 'type'=>1, 'parent_id'=>$parent])
+        ->where(['active'=>1, 'parent_id'=>$parent])
         ->orderBy('order ASC')
         ->all();
 
@@ -117,11 +117,14 @@ class TbMenu extends \yii\db\ActiveRecord
             $html = '<ol '.$class.'>';
             $no = 1;
             foreach($model as $val){
-                
+                $style = '';
+                if($val->type == 2){
+                    $style = 'style="font-color:red"';
+                }
 
                 $html .= '<li>
                          <span class="num"><input type="checkbox" id="'.$val->id.'" class="set-menu"></span>
-                         <a href="#">'.$val->menu_name.'</a>'.TbMenu::getListMenu($val->id).'
+                         <a href="#" '.$style.'>'.$val->menu_name.'</a>'.TbMenu::getListMenu($val->id).'
                       </li>';
 
                 $no++;
@@ -141,5 +144,37 @@ class TbMenu extends \yii\db\ActiveRecord
     public static function find()
     {
         return new TbMenuQuery(get_called_class());
+    }
+
+    public static function getAksesUser(){
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $menu = AppGroupMenu::find()->where(['id_group'=>$user->id_group, 'active'=>1])->all();
+        $controller = Yii::$app->controller->id;
+
+        $arr_return = [];
+        if($menu != null){
+            foreach($menu as $val){
+                $explode = explode('/',$val->menu->url);
+                if($val->menu->module == '-'){
+                    if($explode[1] == $controller){
+                        $action = $explode[2];
+                        $arr_return[] = $action;
+                    }
+                }else{
+                    if($explode[2] == $controller){
+                        $action = $explode[3];
+                        $arr_return[] = $action;
+                    }
+                    
+                }
+
+                
+            }
+            
+        }
+
+        return $arr_return;
     }
 }
