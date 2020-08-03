@@ -35,7 +35,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout','index','excelrekap','login'],
+                'only' => ['logout','index','excelrekap','login','excellogbook'],
                 'denyCallback' => function ($rule, $action) {
                     throw new \Exception('You are not authorized to access this page');
                 },
@@ -225,6 +225,84 @@ class SiteController extends Controller
         ];
 
         return $exporter->send('rekap-backlog-'.$nama_pegawai.'.xls');
+    }
+
+    public function actionExcellogbook(){
+        $session = new Session;
+        $session->open();
+        $range_date = $session['rangedate'];
+        if (isset($_GET['id'])) {
+            $pegawai = DataPegawai::findOne($_GET['id']);
+            $id_pegawai = $_GET['id'];
+            $nama_pegawai = $pegawai->nama;
+        }else{
+            $id_user = Yii::$app->user->id;
+            $user = AppUser::findOne($id_user);
+            $id_pegawai = $user->pegawai_id;
+            $nama_pegawai = $user->pegawai->nama;
+        }
+        
+
+        $explode = explode('-',$range_date);
+        $date_start = date('Y-m-d', strtotime(trim($explode[0])));
+        $date_end = date('Y-m-d', strtotime(trim($explode[1])));
+
+        $exporter = new Spreadsheet([
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Kinerja::find()
+                ->leftJoin('tugas', 'kinerja.id_tugas = tugas.id_tugas')
+                ->andWhere(['kinerja.approval'=>1])
+                ->andWhere(['kinerja.id_pegawai'=>$id_pegawai])
+                ->andFilterWhere(['between', 'kinerja.tanggal_kinerja', $date_start, $date_end])
+                ->orderBy('kinerja.tanggal_kinerja ASC')
+            ]),
+            'columns' => [
+                [
+                    'label'=>'Tanggal',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return date('d-m-Y', strtotime($model->tanggal_kinerja));
+                    },
+                ],
+                [
+                    'label'=>'Tugas',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->tugas->nama_tugas;
+                    },
+                ],
+                [
+                    'label'=>'Jumlah',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->jumlah;
+                    },
+                ],
+                [
+                    'label'=>'Deskripsi',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return $model->deskripsi;
+                    },
+                ],
+                [],
+                [],
+                [],
+            ],
+        ]);
+
+        $exporter->title = 'LAPORAN REKAP BACKLOG';
+        $exporter->headerColumnUnions = 
+        [
+            [
+                'header' => 'REKAP LOGBOOK : '.strtoupper($nama_pegawai).' PERIODE : '.date('d/m/Y', strtotime($date_start)).' - '.date('d/m/Y', strtotime($date_end)),
+                'offset' => 0,
+                'length' => 7,
+            ],
+            
+        ];
+
+        return $exporter->send('rekap-logbook-'.$nama_pegawai.'.xls');
     }
 
     /**

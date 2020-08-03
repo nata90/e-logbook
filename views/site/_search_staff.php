@@ -7,6 +7,7 @@ use yii\helpers\Url;
 $this->registerJs('var daysago = "' . date('m/d/Y'). '";');
 $this->registerJs('var daysnow = "' . date('m/d/Y') . '";');
 $this->registerJs('var url_download = "' . Url::to(['site/excelrekap']) . '";');
+$this->registerJs('var url_logbook = "' . Url::to(['site/excellogbook']) . '";');
 $this->registerJs(<<<JS
     //Date range picker
     $('#reservation').daterangepicker();
@@ -17,7 +18,19 @@ $this->registerJs(<<<JS
         
     });
 
+    $(document).on("click", "#list-logbook", function () {
+
+        window.open(url_logbook);
+        
+    });
+
     $(document).on("click", ".rekap-peg", function () {
+        var url = $(this).attr('url');
+        window.open(url);
+        
+    });
+
+    $(document).on("click", ".logbook-peg", function () {
         var url = $(this).attr('url');
         window.open(url);
         
@@ -55,7 +68,9 @@ JS
      <div class="col-xs-2">
          <button type="button" class="btn btn-block bg-olive btn-sm btn-flat" id="rekap-logbook">Rekap (.xls)</button>
      </div>
-
+     <div class="col-xs-2">
+         <button type="button" class="btn btn-block bg-maroon btn-sm btn-flat" id="list-logbook">Logbook (.xls)</button>
+     </div>
 
 <?php ActiveForm::end(); ?>
 

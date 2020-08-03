@@ -6,6 +6,8 @@ use yii\jui\DatePicker ;
 use app\modules\logbook\models\Tugas;
 use yii\helpers\Json;
 
+$this->title = Yii::t('app', 'Logbook');
+
 $this->registerJs('var url = "' . Url::to(['kinerja/simpanbacklog']) . '";');
 $this->registerJs('var url_delete = "' . Url::to(['kinerja/deletebacklog']) . '";');
 $this->registerJs('var url_auto = "' . Url::to(['kinerja/autotugas']) . '";');

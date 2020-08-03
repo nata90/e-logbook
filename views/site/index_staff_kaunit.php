@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-
+$this->title = Yii::t('app', 'Dashboard');
 ?>
 <div class="row">
 	<?php Pjax::begin([
@@ -156,7 +156,7 @@ use yii\widgets\Pjax;
 	                        	'label'=>'',
 	                        	'format'=>'raw',
 	                            'value'=>function($model){
-	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs">Logbook (.xls)</button>';
+	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs logbook-peg" url="'.Url::to(['site/excellogbook', 'id'=>$model->id_pegawai]).'">Logbook (.xls)</button>';
 	                            }
 	                        ]
 	                    ],
