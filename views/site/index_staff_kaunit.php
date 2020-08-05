@@ -76,11 +76,14 @@ $this->title = Yii::t('app', 'Dashboard');
 		<div class="nav-tabs-custom">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Logbook Pribadi</a></li>
-				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
+				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Logbook</a></li>
+				<li><a href="#tab_3" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1">
+					
 					<?= GridView::widget([
+						
 	                    'dataProvider' => $dataProvider,
 	                    //'filterModel' => $searchModel,
 	                    'summary' => '',
@@ -137,6 +140,48 @@ $this->title = Yii::t('app', 'Dashboard');
 	                ]); ?>
 				</div>
 				<div class="tab-pane" id="tab_2">
+					<?= GridView::widget([
+	                    'dataProvider' => $dataProvider5,
+	                    //'filterModel' => $searchModel,
+	                    'summary' => '',
+	                    'showFooter'=>TRUE,
+	                    'emptyText' => 'Rekap logbook anda masih kosong',
+	                    'columns' => [
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        
+	                        [
+			                    'label'=>'Kategori',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->nama_kategori;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Jumlah',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->jumlah;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Poin',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->poin_kategori;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Total',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->jumlah * $model->poin_kategori;
+			                    },
+			                    'footer' => $total_rekap,
+			                ],
+	                    ],
+	                ]); ?>
+				</div>
+				<div class="tab-pane" id="tab_3">
 					<?= GridView::widget([
 	                    'dataProvider' => $dataStaff,
 	                    //'filterModel' => $searchModel,

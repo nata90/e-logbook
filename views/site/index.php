@@ -3,7 +3,16 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+$this->title = Yii::t('app', 'Dashboard');
+$this->registerJs("
+	$(document).on('ready pjax:success', function() {
+		/*$('li#logbook-id').removeClass('active');
+		$('div#tab_1').removeClass('active');
+		$('li#kin-staff').addClass('active');
+		$('div#tab_3').addClass('active');*/
 
+	});
+");
 ?>
 <div class="row">
 	<?php Pjax::begin([
@@ -19,17 +28,71 @@ use yii\widgets\Pjax;
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12">
-		<div class="box box-danger box-solid">
-			<div class="box-header with-border">
-				<h3 class="box-title">
-					DASHBOARD
-				</h3>
-			</div>
-			<div class="box-body">
+	<div class="col-lg-3 col-xs-6">
+		<div class="small-box bg-aqua">
+            <div class="inner">
+              <h3><?php echo $total_logbook;?></h3>
 
-                <div class="form-group">
-                    <?= GridView::widget([
+              <p>Total</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">Logbook yg sudah dientri <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+	</div>
+	<div class="col-lg-3 col-xs-6">
+		<div class="small-box bg-green">
+            <div class="inner">
+              <h3><?php echo $approve_logbook;?></h3>
+
+              <p>Approved</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer">Logbook yang sudah disetujui <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+	</div>
+	<div class="col-lg-3 col-xs-6">
+		<div class="small-box bg-red">
+            <div class="inner">
+              <h3><?php echo $notapprove_logbook;?></h3>
+
+              <p>Not Approve</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">Logbook yang belum disetujui <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+	</div>
+	<div class="col-lg-3 col-xs-6">
+		<div class="small-box bg-yellow">
+            <div class="inner">
+              <h3><?php echo $hari_kerja;?></h3>
+
+              <p>Hari Kerja</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer">Jumlah hari kerja <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+				<li id="logbook-id" class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Logbook Pribadi</a></li>
+				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Logbook</a></li>
+				<li id="kin-staff"><a href="#tab_3" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1">
+					
+					<?= GridView::widget([
+						
 	                    'dataProvider' => $dataProvider,
 	                    //'filterModel' => $searchModel,
 	                    'summary' => '',
@@ -84,12 +147,87 @@ use yii\widgets\Pjax;
 	                        ],
 	                    ],
 	                ]); ?>
- 				</div>
-                
-
-                
+				</div>
+				<div class="tab-pane" id="tab_2">
+					<?= GridView::widget([
+	                    'dataProvider' => $dataProvider5,
+	                    //'filterModel' => $searchModel,
+	                    'summary' => '',
+	                    'showFooter'=>TRUE,
+	                    'emptyText' => 'Rekap logbook anda masih kosong',
+	                    'columns' => [
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        
+	                        [
+			                    'label'=>'Kategori',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->nama_kategori;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Jumlah',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->jumlah;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Poin',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->poin_kategori;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Total',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->jumlah * $model->poin_kategori;
+			                    },
+			                    'footer' => $total_rekap,
+			                ],
+	                    ],
+	                ]); ?>
+				</div>
+				<div class="tab-pane" id="tab_3">
+					<?= GridView::widget([
+	                    'dataProvider' => $dataStaff,
+	                    'filterModel' => $search_staff,
+	                    'summary' => '',
+	                    'emptyText' => 'Anda tidak memiliki staff !!',
+	                    'columns' => [
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        
+	                        [
+	                            'attribute'=>'nama',
+	                            'format'=>'raw',
+	                            'value'=>function($model){
+	                                return $model->pegawai->nama;
+	                            },
+	                            'filter'=>Html::activeInput('text', $search_staff, 'nama', ['class' => 'form-control'])
+	                        ],
+	                        [
+	                            'label'=>'Jabatan',
+	                            'format'=>'raw',
+	                            'value'=>function($model){
+	                                return $model->jabatan->nama_jabatan;
+	                            },
+	                            'filter'=>Html::activeDropDownList($search_staff, 'id_jabatan',$list_jabatan,['class'=>'form-control','prompt'=>''])
+	                        ],
+	                        [
+	                        	'label'=>'',
+	                        	'format'=>'raw',
+	                            'value'=>function($model){
+	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs logbook-peg" url="'.Url::to(['site/excellogbook', 'id'=>$model->id_pegawai]).'">Logbook (.xls)</button>';
+	                            }
+	                        ]
+	                    ],
+	                ]); ?>
+				</div>
 			</div>
 		</div>
+		
 	</div>
 	<?php Pjax::end(); ?>
 </div>

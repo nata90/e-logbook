@@ -11,6 +11,7 @@ use app\modules\pegawai\models\JabatanPegawai;
  */
 class JabatanPegawaiSearch extends JabatanPegawai
 {
+    public $nama;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class JabatanPegawaiSearch extends JabatanPegawai
     {
         return [
             [['id_jbt_pegawai', 'id_jabatan', 'id_pegawai', 'id_penilai', 'status_jbt'], 'integer'],
-            [['tmt_jbt'], 'safe'],
+            [['tmt_jbt','nama'], 'safe'],
         ];
     }
 
@@ -40,7 +41,7 @@ class JabatanPegawaiSearch extends JabatanPegawai
      */
     public function search($params)
     {
-        $query = JabatanPegawai::find();
+        $query = JabatanPegawai::find()->leftJoin('data_pegawai', 'jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai');
 
         // add conditions that should always apply here
 
@@ -55,7 +56,7 @@ class JabatanPegawaiSearch extends JabatanPegawai
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        
         // grid filtering conditions
         $query->andFilterWhere([
             'id_jbt_pegawai' => $this->id_jbt_pegawai,
@@ -65,6 +66,8 @@ class JabatanPegawaiSearch extends JabatanPegawai
             'status_jbt' => $this->status_jbt,
             'tmt_jbt' => $this->tmt_jbt,
         ]);
+
+        $query->andFilterWhere(['like', 'data_pegawai.nama', $this->nama]);
 
         return $dataProvider;
     }

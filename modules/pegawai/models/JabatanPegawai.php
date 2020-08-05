@@ -35,7 +35,7 @@ class JabatanPegawai extends \yii\db\ActiveRecord
         return [
             [['id_jabatan', 'id_pegawai', 'status_jbt', 'tmt_jbt', 'id_penilai'], 'required'],
             [['id_jabatan', 'id_pegawai', 'status_jbt'], 'integer'],
-            [['tmt_jbt'], 'safe'],
+            [['tmt_jbt','nama'], 'safe'],
             [['id_pegawai'], 'exist', 'skipOnError' => true, 'targetClass' => DataPegawai::className(), 'targetAttribute' => ['id_pegawai' => 'id_pegawai']],
             [['id_jabatan'], 'exist', 'skipOnError' => true, 'targetClass' => Jabatan::className(), 'targetAttribute' => ['id_jabatan' => 'id_jabatan']],
         ];

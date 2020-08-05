@@ -18,6 +18,7 @@ use app\modules\logbook\models\Tugas;
 use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\pegawai\models\JabatanPegawaiSearch;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\Jabatan;
 use app\modules\logbook\models\Kinerja;
 use app\modules\base\models\TbMenu;
 use yii2tech\spreadsheet\Spreadsheet;
@@ -37,7 +38,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['logout','index','excelrekap','login','excellogbook'],
                 'denyCallback' => function ($rule, $action) {
-                    throw new \Exception('You are not authorized to access this page');
+                    throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
                 },
                 'rules' => [
                     [
@@ -98,6 +99,18 @@ class SiteController extends Controller
 
             $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
 
+            $dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
+            $total_rekap = 0;
+            if($dataProvider5 != null){
+                foreach($dataProvider5->models as $m)
+                {
+
+                   $total_rekap += $m->jumlah * $m->poin_kategori;;
+
+                }
+            }
+            
+
             $total_logbook = $dataProvider->getCount();
             $approve_logbook = $dataProvider2->getCount();
             $notapprove_logbook = $dataProvider3->getCount();
@@ -106,42 +119,72 @@ class SiteController extends Controller
 
             $search_staff = new JabatanPegawaiSearch();
             $search_staff->id_penilai = $user->pegawai_id;
+            $search_staff->status_jbt = 1;
             $dataStaff = $search_staff->search(Yii::$app->request->queryParams);
 
 
             return $this->render('index_staff_kaunit', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'dataProvider5'=>$dataProvider5,
                 'total_logbook' => $total_logbook,
                 'approve_logbook'=> $approve_logbook,
                 'notapprove_logbook'=> $notapprove_logbook,
                 'hari_kerja'=>$hari_kerja,
-                'dataStaff'=>$dataStaff
+                'dataStaff'=>$dataStaff,
+                'total_rekap'=>$total_rekap
             ]);
         }else{
             $searchModel = new KinerjaSearch();
             $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
-
-            $list_pegawai_dinilai = JabatanPegawai::find()
-            ->select(['data_pegawai.id_pegawai','data_pegawai.nama'])
-            ->leftJoin('data_pegawai','jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')
-            ->where(['jabatan_pegawai.id_penilai'=>$user->pegawai_id, 'jabatan_pegawai.status_jbt'=>1])
-            ->orderBy('data_pegawai.nama ASC')
-            ->all();
-
-            if($list_pegawai_dinilai != null){
-                $listPegawai = ArrayHelper::map($list_pegawai_dinilai,'id_pegawai','id_pegawai');
-
-                $searchModel->list_pegawai = $listPegawai;
-            }
-            
+            $searchModel->id_pegawai = $user->pegawai_id;
 
             $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
 
+            $searchModel->approval = 1;
+            $dataProvider2 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+            $searchModel->approval = 0;
+            $dataProvider3 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+            $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
+
+            $dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
+            $total_rekap = 0;
+            if($dataProvider5 != null){
+                foreach($dataProvider5->models as $m)
+                {
+
+                   $total_rekap += $m->jumlah * $m->poin_kategori;;
+
+                }
+            }
+            
+
+            $total_logbook = $dataProvider->getCount();
+            $approve_logbook = $dataProvider2->getCount();
+            $notapprove_logbook = $dataProvider3->getCount();
+
+            $hari_kerja = $dataProvider4->getCount();
+
+            $search_staff = new JabatanPegawaiSearch();
+            $search_staff->status_jbt = 1;
+            $dataStaff = $search_staff->search(Yii::$app->request->queryParams);
+
+            $list_jabatan = ArrayHelper::map(Jabatan::find()->orderBy('nama_jabatan ASC')->all(),'id_jabatan','nama_jabatan');
 
             return $this->render('index', [
                 'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider
+                'dataProvider' => $dataProvider,
+                'dataProvider5'=>$dataProvider5,
+                'total_logbook' => $total_logbook,
+                'approve_logbook'=> $approve_logbook,
+                'notapprove_logbook'=> $notapprove_logbook,
+                'hari_kerja'=>$hari_kerja,
+                'dataStaff'=>$dataStaff,
+                'total_rekap'=>$total_rekap,
+                'search_staff'=>$search_staff,
+                'list_jabatan'=>$list_jabatan
             ]);
         }
         
