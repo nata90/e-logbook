@@ -38,7 +38,7 @@ $this->title = Yii::t('app', 'Kategori');
                             'label'=>'Poin Kategori',
                             'format'=>'raw',
                             'value'=>function($model){
-                                return $model->poin_kategori;
+                                return round($model->poin_kategori,2);
                             }
                         ],
                         [

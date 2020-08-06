@@ -4,14 +4,24 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Dashboard');
+$this->registerJs('var url_cek_profile = "' . Url::to(['app/user/cekprofile']) . '";');
 $this->registerJs("
 	$(document).on('ready pjax:success', function() {
 		/*$('li#logbook-id').removeClass('active');
 		$('div#tab_1').removeClass('active');
 		$('li#kin-staff').addClass('active');
 		$('div#tab_3').addClass('active');*/
-
 	});
+
+	$.ajax({
+      url: url_cek_profile,
+      dataType: 'json',
+      success: function (v) {
+      	if(v.update == 0){
+        	notifikasi('Profil anda belum update, silahkan cek dan simpan lagi profile anda','info');
+      	}
+      }
+    });
 ");
 ?>
 <div class="row">
@@ -176,7 +186,7 @@ $this->registerJs("
 			                    'label'=>'Poin',
 			                    'format'=>'raw',
 			                    'value'=>function($model){
-			                        return $model->poin_kategori;
+			                        return round($model->poin_kategori,2);
 			                    },
 			                ],
 			                [

@@ -29,7 +29,7 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index','create','update','updatepassword','savenewpassword'],
+                'only' => ['index','create','update','updatepassword','savenewpassword','profile'],
                 'denyCallback' => function ($rule, $action) {
                     throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
                 },
@@ -193,6 +193,39 @@ class UserController extends Controller
         }
         
         
+        echo Json::encode($rows);
+    }
+
+    public function actionProfile(){
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $model = DataPegawai::findOne($user->pegawai_id);
+        $model->update = 1;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Data pegawai ".$model->nama." berhasil diupdate");
+
+            return $this->redirect(['profile']);
+        }
+
+        return $this->render('profile', [
+            'model' => $model
+        ]);
+    }
+
+
+    public function actionCekprofile(){
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $model = DataPegawai::findOne($user->pegawai_id);
+
+        if($model->update == 0){
+            $rows['update'] = 0;
+        }else{
+            $rows['update'] = 1;
+        }
+
         echo Json::encode($rows);
     }
 

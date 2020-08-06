@@ -40,9 +40,9 @@ class DataPegawai extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nip', 'pin', 'nama', 'tmp_lahir', 'tgl_lahir', 'jenis_peg', 'status_peg', 'gender'], 'required'],
-            [['pin', 'jenis_peg', 'status_peg', 'gender'], 'integer'],
-            [['tgl_lahir'], 'safe'],
+            [['nip', 'nama', 'tmp_lahir', 'tgl_lahir', 'jenis_peg', 'status_peg', 'gender'], 'required'],
+            [['pin', 'jenis_peg', 'status_peg', 'gender','update'], 'integer'],
+            [['tgl_lahir','update'], 'safe'],
             [['nip', 'tmp_lahir'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 100],
         ];

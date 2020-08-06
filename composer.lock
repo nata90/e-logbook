@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "351234144f4c17d31545ed880e66d951",
+    "content-hash": "aae2ec2cf5cf43eaf49379f0666cd8f8",
     "packages": [
         {
             "name": "2amigos/yii2-dosamigos-asset-bundle",
@@ -961,6 +961,51 @@
                 "vector"
             ],
             "time": "2019-10-06T11:29:25+00:00"
+        },
+        {
+            "name": "moonlandsoft/yii2-phpexcel",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonlandsoft/yii2-phpexcel.git",
+                "reference": "e0614787a41a9e7e1c9ab3b707ce54c256461d7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonlandsoft/yii2-phpexcel/zipball/e0614787a41a9e7e1c9ab3b707ce54c256461d7f",
+                "reference": "e0614787a41a9e7e1c9ab3b707ce54c256461d7f",
+                "shasum": ""
+            },
+            "require": {
+                "phpoffice/phpspreadsheet": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "moonland\\phpexcel\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moh Khoirul Anam",
+                    "email": "moh.khoirul.anaam@gmail.com"
+                }
+            ],
+            "description": "Exporting PHP to Excel or Importing Excel to PHP",
+            "keywords": [
+                "excel",
+                "export",
+                "extension",
+                "import",
+                "xls",
+                "yii2"
+            ],
+            "time": "2018-10-27T03:52:57+00:00"
         },
         {
             "name": "myclabs/php-enum",

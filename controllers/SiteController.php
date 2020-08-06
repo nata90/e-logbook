@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+//use app\models\XmlParser;
 use app\modules\base\models\Backlog;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
@@ -240,7 +241,7 @@ class SiteController extends Controller
                     'label'=>'Poin',
                     'format'=>'raw',
                     'value'=>function($model){
-                        return $model->poin_kategori;
+                        return round($model->poin_kategori,2);
                     },
                 ],
                 [
@@ -414,7 +415,44 @@ class SiteController extends Controller
 
     public function actionTes()
     {
-        print_r(TbMenu::getAksesUser());
+        //echo Yii::$app->request->baseUrl;
+        $fileName = '/var/www/html/elogbook/web/data/data-pegawai-sin.xls';
+        $data = \moonland\phpexcel\Excel::import($fileName, [
+            'setFirstRecordAsKeys' => true,  
+            'setIndexSheetByName' => true, 
+            'getOnlySheet' => 'sheet1', 
+        ]);
+
+        /*echo '<pre>';
+        print_r($data);
+        echo '</pre>';*/
+        /*foreach($data as $key=>$val){
+            $model = DataPegawai::find()->where(['nip'=>trim($val['nip'])])->one();
+
+            if($model != null){
+                $model->nama = ucfirst(trim($val['nama_pegawai']));
+                $model->tmp_lahir = trim($val['tmp_lahir']);
+                $model->tgl_lahir = date('Y-m-d', strtotime($val['tgl_lahir']));
+
+                if($val['id_status_pegawai'] == 1){
+                    $jenis_peg = 0;
+                }else{
+                    $jenis_peg = 1;
+                }
+
+                if($val['jk'] == 1){
+                    $jk = 0;
+                }else{
+                    $jk = 1;
+                }
+
+                $model->jenis_peg = $jenis_peg;
+                $model->status_peg = 0;
+                $model->gender = $jk;
+                $model->save(false);
+            }
+        }*/
+        
     }
 
 

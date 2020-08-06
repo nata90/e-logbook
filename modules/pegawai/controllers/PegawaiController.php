@@ -58,7 +58,7 @@ class PegawaiController extends Controller
      */
     public function actionIndex()
     {
-        print_r(TbMenu::getAksesUser());
+        
         $searchModel = new DataPegawaiSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
