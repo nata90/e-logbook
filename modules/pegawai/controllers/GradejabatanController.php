@@ -32,13 +32,15 @@ class GradejabatanController extends Controller
                 },
                 'rules' => [
                     [
-                        //'actions' => ['logout','index','excelrekap'],
                         'actions' => TbMenu::getAksesUser(),
                         'allow' => true,
-                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            
+                            return true;
+                        }
                     ],
                     [
-                        'actions' => [],
+                        'actions' => [''],
                         'allow' => true,
                         'roles' => ['?'],
                     ],

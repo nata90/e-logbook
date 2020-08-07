@@ -5,6 +5,7 @@ namespace app\modules\base\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\modules\app\models\AppUser;
+use app\modules\app\models\AppUserGroup;
 use app\modules\base\models\AppGroupMenu;
 
 /**
@@ -151,19 +152,60 @@ class TbMenu extends \yii\db\ActiveRecord
         $user = AppUser::findOne($id_user);
 
         $menu = AppGroupMenu::find()->where(['id_group'=>$user->id_group, 'active'=>1])->all();
+
+        
         $controller = Yii::$app->controller->id;
 
-        $arr_return = [''];
+        $arr_return = ['-'];
+        $list_menu = [];
         if($menu != null){
             foreach($menu as $val){
                 $explode = explode('/',$val->menu->url);
                 if($val->menu->module == '-'){
-                    if($explode[1] == $controller){
+                    if($explode[1] === $controller){
+                        $action = $explode[2];
+                        $arr_return[$val->id_menu] = $action;
+                    }
+                }else{
+                    if($explode[2] === $controller){
+                        $action = $explode[3];
+                        $arr_return[$val->id_menu] = $action;
+                   }
+                    
+                }
+
+                
+            }
+            
+        }
+
+        return $arr_return;
+    }
+
+    public static function getAksesUser2($id_grup){
+        //$id_user = Yii::$app->user->id;
+        //$user = AppUser::findOne($id_user);
+
+        //if(!Yii::$app->user->isGuest){
+            $menu = AppGroupMenu::find()->where(['id_group'=>$id_grup, 'active'=>1])->all();
+        /*}else{
+            $menu = AppGroupMenu::find()->where(['active'=>1])->all();
+        }*/
+        
+        $controller = Yii::$app->controller->id;
+
+        $arr_return = [];
+        $list_menu = [];
+        if($menu != null){
+            foreach($menu as $val){
+                $explode = explode('/',$val->menu->url);
+                if($val->menu->module == '-'){
+                    if($explode[1] === $controller){
                         $action = $explode[2];
                         $arr_return[] = $action;
                     }
                 }else{
-                    if($explode[2] == $controller){
+                    if($explode[2] === $controller){
                         $action = $explode[3];
                         $arr_return[] = $action;
                    }
@@ -176,5 +218,25 @@ class TbMenu extends \yii\db\ActiveRecord
         }
 
         return $arr_return;
+    }
+
+    public static function getGrupAkses(){
+        $grup = AppUserGroup::find()->where(['active'=>1])->all();
+        $return = array();
+        if($grup != null){
+            foreach($grup as $val){
+                $return[] = [
+                    'actions' => TbMenu::getAksesUser($val->id),
+                    'allow' => true,
+                    'matchCallback' => 'function ($rule, $action) {
+                        $id_user = Yii::$app->user->id;
+                        $user = AppUser::findOne($id_user);
+                        return $user->id_group === $val->id;
+                    }'
+                ];
+            }
+        }
+
+        return $return;
     }
 }

@@ -43,10 +43,12 @@ class SiteController extends Controller
                 },
                 'rules' => [
                     [
-                        //'actions' => ['logout','index','excelrekap'],
                         'actions' => TbMenu::getAksesUser(),
                         'allow' => true,
-                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            
+                            return true;
+                        }
                     ],
                     [
                         'actions' => ['login'],
@@ -415,13 +417,26 @@ class SiteController extends Controller
 
     public function actionTes()
     {
+        $model = DataPegawai::find()->limit(5000)->all();
+        if($model != null){
+            $no = 1;
+            foreach ($model as $key => $value) {
+                $explode = explode(',',$value->nama);
+                $replace_dr = str_replace('dr.', '', $explode[0]);
+                $replace_Dr = str_replace('Dr.','',$replace_dr);
+                $replace_DR = str_replace('DR.','',$replace_Dr);
+                $replace_DRG = str_replace('Drg.','',$replace_DR);
+                echo $no.' '.$replace_DRG.'<br/>';
+                $no++;
+            }
+        }
         //echo Yii::$app->request->baseUrl;
-        $fileName = '/var/www/html/elogbook/web/data/data-pegawai-sin.xls';
+        /*$fileName = '/var/www/html/elogbook/web/data/data-pegawai-sin.xls';
         $data = \moonland\phpexcel\Excel::import($fileName, [
             'setFirstRecordAsKeys' => true,  
             'setIndexSheetByName' => true, 
             'getOnlySheet' => 'sheet1', 
-        ]);
+        ]);*/
 
         /*echo '<pre>';
         print_r($data);

@@ -5,6 +5,7 @@ namespace app\modules\pegawai\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use app\modules\base\models\TbMenu;
+use app\modules\app\models\AppUser;
 use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\DataPegawaiSearch;
 use app\modules\pegawai\models\JabatanPegawai;
@@ -36,13 +37,15 @@ class PegawaiController extends Controller
                 },
                 'rules' => [
                     [
-                        //'actions' => ['logout','index','excelrekap'],
-                        'actions' => TbMenu::getAksesUser('pegawai'),
+                        'actions' => TbMenu::getAksesUser(),
                         'allow' => true,
-                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            
+                            return true;
+                        }
                     ],
                     [
-                        'actions' => [],
+                        'actions' => [''],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -58,7 +61,7 @@ class PegawaiController extends Controller
      */
     public function actionIndex()
     {
-        
+
         $searchModel = new DataPegawaiSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
