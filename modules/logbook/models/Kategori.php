@@ -31,7 +31,8 @@ class Kategori extends \yii\db\ActiveRecord
     {
         return [
             [['nama_kategori', 'poin_kategori', 'status_kategori'], 'required'],
-            [['poin_kategori', 'status_kategori'], 'integer'],
+            [['status_kategori'], 'integer'],
+            [['poin_kategori'], 'number'],
             [['nama_kategori'], 'string', 'max' => 50],
         ];
     }
