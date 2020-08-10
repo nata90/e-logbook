@@ -150,7 +150,7 @@ class PegawaiController extends Controller
 
         $pegawai = $this->findModel($id);
         $list_jabatan=ArrayHelper::map(Jabatan::find()->all(),'id_jabatan','nama_jabatan');
-        $list_penilai=ArrayHelper::map(DataPegawai::find()->orderBy('nama ASC')->all(),'id_pegawai','nama');
+        $list_penilai=ArrayHelper::map(DataPegawai::find()->leftJoin('app_user', 'data_pegawai.id_pegawai = app_user.pegawai_id')->where(['IN', 'app_user.id_group', [4,6]])->orderBy('data_pegawai.nama ASC')->all(),'id_pegawai','nama');
 
         $rows['title'] = 'SET JABATAN '.$pegawai->nama;
         $rows['html'] = $this->renderPartial('form_set_jabatan', [

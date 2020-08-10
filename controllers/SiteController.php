@@ -421,13 +421,18 @@ class SiteController extends Controller
         if($model != null){
             $no = 1;
             foreach ($model as $key => $value) {
-                $explode = explode(',',$value->nama);
-                $replace_dr = str_replace('dr.', '', $explode[0]);
-                $replace_Dr = str_replace('Dr.','',$replace_dr);
-                $replace_DR = str_replace('DR.','',$replace_Dr);
-                $replace_DRG = str_replace('Drg.','',$replace_DR);
-                echo $no.' '.$replace_DRG.'<br/>';
-                $no++;
+                $new_model = new AppUser();
+                $new_model->scenario = AppUser::SCENARIO_ADD;
+                $new_model->username = $value->nip;
+                $new_model->password = $value->pin;
+                $new_model->active = 1;
+                $new_model->pegawai_id = $value->id_pegawai;
+                $new_model->accessToken = '-';
+                $new_model->id_group = 2;
+                $new_model->pegawai_nama = $value->nama;
+                if(!$new_model->save()){
+                    print_r($new_model->getErrors());
+                }
             }
         }
         //echo Yii::$app->request->baseUrl;
