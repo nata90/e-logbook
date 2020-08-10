@@ -31,7 +31,7 @@ class KinerjaController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['createlogbook','simpanbacklog','deletebacklog','autotugas','getdatakinerja','approve'],
+                'only' => ['index','createlogbook','simpanbacklog','deletebacklog','autotugas','getdatakinerja','approve'],
                 'denyCallback' => function ($rule, $action) {
                     throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
                 },

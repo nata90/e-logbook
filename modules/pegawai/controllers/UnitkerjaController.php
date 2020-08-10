@@ -187,7 +187,7 @@ class UnitkerjaController extends Controller
 
             $rows['id_unit'] = $return;
         }else{
-            $rows['id_unit'] = $bagian.'00';
+            $rows['id_unit'] = $bagian.'01';
         }
 
         echo Json::encode($rows);
