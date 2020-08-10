@@ -98,7 +98,8 @@ class TugasController extends Controller
         $list_unit_kerja = ArrayHelper::map(UnitKerja::find()->orderBy('nama_unit_kerja ASC')->all(),'id_unit_kerja','nama_unit_kerja');
 
         $list_kategori = ArrayHelper::map(Kategori::find()->orderBy('nama_kategori ASC')->all(),'id_kategori','nama_kategori');
-
+        $model->akses = 0;
+        $model->status_tugas = 1;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Tugas ".$model->nama_tugas." berhasil ditambahkan");
             return $this->redirect(['index']);
