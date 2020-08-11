@@ -172,6 +172,7 @@ class SiteController extends Controller
 
             $search_staff = new JabatanPegawaiSearch();
             $search_staff->status_jbt = 1;
+            $search_staff->id_penilai = $user->pegawai_id;
             $dataStaff = $search_staff->search(Yii::$app->request->queryParams);
 
             $list_jabatan = ArrayHelper::map(Jabatan::find()->orderBy('nama_jabatan ASC')->all(),'id_jabatan','nama_jabatan');
