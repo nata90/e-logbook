@@ -20,7 +20,9 @@ use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\pegawai\models\JabatanPegawaiSearch;
 use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\Jabatan;
+use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\logbook\models\Kinerja;
+use app\modules\logbook\models\Target;
 use app\modules\base\models\TbMenu;
 use yii2tech\spreadsheet\Spreadsheet;
 use yii\data\ArrayDataProvider;
@@ -125,6 +127,28 @@ class SiteController extends Controller
             $search_staff->status_jbt = 1;
             $dataStaff = $search_staff->search(Yii::$app->request->queryParams);
 
+            if($total_logbook == 0){
+                $persen_logbook = 0;
+            }else{
+                $persen_logbook = ($approve_logbook/$total_logbook)*100;
+            }
+
+            $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id,'status_jbt'=>1])->one();
+            $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id,'status_peg'=>1])->one();
+            $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+
+            if($model_target != null){
+                $target = $model_target->nilai_target;
+            }else{
+                $target = '-';
+            }
+
+            if($target != '-'){
+                $persen_capaian = round(($total_rekap/$target)*100,2);
+            }else{
+                $persen_capaian = 0;
+            }
+
 
             return $this->render('index_staff_kaunit', [
                 'searchModel' => $searchModel,
@@ -135,7 +159,10 @@ class SiteController extends Controller
                 'notapprove_logbook'=> $notapprove_logbook,
                 'hari_kerja'=>$hari_kerja,
                 'dataStaff'=>$dataStaff,
-                'total_rekap'=>$total_rekap
+                'total_rekap'=>$total_rekap,
+                'persen_logbook'=>$persen_logbook,
+                'target'=>$target,
+                'persen_capaian'=>$persen_capaian
             ]);
         }else{
             $searchModel = new KinerjaSearch();
@@ -177,6 +204,29 @@ class SiteController extends Controller
 
             $list_jabatan = ArrayHelper::map(Jabatan::find()->orderBy('nama_jabatan ASC')->all(),'id_jabatan','nama_jabatan');
 
+            if($total_logbook == 0){
+                $persen_logbook = 0;
+            }else{
+                $persen_logbook = ($approve_logbook/$total_logbook)*100;
+            }
+
+            $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id,'status_jbt'=>1])->one();
+            $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id,'status_peg'=>1])->one();
+            $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+
+            if($model_target != null){
+                $target = $model_target->nilai_target;
+            }else{
+                $target = '-';
+            }
+
+            if($target != '-'){
+                $persen_capaian = round(($total_rekap/$target)*100,2);
+            }else{
+                $persen_capaian = 0;
+            }
+            
+
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
@@ -188,7 +238,10 @@ class SiteController extends Controller
                 'dataStaff'=>$dataStaff,
                 'total_rekap'=>$total_rekap,
                 'search_staff'=>$search_staff,
-                'list_jabatan'=>$list_jabatan
+                'list_jabatan'=>$list_jabatan,
+                'persen_logbook'=>$persen_logbook,
+                'target'=>$target,
+                'persen_capaian'=>$persen_capaian
             ]);
         }
         

@@ -38,7 +38,38 @@ $this->registerJs("
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-xs-6">
+	<div class="col-lg-6 col-xs-6">
+		<div class="info-box bg-green">
+			<span class="info-box-icon">
+				<i class="ion ion-ios-pricetag-outline"></i>
+			</span>
+			<div class="info-box-content">
+				<span class="info-box-text">Logbook</span>
+				<span class="info-box-number"><?php echo $total_logbook;?></span>
+				<div class="progress">
+					<div class="progress-bar" style="width: <?php echo $persen_logbook;?>%;"></div>
+				</div>
+				<span class="progress-description"><?php echo $approve_logbook;?> disetujui, <?php echo $notapprove_logbook;?> belum disetujui (<?php echo $persen_logbook;?>%)</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6 col-xs-6">
+		<div class="info-box bg-red">
+			<span class="info-box-icon">
+				<i class="ion ion-ios-pricetag-outline"></i>
+			</span>
+			<div class="info-box-content">
+				<span class="info-box-text">Target</span>
+				<span class="info-box-number"><?php echo $target;?></span>
+
+				<div class="progress">
+					<div class="progress-bar" style="width: <?php echo $persen_capaian;?>%;"></div>
+				</div>
+				<span class="progress-description">Capaian target <?php echo $total_rekap;?> (<?php echo $persen_capaian;?>%)</span>
+			</div>
+		</div>
+	</div>
+	<?php /*<div class="col-lg-3 col-xs-6">
 		<div class="small-box bg-aqua">
             <div class="inner">
               <h3><?php echo $total_logbook;?></h3>
@@ -89,7 +120,7 @@ $this->registerJs("
             </div>
             <a href="#" class="small-box-footer">Jumlah hari kerja <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-	</div>
+	</div>*/ ?>
 	
 	<div class="col-md-12">
 		<div class="nav-tabs-custom">
