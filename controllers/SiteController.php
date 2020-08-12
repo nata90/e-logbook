@@ -130,7 +130,7 @@ class SiteController extends Controller
             if($total_logbook == 0){
                 $persen_logbook = 0;
             }else{
-                $persen_logbook = ($approve_logbook/$total_logbook)*100;
+                $persen_logbook = round(($approve_logbook/$total_logbook)*100);
             }
 
             $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id,'status_jbt'=>1])->one();
@@ -207,7 +207,7 @@ class SiteController extends Controller
             if($total_logbook == 0){
                 $persen_logbook = 0;
             }else{
-                $persen_logbook = ($approve_logbook/$total_logbook)*100;
+                $persen_logbook = round(($approve_logbook/$total_logbook)*100);
             }
 
             $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id,'status_jbt'=>1])->one();
