@@ -64,6 +64,9 @@ class WebserviceController extends Controller
             if($model->save()){
                 $return['error'] = 0;
                 $return['msg'] = 'Kinerja berhasil disimpan';
+            }else{
+                $return['error'] = 1;
+                $return['msg'] = 'Kinerja gagal disimpan';
             }
         }
 
