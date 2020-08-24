@@ -184,7 +184,7 @@ class KinerjaController extends Controller
 
         $return['data'] = $arr_data;
 
-        echo Json::encode($return);
+        return Json::encode($return);
     }
 
     public function actionSimpanbacklog(){
@@ -249,7 +249,7 @@ class KinerjaController extends Controller
 
         $return['data'] = $arr_data;
 
-        echo Json::encode($return);
+        return Json::encode($return);
         
     }
 
@@ -269,7 +269,7 @@ class KinerjaController extends Controller
 
         $data['data'] = $arr_data;
 
-        echo Json::encode($data);
+        return Json::encode($data);
 
     }
 
@@ -307,7 +307,7 @@ class KinerjaController extends Controller
 
         $return['data'] = $arr_data;
 
-        echo Json::encode($return);
+        return Json::encode($return);
     }
 
     public function actionApprove(){
@@ -333,7 +333,7 @@ class KinerjaController extends Controller
             $return['button'] = '<button rel="'.$model->id_kinerja.'" type="button" class="btn bg-maroon btn-flat margin approve">Not Approve</button>';
         }
 
-        echo Json::encode($return);
+        return Json::encode($return);
     }
 
     public function actionSearchkinerja(){
@@ -347,7 +347,7 @@ class KinerjaController extends Controller
         $return['datestart'] = $date_start;
         $return['dateend'] = $date_end;
 
-        echo Json::encode($return);
+        return Json::encode($return);
 
     }
 
