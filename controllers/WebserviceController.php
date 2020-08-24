@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use app\modules\logbook\models\Tugas;
 use app\modules\logbook\models\Kinerja;
+use app\models\LoginForm;
 
 class WebserviceController extends Controller
 {
@@ -71,6 +72,24 @@ class WebserviceController extends Controller
         }
 
         echo Json::encode($return);
+    }
+
+
+    public function actionLogin(){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $return = array();
+
+        $model = new LoginForm();
+        $model->username = $username;
+        $model->password = $password;
+        if ($model->login()) {
+            echo 'sukses';
+        }else{
+            echo 'gagal';
+        }
+
     }
 }
 ?>

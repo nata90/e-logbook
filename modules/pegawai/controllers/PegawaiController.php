@@ -161,7 +161,7 @@ class PegawaiController extends Controller
         ]);
         $rows['footer'] = Html::button(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right', 'id'=>'set-jab-pegawai']);
 
-        echo Json::encode($rows);
+        return Json::encode($rows);
     }
 
     public function actionSimpanjabatan(){

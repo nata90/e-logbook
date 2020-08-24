@@ -471,61 +471,40 @@ class SiteController extends Controller
 
     public function actionTes()
     {
-        $model = DataPegawai::find()->limit(5000)->all();
-        if($model != null){
-            $no = 1;
-            foreach ($model as $key => $value) {
-                $new_model = new AppUser();
-                $new_model->scenario = AppUser::SCENARIO_ADD;
-                $new_model->username = $value->nip;
-                $new_model->password = $value->pin;
-                $new_model->active = 1;
-                $new_model->pegawai_id = $value->id_pegawai;
-                $new_model->accessToken = '-';
-                $new_model->id_group = 2;
-                $new_model->pegawai_nama = $value->nama;
-                if(!$new_model->save()){
-                    print_r($new_model->getErrors());
-                }
-            }
-        }
+        
         //echo Yii::$app->request->baseUrl;
-        /*$fileName = '/var/www/html/elogbook/web/data/data-pegawai-sin.xls';
+        $fileName = '/var/www/html/elogbook/web/data/TUGAS_2.xlsx';
         $data = \moonland\phpexcel\Excel::import($fileName, [
             'setFirstRecordAsKeys' => true,  
             'setIndexSheetByName' => true, 
             'getOnlySheet' => 'sheet1', 
-        ]);*/
+        ]);
 
         /*echo '<pre>';
         print_r($data);
         echo '</pre>';*/
-        /*foreach($data as $key=>$val){
-            $model = DataPegawai::find()->where(['nip'=>trim($val['nip'])])->one();
+        foreach($data as $key=>$val){
 
-            if($model != null){
-                $model->nama = ucfirst(trim($val['nama_pegawai']));
-                $model->tmp_lahir = trim($val['tmp_lahir']);
-                $model->tgl_lahir = date('Y-m-d', strtotime($val['tgl_lahir']));
+            $id_tugas = str_replace('.', '', $val['kode']);
 
-                if($val['id_status_pegawai'] == 1){
-                    $jenis_peg = 0;
-                }else{
-                    $jenis_peg = 1;
-                }
-
-                if($val['jk'] == 1){
-                    $jk = 0;
-                }else{
-                    $jk = 1;
-                }
-
-                $model->jenis_peg = $jenis_peg;
-                $model->status_peg = 0;
-                $model->gender = $jk;
-                $model->save(false);
+            $model = Tugas::findOne($id_tugas);
+            if($model == null){
+                $model = new Tugas;
             }
-        }*/
+            
+            $model->id_tugas = $id_tugas;
+            $model->id_kategori = $val['kategori'];
+            $model->nama_tugas = trim($val['tugas']);
+            $model->akses = 0;
+            $model->status_tugas = 1;
+            $model->id_unit_kerja = trim($val['unitkerja']);
+            if($model->save()){
+                
+            }else{
+                print_r($model->getErrors());
+                exit();
+            }
+        }
         
     }
 
