@@ -217,6 +217,8 @@ class KinerjaController extends Controller
                 }
                 
             }
+        }else{
+            $rows = 0;
         }
 
         if($model == null){

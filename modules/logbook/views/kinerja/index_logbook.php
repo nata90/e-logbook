@@ -51,7 +51,7 @@ $this->registerJs(<<<JS
 		        });
 		    },
 		    strict: false,
-		    allowInvalid: true
+		    allowInvalid: true,
 	  	},
 	  	{
 	  		data : 'deskripsi',
