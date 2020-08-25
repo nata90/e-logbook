@@ -178,7 +178,7 @@ class KinerjaController extends Controller
 
         if($model != null){
             foreach($model as $val){
-                $arr_data[] = $val['nama_tugas'].' | '.$val['id_tugas'];
+                $arr_data[] = $val['id_tugas'].' | '.$val['nama_tugas'];
             }
         }
 
@@ -229,7 +229,7 @@ class KinerjaController extends Controller
 
         $model->tanggal_kinerja = date('Y-m-d', strtotime($date));
         $model->id_pegawai = $user->pegawai_id;
-        $model->id_tugas = trim($explode_tugas[1]);
+        $model->id_tugas = trim($explode_tugas[0]);
         $model->jumlah = $jumlah;
         $model->deskripsi = $deskripsi;
         $model->row = $rows;
@@ -245,7 +245,7 @@ class KinerjaController extends Controller
         $arr_data = array();
         if($load_kinerja != null){
             foreach($load_kinerja as $val){
-                $arr_data[] = ['tugas'=>$val->tugas->nama_tugas.' | '.$val->id_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
+                $arr_data[] = ['tugas'=>$val->id_tugas.' | '.$val->tugas->nama_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
             }
         }
 
@@ -265,7 +265,7 @@ class KinerjaController extends Controller
         $arr_data = array();
         if($model != null){
             foreach($model as $val){
-                $arr_data[] = ['tugas'=>$val->tugas->nama_tugas.' | '.$val->id_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
+                $arr_data[] = ['tugas'=>$val->id_tugas.' | '.$val->tugas->nama_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
             }
         }
 
@@ -303,7 +303,7 @@ class KinerjaController extends Controller
         $arr_data = array();
         if($load_kinerja != null){
             foreach($load_kinerja as $val){
-                $arr_data[] = ['tugas'=>$val->tugas->nama_tugas.' | '.$val->id_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
+                $arr_data[] = ['tugas'=>$val->id_tugas.' | '.$val->tugas->nama_tugas,'deskripsi'=>$val->deskripsi, 'jumlah'=>$val->jumlah];
             }
         }
 

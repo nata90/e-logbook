@@ -473,7 +473,7 @@ class SiteController extends Controller
     {
         
         //echo Yii::$app->request->baseUrl;
-        $fileName = '/var/www/html/elogbook/web/data/TUGAS_7.xlsx';
+        $fileName = '/var/www/html/elogbook/web/data/TUGAS_11.xlsx';
         $data = \moonland\phpexcel\Excel::import($fileName, [
             'setFirstRecordAsKeys' => true,  
             'setIndexSheetByName' => true, 
