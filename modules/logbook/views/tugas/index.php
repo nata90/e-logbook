@@ -75,10 +75,13 @@ $this->title = Yii::t('app', 'Tugas');
                                 }
                             },
                             'contentOptions' => ['class' => 'text-center'],
-                            'filter'=>Html::activeDropDownList($searchModel, 'status_tugas',[0=>'Non Aktif',1=>'Aktif'],['class'=>'form-control','prompt'=>''])
+                            //'filter'=>Html::activeDropDownList($searchModel, 'status_tugas',[0=>'Non Aktif',1=>'Aktif'],['class'=>'form-control','prompt'=>''])
                         ],
 
-                        ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template'=>'{update}&nbsp;{delete}',
+                        ],
                     ],
                 ]); ?>
 

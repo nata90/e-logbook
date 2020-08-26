@@ -473,7 +473,7 @@ class SiteController extends Controller
     {
         
         //echo Yii::$app->request->baseUrl;
-        $fileName = '/var/www/html/elogbook/web/data/TUGAS_11.xlsx';
+        $fileName = '/var/www/html/elogbook/web/data/TUGAS_PPI.xlsx';
         $data = \moonland\phpexcel\Excel::import($fileName, [
             'setFirstRecordAsKeys' => true,  
             'setIndexSheetByName' => true, 
@@ -494,7 +494,7 @@ class SiteController extends Controller
             
             $model->id_tugas = $id_tugas;
             $model->id_kategori = $val['kategori'];
-            $model->nama_tugas = trim($val['tugas']);
+            $model->nama_tugas = trim(ucfirst($val['tugas']));
             $model->akses = 0;
             $model->status_tugas = 1;
             $model->id_unit_kerja = trim($val['unitkerja']);

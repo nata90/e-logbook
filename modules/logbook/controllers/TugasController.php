@@ -148,8 +148,11 @@ class TugasController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->status_tugas = 0;
+        $model->save(false);
 
+        Yii::$app->session->setFlash('success', "Tugas ".$model->nama_tugas." berhasil didelete");
         return $this->redirect(['index']);
     }
 

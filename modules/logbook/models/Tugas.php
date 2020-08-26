@@ -38,7 +38,7 @@ class Tugas extends \yii\db\ActiveRecord
             [['id_kategori', 'akses', 'status_tugas'], 'integer'],
             [['id_unit_kerja'], 'string', 'max' => 10],
             [['id_tugas'], 'string', 'max' => 20],
-            [['nama_tugas'], 'string', 'max' => 250],
+            [['nama_tugas'], 'string', 'max' => 400],
             [['id_tugas'], 'unique'],
             [['id_kategori'], 'exist', 'skipOnError' => true, 'targetClass' => Kategori::className(), 'targetAttribute' => ['id_kategori' => 'id_kategori']],
         ];
