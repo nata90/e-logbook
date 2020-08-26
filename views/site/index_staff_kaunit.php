@@ -23,7 +23,10 @@ $this->registerJs("
         'id'=>'data-rekap-kinerja',
         'timeout'=>false,
         'enablePushState'=>false,
-        'clientOptions'=>['method'=>'GET']
+        'clientOptions'=>['method'=>'GET'],
+        'options'=>[
+            'class'=>'yii-gridview',
+        ],
     ]); ?>
 	<div class="col-md-12">
 		<div class="box box-danger">

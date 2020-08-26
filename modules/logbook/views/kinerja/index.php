@@ -66,7 +66,10 @@ JS
                     'id'=>'data-rekap-kinerja',
                     'timeout'=>false,
                     'enablePushState'=>false,
-                    'clientOptions'=>['method'=>'GET']
+                    'clientOptions'=>['method'=>'GET'],
+                    'options'=>[
+                        'class'=>'yii-gridview',
+                    ],
 
                 ]); ?>
                 

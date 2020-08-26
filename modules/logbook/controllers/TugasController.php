@@ -60,6 +60,7 @@ class TugasController extends Controller
     public function actionIndex()
     {
         $searchModel = new TugasSearch();
+        $searchModel->status_tugas = 1;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $list_kategori = ArrayHelper::map(Kategori::find()->orderBy('nama_kategori ASC')->all(),'id_kategori','nama_kategori');

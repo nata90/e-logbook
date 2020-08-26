@@ -65,7 +65,7 @@ class JabatanSearch extends Jabatan
         // grid filtering conditions
         $query->andFilterWhere([
             'id_jabatan' => $this->id_jabatan,
-            'id_grade' => $this->id_grade,
+            'grade_jabatan.id_grade' => $this->id_grade,
             'level_jabatan' => $this->level_jabatan,
             'peer_grup' => $this->peer_grup,
             'status_jabatan' => $this->status_jabatan,

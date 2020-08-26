@@ -473,16 +473,13 @@ class SiteController extends Controller
     {
         
         //echo Yii::$app->request->baseUrl;
-        $fileName = '/var/www/html/elogbook/web/data/TUGAS_PPI.xlsx';
+        $fileName = '/var/www/html/elogbook/web/data/TUGAS_SANITASI.xlsx';
         $data = \moonland\phpexcel\Excel::import($fileName, [
             'setFirstRecordAsKeys' => true,  
             'setIndexSheetByName' => true, 
             'getOnlySheet' => 'sheet1', 
         ]);
 
-        /*echo '<pre>';
-        print_r($data);
-        echo '</pre>';*/
         foreach($data as $key=>$val){
 
             $id_tugas = str_replace('.', '', $val['kode']);

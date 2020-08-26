@@ -20,7 +20,10 @@ $this->title = Yii::t('app', 'Direktorat');
                             'id'=>'grid-direktorat',
                             'timeout'=>false,
                             'enablePushState'=>false,
-                            'clientOptions'=>['method'=>'GET']
+                            'clientOptions'=>['method'=>'GET'],
+                            'options'=>[
+                                'class'=>'yii-gridview',
+                            ],
                         ]); ?>
                 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
