@@ -59,6 +59,36 @@ $this->title = Yii::t('app', 'Profile');
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
 
+            <div class="form-group field-datapegawai-gender">
+                <label class="col-sm-3 control-label">
+                    <label class="control-label">Unit Kerja</label>
+                </label>
+                <div class="col-xs-8" style="padding-top:5px;">
+                    <label class="control-label"><?php echo $model_unit->unitKerja->nama_unit_kerja==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_unit->unitKerja->nama_unit_kerja).'</span>';?></label>
+                </div>
+                
+            </div>
+
+            <div class="form-group field-datapegawai-gender">
+                <label class="col-sm-3 control-label">
+                    <label class="control-label">Jabatan</label>
+                </label>
+                <div class="col-xs-8" style="padding-top:5px;">
+                    <label class="control-label"><?php echo $model_jabatan->jabatan->nama_jabatan==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_jabatan->jabatan->nama_jabatan).'</span>';?></label>
+                </div>
+                
+            </div>
+
+            <div class="form-group field-datapegawai-gender">
+                <label class="col-sm-3 control-label">
+                    <label class="control-label">Target</label>
+                </label>
+                <div class="col-xs-8" style="padding-top:5px;">
+                    <label class="control-label"><?php echo $model_target->nilai_target==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_target->nilai_target).'</span>';?></label>
+                </div>
+                
+            </div>
+
              <div class="box-footer">
                 <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right']) ?>
             </div>

@@ -8,6 +8,9 @@ use app\modules\base\models\TbMenu;
 use app\modules\app\models\AppUser;
 use app\modules\app\models\AppUserSearch;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\PegawaiUnitKerja;
+use app\modules\pegawai\models\JabatanPegawai;
+use app\modules\logbook\models\Target;
 use app\modules\app\models\AppUserGroup;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -208,8 +211,21 @@ class UserController extends Controller
             return $this->redirect(['profile']);
         }
 
+        //unit kerja
+        $model_unit = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_peg'=>1])->one();
+
+        //jabatan
+        $model_jabatan = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_jbt'=>1])->one();
+
+        //target jabatan
+        $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'status_target'=>1])->one();
+
+
         return $this->render('profile', [
-            'model' => $model
+            'model' => $model,
+            'model_unit' =>$model_unit,
+            'model_jabatan'=>$model_jabatan,
+            'model_target'=>$model_target
         ]);
     }
 

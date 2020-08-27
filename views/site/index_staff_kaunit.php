@@ -35,6 +35,7 @@ $this->registerJs("
 			</div>
 		</div>
 	</div>
+	
 	<div class="col-lg-6 col-xs-6">
 		<div class="info-box bg-green">
 			<span class="info-box-icon">

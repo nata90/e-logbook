@@ -3,6 +3,7 @@
 namespace app\modules\pegawai\models;
 
 use Yii;
+use app\modules\logbook\models\Target;
 
 /**
  * This is the model class for table "data_pegawai".
@@ -104,6 +105,33 @@ class DataPegawai extends \yii\db\ActiveRecord
     public function getPegawaiUnitKerjas()
     {
         return $this->hasMany(PegawaiUnitKerja::className(), ['id_pegawai' => 'id_pegawai'])->onCondition(['status_peg' => 1]);
+    }
+
+    public function getLackOfProfile($id_pegawai){
+        $error_message = array();
+        //cek unit kerja
+        $model_unit = PegawaiUnitKerja::find()->where(['id_pegawai'=>$id_pegawai, 'status_peg'=>1])->one();
+
+        if($model == null){
+            $error_message[] = 'Anda belum memiliki unit kerja';
+        }
+
+        //cek jabatan pegawai
+        $model_jabatan = JabatanPegawai::find()->where(['id_pegawai'=>$id_pegawai, 'status_jbt'=>1])->one();
+
+        if($model_jabatan == null){
+            $error_message[] = 'Anda belum memiliki jabatan';
+        }else{
+            //target jabatan
+            $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'status_target'=>1])->one();
+
+            if($model_target == null){
+                $error_message[] = 'Target jabatan anda belum di set';
+            }
+        }
+
+        return $error_message;
+
     }
 
     /**

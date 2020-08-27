@@ -4,6 +4,7 @@ namespace app\modules\pegawai\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "{{%pegawai_unit_kerja}}".
  *
