@@ -149,7 +149,7 @@ class PegawaiController extends Controller
         $jabatan_aktif = JabatanPegawai::find()->where(['id_pegawai'=>$id, 'status_jbt'=>1])->one();
 
         $pegawai = $this->findModel($id);
-        $list_jabatan=ArrayHelper::map(Jabatan::find()->all(),'id_jabatan','nama_jabatan');
+        $list_jabatan=ArrayHelper::map(Jabatan::find()->orderBy('nama_jabatan ASC')->all(),'id_jabatan','nama_jabatan');
         $list_penilai=ArrayHelper::map(DataPegawai::find()->leftJoin('app_user', 'data_pegawai.id_pegawai = app_user.pegawai_id')->where(['IN', 'app_user.id_group', [4,6]])->orderBy('data_pegawai.nama ASC')->all(),'id_pegawai','nama');
 
         $rows['title'] = 'SET JABATAN '.$pegawai->nama;
@@ -166,7 +166,7 @@ class PegawaiController extends Controller
 
     public function actionSimpanjabatan(){
         $id_jabatan = $_GET['id_jabatan'];
-        $status = $_GET['status'];
+        //$status = $_GET['status'];
         $id_peg = $_GET['id_peg'];
         $id_penilai = $_GET['penilai'];
 
@@ -184,7 +184,7 @@ class PegawaiController extends Controller
             $new_model = new JabatanPegawai;
             $new_model->id_jabatan = $id_jabatan;
             $new_model->id_pegawai = $id_peg;
-            $new_model->status_jbt = $status;
+            $new_model->status_jbt = 1;
             $new_model->id_penilai = $id_penilai;
             $new_model->tmt_jbt = date('Y-m-d');
             if($new_model->save()){

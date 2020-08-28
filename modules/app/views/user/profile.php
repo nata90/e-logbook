@@ -76,7 +76,6 @@ $this->title = Yii::t('app', 'Profile');
                 <div class="col-xs-8" style="padding-top:5px;">
                     <label class="control-label"><?php echo $model_jabatan->jabatan->nama_jabatan==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_jabatan->jabatan->nama_jabatan).'</span>';?></label>
                 </div>
-                
             </div>
 
             <div class="form-group field-datapegawai-gender">
@@ -85,6 +84,15 @@ $this->title = Yii::t('app', 'Profile');
                 </label>
                 <div class="col-xs-8" style="padding-top:5px;">
                     <label class="control-label"><?php echo $model_target->nilai_target==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_target->nilai_target).'</span>';?></label>
+                </div>
+            </div>
+
+            <div class="form-group field-datapegawai-gender">
+                <label class="col-sm-3 control-label">
+                    <label class="control-label">Penilai</label>
+                </label>
+                <div class="col-xs-8" style="padding-top:5px;">
+                    <label class="control-label"><?php echo $model_jabatan->penilai->nama==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_jabatan->penilai->nama).'</span>';?></label>
                 </div>
                 
             </div>

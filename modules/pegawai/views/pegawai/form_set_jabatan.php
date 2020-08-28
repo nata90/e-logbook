@@ -24,10 +24,7 @@
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
 
-    <?= $form->field($model, 'status_jbt')->dropDownList(
-                [0=>'Non Aktif', 1=>'Aktif'],
-                ['prompt'=>'Pilih Salah Satu']
-            ) ?>
+ 
 
     <?php 
         if($jabatan_aktif != null){
