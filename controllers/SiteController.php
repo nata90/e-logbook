@@ -88,10 +88,14 @@ class SiteController extends Controller
     {
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);
+        $range_date = Kinerja::RangePeriodeIki();
 
         if($user->id_group == 2 || $user->id_group == 3 || $user->id_group == 4){ //kepala unit kerja
+
+            
+
             $searchModel = new KinerjaSearch();
-            $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
+            $searchModel->range_date = $range_date;
             $searchModel->id_pegawai = $user->pegawai_id;
 
             $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
@@ -167,8 +171,10 @@ class SiteController extends Controller
                 'jab_pegawai'=>$jab_pegawai
             ]);
         }else{
+
+
             $searchModel = new KinerjaSearch();
-            $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');
+            $searchModel->range_date = $range_date;
             $searchModel->id_pegawai = $user->pegawai_id;
 
             $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
