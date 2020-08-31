@@ -92,8 +92,6 @@ class SiteController extends Controller
 
         if($user->id_group == 2 || $user->id_group == 3 || $user->id_group == 4){ //kepala unit kerja
 
-            
-
             $searchModel = new KinerjaSearch();
             $searchModel->range_date = $range_date;
             $searchModel->id_pegawai = $user->pegawai_id;
@@ -168,7 +166,8 @@ class SiteController extends Controller
                 'target'=>$target,
                 'persen_capaian'=>$persen_capaian,
                 'user'=>$user,
-                'jab_pegawai'=>$jab_pegawai
+                'jab_pegawai'=>$jab_pegawai,
+                'peg_unit_kerja'=>$peg_unit_kerja
             ]);
         }else{
 
@@ -251,7 +250,8 @@ class SiteController extends Controller
                 'target'=>$target,
                 'persen_capaian'=>$persen_capaian,
                 'user'=>$user,
-                'jab_pegawai'=>$jab_pegawai
+                'jab_pegawai'=>$jab_pegawai,
+                'peg_unit_kerja'=>$peg_unit_kerja
             ]);
         }
         

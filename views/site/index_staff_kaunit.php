@@ -79,7 +79,7 @@ $this->registerJs("
 	                }
 				?>
 				<h3 class="profile-username text-center"><?php echo $user->pegawai->nama;?></h3>
-				
+				<p class="text-muted text-center"><?php echo $peg_unit_kerja->unitKerja->nama_unit_kerja;?></p>
 				<ul class="list-group list-group-unbordered">
 					<li class="list-group-item"><b>NIP / NIK</b><a class="pull-right"><?php echo $user->pegawai->nip;?></a></li>
 					<li class="list-group-item"><b>Jabatan</b><a class="pull-right">
