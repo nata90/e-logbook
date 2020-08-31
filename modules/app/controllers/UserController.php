@@ -220,6 +220,9 @@ class UserController extends Controller
         //target jabatan
         $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'status_target'=>1])->one();
 
+        //target
+         $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'status_target'=>1])->one();
+
 
         return $this->render('profile', [
             'model' => $model,

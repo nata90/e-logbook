@@ -162,7 +162,9 @@ class SiteController extends Controller
                 'total_rekap'=>$total_rekap,
                 'persen_logbook'=>$persen_logbook,
                 'target'=>$target,
-                'persen_capaian'=>$persen_capaian
+                'persen_capaian'=>$persen_capaian,
+                'user'=>$user,
+                'jab_pegawai'=>$jab_pegawai
             ]);
         }else{
             $searchModel = new KinerjaSearch();
@@ -241,7 +243,9 @@ class SiteController extends Controller
                 'list_jabatan'=>$list_jabatan,
                 'persen_logbook'=>$persen_logbook,
                 'target'=>$target,
-                'persen_capaian'=>$persen_capaian
+                'persen_capaian'=>$persen_capaian,
+                'user'=>$user,
+                'jab_pegawai'=>$jab_pegawai
             ]);
         }
         
@@ -473,7 +477,7 @@ class SiteController extends Controller
     {
         
         //echo Yii::$app->request->baseUrl;
-        $fileName = '/var/www/html/elogbook/web/data/TUGAS_SANITASI.xlsx';
+        $fileName = '/var/www/html/elogbook/web/data/TUGAS_KOMKORDIK_IGD.xls';
         $data = \moonland\phpexcel\Excel::import($fileName, [
             'setFirstRecordAsKeys' => true,  
             'setIndexSheetByName' => true, 
