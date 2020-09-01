@@ -19,7 +19,7 @@ class AppUserSearch extends AppUser
     {
         return [
             [['id', 'active', 'pegawai_id'], 'integer'],
-            [['username', 'password', 'authkey','pegawai_nama'], 'safe'],
+            [['username', 'password', 'authkey','pegawai_nama','id_group'], 'safe'],
         ];
     }
 
@@ -62,6 +62,7 @@ class AppUserSearch extends AppUser
             'id' => $this->id,
             'active' => $this->active,
             'pegawai_id' => $this->pegawai_id,
+            'id_group' => $this->id_group,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username]);
