@@ -65,8 +65,10 @@ class KinerjaController extends Controller
         $user = AppUser::findOne($id_user);
         $list_pegawai_dinilai = JabatanPegawai::find()->select(['data_pegawai.id_pegawai','data_pegawai.nama'])->leftJoin('data_pegawai','jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')->where(['jabatan_pegawai.id_penilai'=>$user->pegawai_id, 'jabatan_pegawai.status_jbt'=>1])->orderBy('data_pegawai.nama ASC')->all();
 
+        $range_date = Kinerja::RangePeriodeIki();
+
         $searchModel = new KinerjaSearch();
-        $searchModel->range_date = date('m/d/Y').' - '.date('m/d/Y');       
+        $searchModel->range_date = $range_date;       
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

@@ -8,13 +8,61 @@ use app\modules\pegawai\models\DataPegawai;
 use app\components\Utility;
 
 $this->title = Yii::t('app', 'Dashboard');
+$this->registerJsFile(Yii::$app->request->BaseUrl . '/js/chart.js');
 $this->registerJs('var url_cek_profile = "' . Url::to(['app/user/cekprofile']) . '";');
+$this->registerJs('var url_load_chart = "' . Url::to(['site/loadchart']) . '";');
 $this->registerJs("
 	$(document).on('ready pjax:success', function() {
-		/*$('li#logbook-id').removeClass('active');
-		$('div#tab_1').removeClass('active');
-		$('li#kin-staff').addClass('active');
-		$('div#tab_3').addClass('active');*/
+		var rangedate = $('#reservation').val();
+		$.ajax({
+		      url: url_load_chart,
+		      dataType: 'json',
+		      data:{'rangedate':rangedate},
+		      type:'GET',
+		      success: function (v) {
+		      	var ctx = document.getElementById('pieChart').getContext('2d');
+				var chart = new Chart(ctx, {
+				    type: 'doughnut',
+				    data: {
+				    	labels: v.kategori,
+				        datasets: [{
+				            label: 'Jumlah per kategori',
+				            backgroundColor: [
+				            	'rgba(176, 69, 137, 1)',
+				                'rgba(64, 132, 191, 1)',
+				                'rgba(169, 129, 213, 1)',
+				                'rgba(129, 213, 132, 1)',
+				                'rgba(255, 99, 132, 1)',
+				                'rgba(54, 162, 235, 1)',
+				                'rgba(255, 206, 86, 1)',
+				                'rgba(75, 192, 192, 1)',
+				                'rgba(153, 102, 255, 1)',
+				                'rgba(255, 159, 64, 1)',
+				                'rgba(72, 176, 69, 1)',
+				                
+				            ],
+				            borderColor: [
+				            	'rgba(176, 69, 137, 1)',
+				                'rgba(64, 132, 191, 1)',
+				                'rgba(169, 129, 213, 1)',
+				                'rgba(129, 213, 132, 1)',
+				                'rgba(255, 99, 132, 1)',
+				                'rgba(54, 162, 235, 1)',
+				                'rgba(255, 206, 86, 1)',
+				                'rgba(75, 192, 192, 1)',
+				                'rgba(153, 102, 255, 1)',
+				                'rgba(255, 159, 64, 1)',
+				                'rgba(72, 176, 69, 1)',
+				                
+				            ],
+				            borderWidth: 1,
+				            data: v.data
+				        }]
+				    }
+				});
+		      }
+		    });
+
 	});
 
 	$.ajax({
@@ -26,6 +74,56 @@ $this->registerJs("
       	}
       }
     });
+
+    $.ajax({
+      url: url_load_chart,
+      dataType: 'json',
+      'type':'GET',
+      success: function (v) {
+      	var ctx = document.getElementById('pieChart').getContext('2d');
+		var chart = new Chart(ctx, {
+		    type: 'doughnut',
+		    data: {
+		    	labels: v.kategori,
+		        datasets: [{
+		            label: 'Jumlah per kategori',
+		            backgroundColor: [
+		            	'rgba(176, 69, 137, 1)',
+		                'rgba(64, 132, 191, 1)',
+		                'rgba(169, 129, 213, 1)',
+		                'rgba(129, 213, 132, 1)',
+		                'rgba(255, 99, 132, 1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)',
+		                'rgba(72, 176, 69, 1)',
+		                
+		            ],
+		            borderColor: [
+		            	'rgba(176, 69, 137, 1)',
+		                'rgba(64, 132, 191, 1)',
+		                'rgba(169, 129, 213, 1)',
+		                'rgba(129, 213, 132, 1)',
+		                'rgba(255, 99, 132, 1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)',
+		                'rgba(72, 176, 69, 1)',
+		                
+		            ],
+		            borderWidth: 1,
+		            data: v.data
+		        }]
+		    }
+		});
+      }
+    });
+
+    
 ");
 ?>
 <div class="row">
@@ -115,43 +213,60 @@ $this->registerJs("
 		</div>
 	</div>
 	<div class="col-md-5">
-		<div class="info-box bg-yellow">
-			<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
-			<div class="info-box-content">
-				<span class="info-box-text">Logbook</span>
-				<span class="info-box-number"><?php echo $total_logbook;?></span>
-				<div class="progress">
-					<div class="progress-bar" style="width: <?php echo $persen_logbook;?>%"></div>
+		<div class="col-md-12">
+			<div class="info-box bg-yellow">
+				<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Logbook</span>
+					<span class="info-box-number"><?php echo $total_logbook;?></span>
+					<div class="progress">
+						<div class="progress-bar" style="width: <?php echo $persen_logbook;?>%"></div>
+					</div>
+					<span class="progress-description"><?php echo $approve_logbook;?> disetujui, <?php echo $notapprove_logbook;?> belum disetujui</span>
 				</div>
-				<span class="progress-description"><?php echo $approve_logbook;?> disetujui, <?php echo $notapprove_logbook;?> belum disetujui (<?php echo $persen_logbook;?>%)</span>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="info-box bg-green">
+				<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Target</span>
+					<span class="info-box-number"><?php echo $target;?></span>
+					<div class="progress">
+						<div class="progress-bar" style="width: <?php echo $persen_capaian;?>%"></div>
+					</div>
+					<span class="progress-description">Capaian target <?php echo $total_rekap;?> (<?php echo $persen_capaian;?>%)</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="info-box bg-red">
+				<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">Hari Kerja</span>
+					<span class="info-box-number"><?php echo $hari_kerja;?></span>
+					<div class="progress">
+						<div class="progress-bar" style="width: 100%"></div>
+					</div>
+					<span class="progress-description">Jumlah hari kerja <?php echo $hari_kerja;?></span>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-5">
-		<div class="info-box bg-green">
-			<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
-			<div class="info-box-content">
-				<span class="info-box-text">Target</span>
-				<span class="info-box-number"><?php echo $target;?></span>
-				<div class="progress">
-					<div class="progress-bar" style="width: <?php echo $persen_capaian;?>%"></div>
+	<div class="col-md-3">
+		<div class="box box-danger">
+			<div class="box-header with-border">
+				<h3 class="box-title">Rekap Per Kategori</h3>
+			</div>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-10">
+						<canvas id="pieChart" height="390" width="400" style="width: 200px; height: 195px;"></canvas>
+					</div>
 				</div>
-				<span class="progress-description">Capaian target <?php echo $total_rekap;?> (<?php echo $persen_capaian;?>%)</span>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-5">
-		<div class="info-box bg-red">
-			<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
-			<div class="info-box-content">
-				<span class="info-box-text">Hari Kerja</span>
-				<span class="info-box-number"><?php echo $hari_kerja;?></span>
-				<div class="progress">
-					<div class="progress-bar" style="width: 100%"></div>
-				</div>
-				<span class="progress-description">Jumlah hari kerja <?php echo $hari_kerja;?></span>
-			</div>
-		</div>
+		
 	</div>
 	<div class="col-md-12">
 		<div class="nav-tabs-custom">

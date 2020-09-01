@@ -515,5 +515,37 @@ class SiteController extends Controller
         
     }
 
+    public function actionLoadchart(){
+        if(isset($_GET['rangedate']) && $_GET['rangedate'] != null){
+            $range_date = $_GET['rangedate'];
+        }else{
+            $range_date = Kinerja::RangePeriodeIki();
+        }
+        
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $searchModel = new KinerjaSearch();
+        $searchModel->range_date = $range_date;
+        $searchModel->id_pegawai = $user->pegawai_id;
+
+        $dataProvider = $searchModel->searchRekap(Yii::$app->request->queryParams);
+        $models = $dataProvider->getModels();
+
+        $arr_data = [];
+        $arr_nama = [];
+        if($models != null){
+            foreach($models as $val){
+                $arr_data[] = $val->jumlah;
+                $arr_nama[] = $val->nama_kategori;
+            }
+        }
+
+        $return['data'] = $arr_data;
+        $return['kategori'] = $arr_nama;
+
+        return Json::encode($return);
+    }
+
 
 }

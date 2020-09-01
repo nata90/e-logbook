@@ -43,10 +43,7 @@ $this->registerJs(<<<JS
     });
 
     //Date range picker
-    $('#reservation').daterangepicker({
-        "startDate": daysago,
-        "endDate": daysnow
-    });
+    $('#reservation').daterangepicker();
 
     $(document).on("pjax:success", function(){
         $('#reservation').daterangepicker();
