@@ -222,7 +222,7 @@ $this->registerJs("
 					<div class="progress">
 						<div class="progress-bar" style="width: <?php echo $persen_logbook;?>%"></div>
 					</div>
-					<span class="progress-description"><?php echo $approve_logbook;?> disetujui, <?php echo $notapprove_logbook;?> belum disetujui</span>
+					<span class="progress-description"><?php echo $approve_logbook;?> disetujui, <?php echo $notapprove_logbook;?> belum disetujui (<?php echo $persen_logbook;?>%)</span>
 				</div>
 			</div>
 		</div>
@@ -256,7 +256,7 @@ $this->registerJs("
 	<div class="col-md-3">
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				<h3 class="box-title">Rekap Per Kategori</h3>
+				<h3 class="box-title">Chart Kategori</h3>
 			</div>
 			<div class="box-body">
 				<div class="row">
