@@ -201,7 +201,7 @@ class KinerjaController extends Controller
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);
 
-        $last_row = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d'), 'id_pegawai'=>$user->pegawai_id])->orderBy('row DESC')->one();
+        $last_row = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id])->orderBy('row DESC')->one();
 
         $model = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id, 'row'=>$rows])->one();
 
