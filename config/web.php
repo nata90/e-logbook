@@ -26,6 +26,14 @@ $config = [
             ],
         ],
     'components' => [
+        /*'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '' => 'site/index',                                
+                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
+            ],
+        ],*/
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'e9YOpKOhsRXSOkwHHy0AQWYU6Q_gAz8L',

@@ -34,7 +34,7 @@ JS
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    'filterModel' => $filter,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 

@@ -5,6 +5,7 @@ namespace app\modules\pegawai\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use app\modules\base\models\TbMenu;
+use app\modules\app\models\AppUser;
 use app\modules\pegawai\models\UnitKerja;
 use app\modules\pegawai\models\UnitKerjaSearch;
 use app\modules\pegawai\models\Bagian;
@@ -64,12 +65,27 @@ class UnitkerjaController extends Controller
      */
     public function actionIndex()
     {
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_peg'=>1])->one();
         $searchModel = new UnitKerjaSearch();
+        $filter = $searchModel;
+        if($user->id_group == 3){
+            if($peg_unit_kerja != null){
+                $searchModel->id_unit_kerja = $peg_unit_kerja->id_unit_kerja;
+            }else{
+                $searchModel->id_unit_kerja = '0';
+            }
+            
+            $filter = false;
+        }
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'filter'=>$filter
         ]);
     }
 

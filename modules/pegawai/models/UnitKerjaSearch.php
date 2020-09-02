@@ -60,10 +60,10 @@ class UnitKerjaSearch extends UnitKerja
         $query->andFilterWhere([
             'status_unit' => $this->status_unit,
             'tmt_aktif' => $this->tmt_aktif,
+            'id_unit_kerja'=>$this->id_unit_kerja
         ]);
 
-        $query->andFilterWhere(['like', 'id_unit_kerja', $this->id_unit_kerja])
-            ->andFilterWhere(['like', 'id_bagian', $this->id_bagian])
+        $query->andFilterWhere(['like', 'id_bagian', $this->id_bagian])
             ->andFilterWhere(['like', 'nama_unit_kerja', $this->nama_unit_kerja]);
 
         return $dataProvider;
