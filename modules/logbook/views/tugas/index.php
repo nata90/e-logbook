@@ -44,7 +44,7 @@ $this->title = Yii::t('app', 'Tugas');
                             'value'=>function($model){
                                 return $model->unitkerja->nama_unit_kerja;
                             },
-                            'filter'=>Html::activeDropDownList($searchModel, 'id_unit_kerja',$list_unit_kerja,['class'=>'form-control','prompt'=>''])
+                            'filter'=>$filter
                         ],
                         [
                             'label'=>'Kategori',

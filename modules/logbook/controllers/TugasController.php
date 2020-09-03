@@ -6,15 +6,18 @@ use Yii;
 use yii\filters\AccessControl;
 use app\modules\base\models\TbMenu;
 use app\modules\logbook\models\Tugas;
+use app\modules\app\models\AppUser;
 use app\modules\logbook\models\TugasSearch;
 use app\modules\pegawai\models\UnitKerja;
 use app\modules\logbook\models\Kategori;
+use app\modules\pegawai\models\PegawaiUnitKerja;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\helpers\Json;
+use yii\helpers\Html;
 
 /**
  * TugasController implements the CRUD actions for Tugas model.
@@ -59,12 +62,29 @@ class TugasController extends Controller
      */
     public function actionIndex()
     {
+        $id_user = Yii::$app->user->id;
+        $user = AppUser::findOne($id_user);
+
+        $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_peg'=>1])->one();
         $searchModel = new TugasSearch();
         $searchModel->status_tugas = 1;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $list_kategori = ArrayHelper::map(Kategori::find()->orderBy('nama_kategori ASC')->all(),'id_kategori','nama_kategori');
         $list_unit_kerja = ArrayHelper::map(UnitKerja::find()->orderBy('nama_unit_kerja ASC')->all(),'id_unit_kerja','nama_unit_kerja');
+
+        $filter = Html::activeDropDownList($searchModel, 'id_unit_kerja',$list_unit_kerja,['class'=>'form-control','prompt'=>'']);
+        if($user->id_group == 3){
+            if($peg_unit_kerja != null){
+                $searchModel->id_unit_kerja = $peg_unit_kerja->id_unit_kerja;
+            }else{
+                $searchModel->id_unit_kerja = '0';
+            }
+            
+            $filter = false;
+        }
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        
 
         return $this->render('index', [
             'searchModel' => $searchModel,
