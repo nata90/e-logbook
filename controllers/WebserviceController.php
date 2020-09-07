@@ -9,7 +9,10 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use app\modules\logbook\models\Tugas;
 use app\modules\logbook\models\Kinerja;
+use app\modules\logbook\models\Target;
 use app\modules\pegawai\models\PegawaiUnitKerja;
+use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\JabatanPegawai;
 use app\modules\app\models\AppUser;
 use app\models\LoginForm;
 
@@ -37,6 +40,53 @@ class WebserviceController extends Controller
     	}
 
     	echo Json::encode($arr_json);
+    }
+
+    public function actionGetrekap(){
+        $id = $_GET['id'];
+        $date = $_GET['date'];
+
+        if(isset($_GET['date']) && $_GET['date'] != ''){
+            $date = date('Y-m-d', strtotime($_GET['date']));
+        }else{
+            $date = date('Y-m-d');
+        }
+
+        $model = Kinerja::find()->where(['id_pegawai'=>$id, 'tanggal_kinerja'=>$date])->orderBy('id_kinerja DESC')->all();
+
+        $arr_json = array();
+
+        if($model != null){
+            foreach ($model as $key => $value) {
+                if($value->approval == 1){
+                    $status = 'approved';
+                }else{
+                    $status = 'not approve';
+                }
+                $arr_json['data'][] = ['tugas'=>$value->tugas->nama_tugas, 'jumlah'=>$value->jumlah, 'status'=>$status];
+            }
+        }
+
+        return Json::encode($arr_json);
+    }
+
+    public function actionProfile($id){
+        $arr_json = array();
+
+        $data_pegawai = DataPegawai::findOne($id);
+
+        $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$id,'status_jbt'=>1])->one();
+        $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$id,'status_peg'=>1])->one();
+        $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+
+        $arr_json['data'][] = ['value'=>'NIP / NIK : '.$data_pegawai->nip];
+        $arr_json['data'][] = ['value'=>'Nama : '.$data_pegawai->nama];
+        $arr_json['data'][] = ['value'=>'Jabatan : '.$jab_pegawai->jabatan->nama_jabatan];
+        $arr_json['data'][] = ['value'=>'Unit Kerja : '.$peg_unit_kerja->unitKerja->nama_unit_kerja];
+        $arr_json['data'][] = ['value'=>'Penilai : '.$jab_pegawai->penilai->nama];
+        $arr_json['data'][] = ['value'=>'Target : '.$model_target->nilai_target];
+
+        echo Json::encode($arr_json);
     }
 
     public function actionSimpankinerja(){
