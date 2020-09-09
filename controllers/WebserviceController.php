@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use app\modules\logbook\models\Tugas;
 use app\modules\logbook\models\Kinerja;
+use app\modules\logbook\models\KinerjaSearch;
 use app\modules\logbook\models\Target;
 use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\pegawai\models\DataPegawai;
@@ -65,6 +66,8 @@ class WebserviceController extends Controller
                 }
                 $arr_json['data'][] = ['tugas'=>$value->tugas->nama_tugas, 'jumlah'=>$value->jumlah, 'status'=>$status];
             }
+        }else{
+            $arr_json['data'][] = ['tugas'=>'-', 'jumlah'=>'0', 'status'=>'-'];
         }
 
         return Json::encode($arr_json);
@@ -79,12 +82,59 @@ class WebserviceController extends Controller
         $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$id,'status_peg'=>1])->one();
         $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
 
+        $range_date = Kinerja::RangePeriodeIki2();
+
+        $searchModel = new KinerjaSearch();
+        $searchModel->range_date = $range_date;
+        $searchModel->id_pegawai = $id;
+
+        $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+        $searchModel->approval = 1;
+        $dataProvider2 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+        $searchModel->approval = 0;
+        $dataProvider3 = $searchModel->searchStaff(Yii::$app->request->queryParams);
+
+        $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
+
+        $dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
+        $total_rekap = 0;
+        if($dataProvider5->models != null){
+            foreach($dataProvider5->models as $m)
+            {
+
+               $total_rekap += $m->jumlah * $m->poin_kategori;;
+
+            }
+        }
+
+        $total_logbook = $dataProvider->getCount();
+        $approve_logbook = $dataProvider2->getCount();
+        $notapprove_logbook = $dataProvider3->getCount();
+
+        if($model_target != null){
+            $target = $model_target->nilai_target;
+        }else{
+            $target = '-';
+        }
+
+        if($target != '-'){
+            $persen_capaian = round(($total_rekap/$target)*100,2);
+        }else{
+            $persen_capaian = 0;
+        }
+
         $arr_json['data'][] = ['value'=>'NIP / NIK : '.$data_pegawai->nip];
-        $arr_json['data'][] = ['value'=>'Nama : '.$data_pegawai->nama];
         $arr_json['data'][] = ['value'=>'Jabatan : '.$jab_pegawai->jabatan->nama_jabatan];
         $arr_json['data'][] = ['value'=>'Unit Kerja : '.$peg_unit_kerja->unitKerja->nama_unit_kerja];
         $arr_json['data'][] = ['value'=>'Penilai : '.$jab_pegawai->penilai->nama];
-        $arr_json['data'][] = ['value'=>'Target : '.$model_target->nilai_target];
+        $arr_json['data'][] = ['value'=>'Periode : '.$range_date];
+        $arr_json['data'][] = ['value'=>'Logbook Disetujui : '.$approve_logbook];
+        $arr_json['data'][] = ['value'=>'Logbook belum disetujui : '.$notapprove_logbook];
+        $arr_json['data'][] = ['value'=>'Target : '.$target];
+        $arr_json['data'][] = ['value'=>'Capaian Poin : '.$total_rekap];
+        $arr_json['data'][] = ['value'=>'Persen Capaian : '.$persen_capaian.'%'];
 
         echo Json::encode($arr_json);
     }

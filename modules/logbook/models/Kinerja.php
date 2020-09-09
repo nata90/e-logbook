@@ -92,6 +92,26 @@ class Kinerja extends \yii\db\ActiveRecord
         
     }
 
+    public static function RangePeriodeIki2(){
+        $arr_date = [26,27,28,29,30,31];
+        if(in_array(date('d'),$arr_date)){
+            $mktime_start = mktime(0, 0, 0, date("m"), 26, date("Y"));
+            $date_start = date("d F Y", $mktime_start);
+
+            $mktime_end = mktime(0, 0, 0, date("m")+1, 25, date("Y"));
+            $date_end = date("d F Y", $mktime_end);
+        }else{
+            $mktime_start = mktime(0, 0, 0, date("m")-1, 26, date("Y"));
+            $date_start = date("d F Y", $mktime_start);
+
+            $mktime_end = mktime(0, 0, 0, date("m"), 25, date("Y"));
+            $date_end = date("d F Y", $mktime_end);
+        }
+
+        return $date_start.' - '.$date_end;
+        
+    }
+
     /**
      * Gets query for [[Tugas]].
      *
