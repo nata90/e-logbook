@@ -218,11 +218,7 @@ class UserController extends Controller
         $model_jabatan = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_jbt'=>1])->one();
 
         //target jabatan
-        $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'status_target'=>1])->one();
-
-        //target
-         $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'status_target'=>1])->one();
-
+        $model_target = Target::find()->where(['id_jabatan'=>$model_jabatan->id_jabatan, 'id_unit_kerja'=>$model_unit->id_unit_kerja, 'status_target'=>1])->one();
 
         return $this->render('profile', [
             'model' => $model,
