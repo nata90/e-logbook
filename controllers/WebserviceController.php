@@ -82,7 +82,7 @@ class WebserviceController extends Controller
         $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$id,'status_peg'=>1])->one();
         $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
 
-        $range_date = Kinerja::RangePeriodeIki2();
+        $range_date = Kinerja::RangePeriodeIki();
 
         $searchModel = new KinerjaSearch();
         $searchModel->range_date = $range_date;
@@ -98,7 +98,7 @@ class WebserviceController extends Controller
 
         $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
 
-        $dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
+        /*$dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
         $total_rekap = 0;
         if($dataProvider5->models != null){
             foreach($dataProvider5->models as $m)
@@ -107,7 +107,12 @@ class WebserviceController extends Controller
                $total_rekap += $m->jumlah * $m->poin_kategori;;
 
             }
-        }
+        }*/
+        $total_rekap = Yii::$app->db->createCommand('SELECT SUM(b.`poin_kategori`*t.`jumlah`) AS poin FROM `kinerja` AS  t 
+            LEFT JOIN tugas AS a ON t.`id_tugas` = a.`id_tugas`
+            LEFT JOIN `kategori` AS b ON a.`id_kategori` = b.`id_kategori`
+            WHERE t.id_pegawai = '.$id.' AND t.approval = 1')
+             ->queryScalar();
 
         $total_logbook = $dataProvider->getCount();
         $approve_logbook = $dataProvider2->getCount();
@@ -132,8 +137,8 @@ class WebserviceController extends Controller
         $arr_json['data'][] = ['value'=>'Periode : '.$range_date];
         $arr_json['data'][] = ['value'=>'Logbook Disetujui : '.$approve_logbook];
         $arr_json['data'][] = ['value'=>'Logbook belum disetujui : '.$notapprove_logbook];
-        $arr_json['data'][] = ['value'=>'Target : '.$target];
-        $arr_json['data'][] = ['value'=>'Capaian Poin : '.$total_rekap];
+        $arr_json['data'][] = ['value'=>'Target Poin : '.$target];
+        $arr_json['data'][] = ['value'=>'Capaian Poin : '.round($total_rekap,2)];
         $arr_json['data'][] = ['value'=>'Persen Capaian : '.$persen_capaian.'%'];
 
         echo Json::encode($arr_json);

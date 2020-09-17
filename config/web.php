@@ -97,7 +97,7 @@ $config = [
         */
     ],
     'params' => $params,
-    'defaultRoute'=>'site/login',
+    'defaultRoute'=>'site/default',
     'timeZone' => 'Asia/Jakarta',
 ];
 

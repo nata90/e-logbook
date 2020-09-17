@@ -438,6 +438,14 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionDefault(){
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['site/index']);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
+
     /**
      * Logout action.
      *
