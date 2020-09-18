@@ -158,10 +158,11 @@ class WebserviceController extends Controller
             $deskripsi = $_POST['deskripsi'];
             $jumlah = $_POST['jumlah'];
             $pegawai_id = $_POST['idpeg'];
+            $tanggal = $_POST['tanggal'];
 
             $explode = explode('|',$tugas);
 
-            $lastmodel = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d'), 'id_pegawai'=>$pegawai_id])->orderBy('row DESC')->one();
+            $lastmodel = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($tanggal)), 'id_pegawai'=>$pegawai_id])->orderBy('row DESC')->one();
             if($lastmodel != null){
                 $row = $lastmodel->row +1;
             }else{
@@ -169,7 +170,7 @@ class WebserviceController extends Controller
             }
 
             $model = new Kinerja;
-            $model->tanggal_kinerja = date('Y-m-d');
+            $model->tanggal_kinerja = date('Y-m-d', strtotime($tanggal));
             $model->id_pegawai = $pegawai_id;
             $model->id_tugas = trim($explode[0]);
             $model->jumlah = $jumlah;
