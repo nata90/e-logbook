@@ -64,7 +64,7 @@ class WebserviceController extends Controller
                 }else{
                     $status = 'not approve';
                 }
-                $arr_json['data'][] = ['tugas'=>$value->tugas->nama_tugas, 'jumlah'=>$value->jumlah, 'status'=>$status];
+                $arr_json['data'][] = ['tugas'=>$value->deskripsi, 'jumlah'=>$value->jumlah, 'status'=>$status];
             }
         }else{
             $arr_json['data'][] = ['tugas'=>'-', 'jumlah'=>'0', 'status'=>'-'];
@@ -169,13 +169,23 @@ class WebserviceController extends Controller
                 $row = 0;
             }
 
+            $jabatan_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$id, 'status_jbt'=>1])->one();
+
+            if($jabatan_pegawai != null){
+                $penilai = $jabatan_pegawai->id_penilai;
+            }else{
+                $penilai = 1178;
+            }
+
             $model = new Kinerja;
             $model->tanggal_kinerja = date('Y-m-d', strtotime($tanggal));
             $model->id_pegawai = $pegawai_id;
             $model->id_tugas = trim($explode[0]);
             $model->jumlah = $jumlah;
             $model->deskripsi = $deskripsi;
-            $model->approval = 0;
+            $model->approval = 1;
+            $model->user_approval = $penilai;
+            $model->tgl_approval = date('Y-m-d');
             $model->create_date = date('Y-m-d');
             $model->row = $row;
             if($model->save()){
