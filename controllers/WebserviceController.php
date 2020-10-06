@@ -84,6 +84,8 @@ class WebserviceController extends Controller
 
         $range_date = Kinerja::RangePeriodeIki();
 
+        $date = explode('-',$range_date);
+
         $searchModel = new KinerjaSearch();
         $searchModel->range_date = $range_date;
         $searchModel->id_pegawai = $id;
@@ -111,7 +113,7 @@ class WebserviceController extends Controller
         $total_rekap = Yii::$app->db->createCommand('SELECT SUM(b.`poin_kategori`*t.`jumlah`) AS poin FROM `kinerja` AS  t 
             LEFT JOIN tugas AS a ON t.`id_tugas` = a.`id_tugas`
             LEFT JOIN `kategori` AS b ON a.`id_kategori` = b.`id_kategori`
-            WHERE t.id_pegawai = '.$id.' AND t.approval = 1')
+            WHERE t.id_pegawai = '.$id.' AND t.approval = 1 AND tanggal_kinerja BETWEEN "'.date('Y-m-d', strtotime(trim($date[0]))).'" AND "'.date('Y-m-d', strtotime(trim($date[1]))).'"')
              ->queryScalar();
 
         $total_logbook = $dataProvider->getCount();

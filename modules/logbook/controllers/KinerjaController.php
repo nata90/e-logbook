@@ -226,6 +226,14 @@ class KinerjaController extends Controller
         if($model == null){
             $model = new Kinerja;
         }
+
+        $jabatan_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_jbt'=>1])->one();
+
+        if($jabatan_pegawai != null){
+            $penilai = $jabatan_pegawai->id_penilai;
+        }else{
+            $penilai = 1178;
+        }
         
         $return['success'] = 0;
 
@@ -235,7 +243,9 @@ class KinerjaController extends Controller
         $model->jumlah = $jumlah;
         $model->deskripsi = $deskripsi;
         $model->row = $rows;
-        $model->approval = 0;
+        $model->approval = 1;
+        $model->user_approval = $penilai;
+        $model->tgl_approval = date('Y-m-d');
         $model->create_date = date('Y-m-d');
         if($model->save()){
             $return['success'] = 1;
