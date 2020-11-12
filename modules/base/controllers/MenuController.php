@@ -31,7 +31,11 @@ class MenuController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['setgroupmenu','simpansetting','loadsetting','deletesetting'],
                 'denyCallback' => function ($rule, $action) {
-                    throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
+                     if(Yii::$app->user->isGuest){
+                        return $this->goHome();
+                    }else{
+                        throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
+                    }
                 },
                 'rules' => [
                     [
