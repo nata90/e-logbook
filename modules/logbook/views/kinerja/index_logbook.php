@@ -27,6 +27,7 @@ $this->registerJs(<<<JS
 	var hot = new Handsontable(container, {
 	  data: data,
 	  rowHeaders: true,
+	  manualColumnResize: true,
 	  colHeaders: [
 	  	'TUGAS',
 	  	'DESKRIPSI',
