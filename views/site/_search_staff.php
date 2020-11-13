@@ -66,7 +66,7 @@ JS
          <button type="submit" class="btn btn-block btn-success btn-sm btn-flat" id="search-kinerja">Cari</button>
      </div>
      <div class="col-xs-2">
-         <button type="button" class="btn btn-block bg-olive btn-sm btn-flat" id="rekap-logbook">Rekap (.xls)</button>
+         <button type="button" class="btn btn-block bg-olive btn-sm btn-flat" id="rekap-logbook">Rekap Per Kategori (.xls)</button>
      </div>
      <div class="col-xs-2">
          <button type="button" class="btn btn-block bg-maroon btn-sm btn-flat" id="list-logbook">Logbook (.xls)</button>

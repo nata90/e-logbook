@@ -272,7 +272,8 @@ $this->registerJs("
 		<div class="nav-tabs-custom">
 			<ul class="nav nav-tabs">
 				<li id="logbook-id" class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Logbook Pribadi</a></li>
-				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Logbook</a></li>
+				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Per Kategori</a></li>
+				<li><a href="#tab_4" data-toggle="tab" aria-expanded="true">Rekap Per Tugas</a></li>
 				<li id="kin-staff"><a href="#tab_3" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
 			</ul>
 			<div class="tab-content">
@@ -341,7 +342,7 @@ $this->registerJs("
 	                    //'filterModel' => $searchModel,
 	                    'summary' => '',
 	                    'showFooter'=>TRUE,
-	                    'emptyText' => 'Rekap logbook anda masih kosong',
+	                    'emptyText' => 'Rekap per kategori anda masih kosong',
 	                    'columns' => [
 	                        ['class' => 'yii\grid\SerialColumn'],
 	                        
@@ -409,6 +410,35 @@ $this->registerJs("
 	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs logbook-peg" url="'.Url::to(['site/excellogbook', 'id'=>$model->id_pegawai]).'">Logbook (.xls)</button>';
 	                            }
 	                        ]
+	                    ],
+	                ]); ?>
+				</div>
+				<div class="tab-pane" id="tab_4">
+					<?= GridView::widget([
+	                    'dataProvider' => $dataProvider6,
+	                    //'filterModel' => $searchModel,
+	                    'summary' => '',
+	                    'showFooter'=>TRUE,
+	                    'emptyText' => 'Rekap per tugas anda masih kosong',
+	                    'columns' => [
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        
+	                        [
+			                    'label'=>'Tugas',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->nama_tugas;
+			                    },
+			                ],
+			                [
+			                    'label'=>'Jumlah',
+			                    'format'=>'raw',
+			                    'value'=>function($model){
+			                        return $model->jumlah;
+			                    },
+			                    'footer' => $total_jumlah,
+			                ],
+			                
 	                    ],
 	                ]); ?>
 				</div>

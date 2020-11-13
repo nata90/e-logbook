@@ -28,6 +28,7 @@ class Kinerja extends \yii\db\ActiveRecord
     public $range_date;
     public $nama_kategori;
     public $poin_kategori;
+    public $nama_tugas;
     /**
      * {@inheritdoc}
      */

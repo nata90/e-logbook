@@ -107,13 +107,15 @@ class SiteController extends Controller
             $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
 
             $dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
+            $dataProvider6 = $searchModel->searchTugas(Yii::$app->request->queryParams);
             $total_rekap = 0;
+            $total_jumlah = 0;
             if($dataProvider5 != null){
                 foreach($dataProvider5->models as $m)
                 {
 
                    $total_rekap += $m->jumlah * $m->poin_kategori;;
-
+                   $total_jumlah = $m->jumlah + $total_jumlah;
                 }
             }
             
@@ -167,7 +169,9 @@ class SiteController extends Controller
                 'persen_capaian'=>$persen_capaian,
                 'user'=>$user,
                 'jab_pegawai'=>$jab_pegawai,
-                'peg_unit_kerja'=>$peg_unit_kerja
+                'peg_unit_kerja'=>$peg_unit_kerja,
+                'dataProvider6'=>$dataProvider6,
+                'total_jumlah'=>$total_jumlah,
             ]);
         }else{
 
@@ -187,13 +191,16 @@ class SiteController extends Controller
             $dataProvider4 = $searchModel->searchHarikerja(Yii::$app->request->queryParams);
 
             $dataProvider5 = $searchModel->searchRekap(Yii::$app->request->queryParams);
+            $dataProvider6 = $searchModel->searchTugas(Yii::$app->request->queryParams);
             $total_rekap = 0;
+            $total_jumlah = 0;
+
             if($dataProvider5 != null){
                 foreach($dataProvider5->models as $m)
                 {
 
-                   $total_rekap += $m->jumlah * $m->poin_kategori;;
-
+                   $total_rekap += $m->jumlah * $m->poin_kategori;
+                   $total_jumlah = $m->jumlah + $total_jumlah;
                 }
             }
             
@@ -251,7 +258,9 @@ class SiteController extends Controller
                 'persen_capaian'=>$persen_capaian,
                 'user'=>$user,
                 'jab_pegawai'=>$jab_pegawai,
-                'peg_unit_kerja'=>$peg_unit_kerja
+                'peg_unit_kerja'=>$peg_unit_kerja,
+                'dataProvider6'=>$dataProvider6,
+                'total_jumlah'=>$total_jumlah,
             ]);
         }
         
