@@ -41,7 +41,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['logout','index','excelrekap','login','excellogbook'],
                 'denyCallback' => function ($rule, $action) {
-                    throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
+                    if(Yii::$app->user->isGuest){
+                        return $this->goHome();
+                    }else{
+                        throw new \yii\web\HttpException(403, 'You are not allowed to perform this action');
+                    }
                 },
                 'rules' => [
                     [

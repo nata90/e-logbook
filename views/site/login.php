@@ -7,7 +7,9 @@ use yii\bootstrap\ActiveForm;
 /* @var $model \common\models\LoginForm */
 
 $this->title = 'Sign In';
-
+/*$this->registerJs("
+    window.location.replace('http://192.168.0.103/elogbook');
+");*/
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
