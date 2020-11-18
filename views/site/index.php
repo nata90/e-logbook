@@ -471,9 +471,9 @@ $this->registerJs("
 	                        	'format'=>'raw',
 	                        	'value'=>function($model){
 	                        		if($model->inoutmode == 0){
-	                        			return 'Masuk';
+	                        			return '<small class="label label-success">Masuk</small>';
 	                        		}else{
-	                        			return 'Pulang';
+	                        			return '<small class="label label-danger">Pulang</small>';
 	                        		}
 			                        
 			                    },
