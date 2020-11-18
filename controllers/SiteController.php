@@ -21,6 +21,7 @@ use app\modules\pegawai\models\JabatanPegawaiSearch;
 use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\Jabatan;
 use app\modules\pegawai\models\PegawaiUnitKerja;
+use app\modules\pegawai\models\LogPresensiSearch;
 use app\modules\logbook\models\Kinerja;
 use app\modules\logbook\models\Target;
 use app\modules\base\models\TbMenu;
@@ -157,6 +158,10 @@ class SiteController extends Controller
                 $persen_capaian = 0;
             }
 
+            $searchModelPresensi = new LogPresensiSearch();
+            $searchModelPresensi->range_date = $range_date;
+            $searchModelPresensi->pin = $user->pegawai->pin;
+            $dataProviderPresensi = $searchModelPresensi->search(Yii::$app->request->queryParams);
 
             return $this->render('index_staff_kaunit', [
                 'searchModel' => $searchModel,
@@ -176,6 +181,7 @@ class SiteController extends Controller
                 'peg_unit_kerja'=>$peg_unit_kerja,
                 'dataProvider6'=>$dataProvider6,
                 'total_jumlah'=>$total_jumlah,
+                'dataProviderPresensi'=>$dataProviderPresensi
             ]);
         }else{
 
@@ -243,7 +249,12 @@ class SiteController extends Controller
             }else{
                 $persen_capaian = 0;
             }
-            
+
+
+            $searchModelPresensi = new LogPresensiSearch();
+            $searchModelPresensi->range_date = $range_date;
+            $searchModelPresensi->pin = $user->pegawai->pin;
+            $dataProviderPresensi = $searchModelPresensi->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
                 'searchModel' => $searchModel,
@@ -265,6 +276,7 @@ class SiteController extends Controller
                 'peg_unit_kerja'=>$peg_unit_kerja,
                 'dataProvider6'=>$dataProvider6,
                 'total_jumlah'=>$total_jumlah,
+                'dataProviderPresensi'=>$dataProviderPresensi
             ]);
         }
         

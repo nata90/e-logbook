@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$db_presensi = require __DIR__ . '/db_presensi.php';
 
 $config = [
     'id' => 'basic',
@@ -66,6 +67,7 @@ $config = [
         ],
         
         'db' => $db,
+        'db_presensi' => $db_presensi,
         'assetManager' => [
             'bundles' => [
                 // 'yii\web\JqueryAsset' => [

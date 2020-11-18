@@ -275,6 +275,7 @@ $this->registerJs("
 				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Per Kategori</a></li>
 				<li><a href="#tab_4" data-toggle="tab" aria-expanded="true">Rekap Per Tugas</a></li>
 				<li id="kin-staff"><a href="#tab_3" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
+				<li><a href="#tab_5" data-toggle="tab" aria-expanded="true">Presensi</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1">
@@ -438,6 +439,45 @@ $this->registerJs("
 			                    },
 			                    'footer' => $total_jumlah,
 			                ],
+			                
+	                    ],
+	                ]); ?>
+				</div>
+				<div class="tab-pane" id="tab_5">
+					<?= GridView::widget([
+	                    'dataProvider' => $dataProviderPresensi,
+	                    //'filterModel' => $searchModel,
+	                    'summary' => '',
+	                    'showFooter'=>TRUE,
+	                    'emptyText' => 'Presensi anda masih kosong',
+	                    'columns' => [
+	                        ['class' => 'yii\grid\SerialColumn'],
+	                        [
+	                        	'label'=>'Status WFH / WFO',
+	                        	'format'=>'raw',
+	                        	'value'=>function($model){
+			                        return $model->sn;
+			                    },
+	                        ],
+	                        [
+	                        	'label'=>'Scan Date',
+	                        	'format'=>'raw',
+	                        	'value'=>function($model){
+			                        return date('d-m-Y H:i:s', strtotime($model->scan_date));
+			                    },
+	                        ],
+	                        [
+	                        	'label'=>'Status Presensi',
+	                        	'format'=>'raw',
+	                        	'value'=>function($model){
+	                        		if($model->inoutmode == 0){
+	                        			return 'Masuk';
+	                        		}else{
+	                        			return 'Pulang';
+	                        		}
+			                        
+			                    },
+	                        ],
 			                
 	                    ],
 	                ]); ?>
