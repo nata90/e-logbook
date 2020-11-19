@@ -159,7 +159,12 @@ class SiteController extends Controller
             }
 
             $searchModelPresensi = new LogPresensiSearch();
-            $searchModelPresensi->range_date = $range_date;
+            if(isset($_GET['KinerjaSearch']['range_date']) && $_GET['KinerjaSearch']['range_date'] != ''){
+                $searchModelPresensi->range_date = $_GET['KinerjaSearch']['range_date'];
+            }else{
+                $searchModelPresensi->range_date = $range_date;
+            }
+            
             $searchModelPresensi->pin = $user->pegawai->pin;
             $dataProviderPresensi = $searchModelPresensi->search(Yii::$app->request->queryParams);
 
@@ -252,7 +257,12 @@ class SiteController extends Controller
 
 
             $searchModelPresensi = new LogPresensiSearch();
-            $searchModelPresensi->range_date = $range_date;
+            if(isset($_GET['KinerjaSearch']['range_date']) && $_GET['KinerjaSearch']['range_date'] != ''){
+                $searchModelPresensi->range_date = $_GET['KinerjaSearch']['range_date'];
+            }else{
+                $searchModelPresensi->range_date = $range_date;
+            }
+            
             $searchModelPresensi->pin = $user->pegawai->pin;
             $dataProviderPresensi = $searchModelPresensi->search(Yii::$app->request->queryParams);
 
