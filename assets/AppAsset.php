@@ -31,6 +31,8 @@ class AppAsset extends AssetBundle
         'js/jquery.toast.min.js',
         'js/custom.js',
         'js/daterangepicker.js',
+        'js/notif.js',
+        'js/socket.io.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -254,7 +254,7 @@ class KinerjaController extends Controller
         $model->create_date = date('Y-m-d');
         if($model->save()){
             $return['success'] = 1;
-            $return['msg'] = '"'.$model->deskripsi.'" berhasil disimpan';
+            $return['msg'] = $user->pegawai->nama.' membuat logbook "'.$model->deskripsi.'"';
         }
 
         $load_kinerja = Kinerja::find()->where(['tanggal_kinerja'=>date('Y-m-d', strtotime($date)), 'id_pegawai'=>$user->pegawai_id])->all();

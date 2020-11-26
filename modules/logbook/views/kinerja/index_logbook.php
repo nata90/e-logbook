@@ -121,7 +121,12 @@ $this->registerJs(<<<JS
 	          },
 	          success: function (v) {
 	          	if(v.success == 1){
-		          	notifikasi(v.msg,"success");
+		          	//notifikasi(v.msg,"success");
+		          	var head = 'SUKSES ';
+					var msg = v.msg;
+
+		          	var socket = io.connect('http://localhost:3000');
+					socket.emit('notif',{name: head, message: msg});
 		          	that.loadData(v.data);
 		        }
 	          }
