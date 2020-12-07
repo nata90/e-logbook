@@ -125,7 +125,7 @@ $this->registerJs(<<<JS
 		          	var head = 'SUKSES ';
 					var msg = v.msg;
 
-		          	var socket = io.connect('http://localhost:3000');
+		          	var socket = io.connect('http://192.168.20.20:3000');
 					socket.emit('notif',{name: head, message: msg});
 		          	that.loadData(v.data);
 		        }
