@@ -43,7 +43,7 @@ class DataPegawai extends \yii\db\ActiveRecord
         return [
             [['nip', 'nama', 'tmp_lahir', 'tgl_lahir', 'jenis_peg', 'status_peg', 'gender'], 'required'],
             [['pin', 'jenis_peg', 'status_peg', 'gender','update'], 'integer'],
-            [['tgl_lahir','update'], 'safe'],
+            [['tgl_lahir','update','email','jam_masuk'], 'safe'],
             [['nip', 'tmp_lahir'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 100],
         ];
@@ -64,6 +64,8 @@ class DataPegawai extends \yii\db\ActiveRecord
             'jenis_peg' => Yii::t('app', 'Jenis Pegawai'),
             'status_peg' => Yii::t('app', 'Status Pegawai'),
             'gender' => Yii::t('app', 'Jenis Kelamin'),
+            'email' => Yii::t('app', 'Email'),
+            'jam_masuk' => Yii::t('app', 'Jam Masuk'),
         ];
     }
 

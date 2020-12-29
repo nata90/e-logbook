@@ -54,6 +54,9 @@ $this->title = Yii::t('app', 'Profile');
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
 
+            <?= $form->field($model, 'email')->textInput() ?>
+            <?= $form->field($model, 'jam_masuk')->textInput() ?>
+
            <?= $form->field($model, 'gender')->radioList(
                 [0=>'Pria', 1=>'Wanita'],
                 ['prompt'=>'Pilih Salah Satu']
