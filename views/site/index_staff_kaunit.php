@@ -3,6 +3,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\app\models\AppUser;
+use app\modules\pegawai\models\DataPegawai;
 $this->title = Yii::t('app', 'Dashboard');
 $this->registerJsFile(Yii::$app->request->BaseUrl . '/js/chart.js');
 $this->registerJs('var url_cek_profile = "' . Url::to(['app/user/cekprofile']) . '";');
@@ -461,6 +463,39 @@ $this->registerJs("
 	                        			return '<small class="label label-danger">Pulang</small>';
 	                        		}
 			                        
+			                    },
+	                        ],
+	                        [
+	                        	'label'=>'Status',
+	                        	'format'=>'raw',
+	                        	'value'=>function($model){
+	                        		if($model->inoutmode == 0){
+	                        			$id_user = Yii::$app->user->id;
+        								$user = AppUser::findOne($id_user);
+
+	                        			$date_masuk = date_create($model->scan_date);
+		                        		$date_default = date_create(date('Y-m-d', strtotime($model->scan_date)).' '.$user->pegawai->jam_masuk);
+
+		                        		if($date_masuk > $date_default){
+		                        			$diff    = date_diff($date_masuk,$date_default);
+
+		                        			if($diff->i == 0){
+		                        				return '-';
+		                        			}else{
+		                        				
+		                        				return '<small class="label label-danger">Terlambat : '.$diff->i.' menit</small>';
+		                        			}
+		                        			
+		                        		}else{
+		                        			return '-';
+		                        		}
+		                        		
+
+		                        		
+	                        		}else{
+	                        			return '-';
+	                        		}
+	                        		
 			                    },
 	                        ],
 			                
