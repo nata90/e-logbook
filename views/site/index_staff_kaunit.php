@@ -478,12 +478,14 @@ $this->registerJs("
 
 		                        		if($date_masuk > $date_default){
 		                        			$diff    = date_diff($date_masuk,$date_default);
+		                        			$menit = $diff->h * 60;
+		                        			$total_menit = $menit + $diff->i;
 
 		                        			if($diff->i == 0){
 		                        				return '-';
 		                        			}else{
 		                        				
-		                        				return '<small class="label label-danger">Terlambat : '.$diff->i.' menit</small>';
+		                        				return '<small class="label label-danger">Terlambat : '.$total_menit.' menit</small>';
 		                        			}
 		                        			
 		                        		}else{
