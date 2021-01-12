@@ -15,11 +15,16 @@
                 $id_user = Yii::$app->user->id;
                 $model = AppUser::findOne($id_user);
 
-                if($model->pegawai->gender == 0){
-                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar5.png" class="img-circle" alt="User Image"/>';
+                if($model->photo_profile != '-'){
+                    echo '<img src="'.Yii::$app->request->baseUrl.'/profpic/'.$model->photo_profile.'" class="img-circle" alt="User Image"/>';
                 }else{
-                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar3.png" class="img-circle" alt="User Image"/>';
+                    if($model->pegawai->gender == 0){
+                        echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar5.png" class="img-circle" alt="User Image"/>';
+                    }else{
+                        echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar3.png" class="img-circle" alt="User Image"/>';
+                    }
                 }
+
                 ?>
                 
             </div>

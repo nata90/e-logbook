@@ -176,11 +176,16 @@ $this->registerJs("
 		<div class="box box-danger">
 			<div class="box-body box-profile">
 				<?php 
-					if($user->pegawai->gender == 0){
-	                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar5.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
-	                }else{
-	                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar3.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
-	                }
+					if($user->photo_profile != '-'){
+						echo '<img src="'.Yii::$app->request->baseUrl.'/profpic/'.$user->photo_profile.'" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+					}else{
+						if($user->pegawai->gender == 0){
+		                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar5.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+		                }else{
+		                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar3.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+		                }
+					}
+					
 				?>
 				<h3 class="profile-username text-center"><?php echo $user->pegawai->nama;?></h3>
 				<p class="text-muted text-center"><?php echo $peg_unit_kerja->unitKerja->nama_unit_kerja;?></p>

@@ -595,7 +595,11 @@ class SiteController extends Controller
 
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);
-        $range_date = Kinerja::RangePeriodeIki();
+        $penilai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id])->one();
+
+        $session = new Session;
+        $session->open();
+        $range_date = $session['rangedate'];
 
         $searchModel = new KinerjaSearch();
         $searchModel->range_date = $range_date;
@@ -609,7 +613,9 @@ class SiteController extends Controller
         // get your HTML raw content without any layouts or scripts
         $content = $this->renderPartial('pdf_report',[
             'dataProvider'=>$dataProvider,
-            'dataProvider_2'=>$dataProvider_2
+            'dataProvider_2'=>$dataProvider_2,
+            'user'=>$user,
+            'penilai'=>$penilai
         ]);
         
         // setup kartik\mpdf\Pdf component

@@ -47,6 +47,7 @@ class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['username', 'password', 'authkey', 'pegawai_id','pegawai_nama','id_group'], 'required','on' => self::SCENARIO_ADD],
             [['username', 'pegawai_id','pegawai_nama','id_group'], 'required','on' => self::SCENARIO_UPDATE],
+            [['photo_profile'], 'safe'],
             [['active', 'pegawai_id','id_group'], 'integer'],
             [['username'], 'string', 'max' => 20],
             [['username'], 'unique'],
@@ -71,7 +72,7 @@ class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'pegawai_id' => Yii::t('app', 'Pegawai ID'),
             'pegawai_nama' => Yii::t('app', 'Nama Pegawai'),
             'accessToken' => Yii::t('app', 'Akses Token'),
-
+            'photo_profile' => Yii::t('app', 'Foto Profil'),
         ];
     }
 

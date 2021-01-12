@@ -8,6 +8,7 @@ $this->registerJs('var daysago = "' . date('m/d/Y'). '";');
 $this->registerJs('var daysnow = "' . date('m/d/Y') . '";');
 $this->registerJs('var url_download = "' . Url::to(['site/excelrekap']) . '";');
 $this->registerJs('var url_logbook = "' . Url::to(['site/excellogbook']) . '";');
+$this->registerJs('var url_rekap = "' . Url::to(['site/pdfrekaplogbook']) . '";');
 $this->registerJs(<<<JS
     //Date range picker
     $('#reservation').daterangepicker();
@@ -35,6 +36,11 @@ $this->registerJs(<<<JS
         window.open(url);
         
     });
+
+    $(document).on("click", "#pdf-rekap", function () {
+        window.open(url_rekap);
+    });
+
 
 JS
 );
@@ -70,6 +76,9 @@ JS
      </div>
      <div class="col-xs-2">
          <button type="button" class="btn btn-block bg-maroon btn-sm btn-flat" id="list-logbook">Logbook (.xls)</button>
+     </div>
+     <div class="col-xs-2">
+         <button type="button" class="btn btn-block bg-navy btn-sm btn-flat" id="pdf-rekap">Rekap Uraian Logbook (.pdf)</button>
      </div>
 
 <?php ActiveForm::end(); ?>

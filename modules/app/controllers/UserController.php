@@ -228,7 +228,8 @@ class UserController extends Controller
             'model' => $model,
             'model_unit' =>$model_unit,
             'model_jabatan'=>$model_jabatan,
-            'model_target'=>$model_target
+            'model_target'=>$model_target,
+            'user'=>$user
         ]);
     }
 
@@ -246,6 +247,24 @@ class UserController extends Controller
         }
 
         echo Json::encode($rows);
+    }
+
+    public function actionUploadphoto(){
+        $id_user = Yii::$app->user->id;
+        if(!empty($_FILES)){
+            if(is_uploaded_file($_FILES['uploadFile']['tmp_name'])){
+                $srcPath = $_FILES['uploadFile']['tmp_name'];
+                $name = $id_user.'_'.$_FILES['uploadFile']['name'];
+                $trgPath = 'profpic/'.$name;
+                if(move_uploaded_file($srcPath, $trgPath)){                  
+                    $user = AppUser::findOne($id_user);
+                    $user->photo_profile = $name;
+                    $user->save(false);
+
+                    echo '<img src="'.Yii::$app->request->baseUrl.'/profpic/'.$name.'" class="profile-user-img img-responsive" alt="User Image"/>';
+                }
+            }
+        }
     }
 
     /**

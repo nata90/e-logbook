@@ -157,16 +157,28 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td>Rahanata, S.Kom</td>
+				<td><?php echo $user->pegawai->nama;?></td>
 				<td width="300"></td>
-				<td>Dini Bagus Prasetyo, S.Kom</td>
+				<td>
+					<?php 
+						if($penilai!= null){
+							echo $penilai->penilai->nama;
+						}
+					?>
+				</td>
 				<td width="200"></td>
 				<td>Ni Ketut Rupini, SH., MARS.</td>
 			</tr>
 			<tr>
-				<td>NIK.2016010536</td>
+				<td>NIK/NIP. <?php echo $user->pegawai->nip;?></td>
 				<td width="300"></td>
-				<td>NIK.2015040449</td>
+				<td>
+					<?php 
+						if($penilai!= null){
+							echo 'NIK/NIP. '.$penilai->penilai->nip;
+						}
+					?>
+				</td>
 				<td width="200"></td>
 				<td>NIP.196807241994032002</td>
 			</tr>

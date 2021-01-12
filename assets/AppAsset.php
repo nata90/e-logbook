@@ -33,6 +33,7 @@ class AppAsset extends AssetBundle
         'js/daterangepicker.js',
         'js/notif.js',
         'js/socket.io.js',
+        'js/jquery.form.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
