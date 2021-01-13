@@ -4,6 +4,7 @@ namespace app\modules\logbook\models;
 
 use Yii;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\app\models\AppSetting;
 
 /**
  * This is the model class for table "{{%kinerja}}".
@@ -74,18 +75,32 @@ class Kinerja extends \yii\db\ActiveRecord
     }
 
     public static function RangePeriodeIki(){
-        $arr_date = [26,27,28,29,30,31];
-        if(in_array(date('d'),$arr_date)){
-            $mktime_start = mktime(0, 0, 0, date("m"), 26, date("Y"));
-            $date_start = date("m/d/Y", $mktime_start);
+        $model = AppSetting::findOne(1);
+        if($model->tgl_periode_awal >=  $model->tgl_periode_akhir){
+            $arr_date = [];
 
-            $mktime_end = mktime(0, 0, 0, date("m")+1, 25, date("Y"));
-            $date_end = date("m/d/Y", $mktime_end);
+            for($i=$model->tgl_periode_awal;$i<=31;$i++){
+                $arr_date[] = $i;
+            }
+
+            if(in_array(date('d'),$arr_date)){
+                $mktime_start = mktime(0, 0, 0, date("m"), $model->tgl_periode_awal, date("Y"));
+                $date_start = date("m/d/Y", $mktime_start);
+
+                $mktime_end = mktime(0, 0, 0, date("m")+1, $model->tgl_periode_akhir, date("Y"));
+                $date_end = date("m/d/Y", $mktime_end);
+            }else{
+                $mktime_start = mktime(0, 0, 0, date("m")-1, $model->tgl_periode_awal, date("Y"));
+                $date_start = date("m/d/Y", $mktime_start);
+
+                $mktime_end = mktime(0, 0, 0, date("m"), $model->tgl_periode_akhir, date("Y"));
+                $date_end = date("m/d/Y", $mktime_end);
+            }
         }else{
-            $mktime_start = mktime(0, 0, 0, date("m")-1, 26, date("Y"));
+            $mktime_start = mktime(0, 0, 0, date("m"), $model->tgl_periode_awal, date("Y"));
             $date_start = date("m/d/Y", $mktime_start);
 
-            $mktime_end = mktime(0, 0, 0, date("m"), 25, date("Y"));
+            $mktime_end = mktime(0, 0, 0, date("m"), $model->tgl_periode_akhir, date("Y"));
             $date_end = date("m/d/Y", $mktime_end);
         }
 
