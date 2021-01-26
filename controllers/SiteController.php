@@ -595,7 +595,7 @@ class SiteController extends Controller
 
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);
-        $penilai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id])->one();
+        $penilai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id, 'status_jbt'=>1])->one();
 
         $session = new Session;
         $session->open();
