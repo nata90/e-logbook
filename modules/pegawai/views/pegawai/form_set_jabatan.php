@@ -24,14 +24,21 @@
                 ['prompt'=>'Pilih Salah Satu']
             ) ?>
 
+    <?= $form->field($model, 'id_penilai_2')->dropDownList(
+                $list_penilai,
+                ['prompt'=>'Pilih Salah Satu']
+            ) ?>
+
  
 
     <?php 
-        if($jabatan_aktif != null){
+        /*if($jabatan_aktif != null){
             echo '<div class="form-group field-jabatanpegawai-jabatan_aktif required"><label class="col-sm-3 control-label"><label class="control-label" for="jabatanpegawai-jabatan_aktif">Jabatan Aktif</label></label><div class="col-xs-8" style="padding-top:10px;"><span class="label label-success" >'.$jabatan_aktif->jabatan->nama_jabatan.'</span></div></div>';
 
             echo '<div class="form-group field-jabatanpegawai-penilai required"><label class="col-sm-3 control-label"><label class="control-label" for="jabatanpegawai-penilai">Penilai</label></label><div class="col-xs-8" style="padding-top:10px;"><span class="label label-success" >'.$jabatan_aktif->penilai->nama.'</span></div></div>';
-        }
+
+            echo '<div class="form-group field-jabatanpegawai-penilai required"><label class="col-sm-3 control-label"><label class="control-label" for="jabatanpegawai-penilai">Penilai 2</label></label><div class="col-xs-8" style="padding-top:10px;"><span class="label label-success" >'.$jabatan_aktif->penilai2->nama.'</span></div></div>';
+        }*/
     ?>
 
 

@@ -66,12 +66,13 @@ $this->registerJs(<<<JS
         var status = $('#jabatanpegawai-status_jbt').val();
         var id_peg = $('#jabatanpegawai-id_pegawai').val();
         var penilai = $('#jabatanpegawai-id_penilai').val();
+        var penilai2 = $('#jabatanpegawai-id_penilai_2').val();
 
         $.ajax({
             type: 'get',
             url: url_tambah_jabatan,
             dataType: 'json',
-            data: {'id_jabatan':id_jabatan, 'status':status, 'id_peg':id_peg, 'penilai':penilai},
+            data: {'id_jabatan':id_jabatan, 'status':status, 'id_peg':id_peg, 'penilai':penilai, 'penilai2':penilai2},
             success: function(v){
                 
                 if(v.success == 1){
@@ -180,13 +181,30 @@ JS
                                     }
                                 ],
                                 [
-                                    'label'=>'Nama Penilai',
+                                    'label'=>'Penilai Pertama',
                                     'format'=>'raw',
                                     'value'=>function($model){
                                         $html = '';
                                         if($model->pegawai->jabatanPegawais != null){
                                             foreach($model->pegawai->jabatanPegawais as $val){
                                                 $html .= $val->penilai->nama;
+                                            }
+                                        }else{
+                                            $html .= '-';
+                                        }
+                                        
+
+                                        return $html;
+                                    }
+                                ],
+                                [
+                                    'label'=>'Penilai Kedua',
+                                    'format'=>'raw',
+                                    'value'=>function($model){
+                                        $html = '';
+                                        if($model->pegawai->jabatanPegawais != null){
+                                            foreach($model->pegawai->jabatanPegawais as $val){
+                                                $html .= $val->penilai2->nama;
                                             }
                                         }else{
                                             $html .= '-';

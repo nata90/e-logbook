@@ -168,7 +168,13 @@
 						?>
 					</td>
 					<td width="200"></td>
-					<td>Rohmiyati, SE</td>
+					<td>
+						<?php 
+							if($penilai!= null){
+								echo $penilai->penilai2->nama;
+							}
+						?>
+					</td>
 				</tr>
 				<tr>
 					<td>NIK/NIP. <?php echo $user->pegawai->nip;?></td>
@@ -181,7 +187,11 @@
 						?>
 					</td>
 					<td width="200"></td>
-					<td>NIP.196802261998032002</td>
+					<td><?php 
+							if($penilai!= null){
+								echo 'NIP. '.$penilai->penilai2->nip;
+							}
+						?></td>
 				</tr>
 			</table>
 		

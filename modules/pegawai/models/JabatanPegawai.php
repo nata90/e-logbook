@@ -33,8 +33,8 @@ class JabatanPegawai extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_jabatan', 'id_pegawai', 'status_jbt', 'tmt_jbt', 'id_penilai'], 'required'],
-            [['id_jabatan', 'id_pegawai', 'status_jbt','id_penilai'], 'integer'],
+            [['id_jabatan', 'id_pegawai', 'status_jbt', 'tmt_jbt', 'id_penilai', 'id_penilai_2'], 'required'],
+            [['id_jabatan', 'id_pegawai', 'status_jbt','id_penilai','id_penilai_2'], 'integer'],
             [['tmt_jbt','nama'], 'safe'],
             [['id_pegawai'], 'exist', 'skipOnError' => true, 'targetClass' => DataPegawai::className(), 'targetAttribute' => ['id_pegawai' => 'id_pegawai']],
             [['id_jabatan'], 'exist', 'skipOnError' => true, 'targetClass' => Jabatan::className(), 'targetAttribute' => ['id_jabatan' => 'id_jabatan']],
@@ -54,6 +54,7 @@ class JabatanPegawai extends \yii\db\ActiveRecord
             'status_jbt' => Yii::t('app', 'Status'),
             'tmt_jbt' => Yii::t('app', 'Tmt Jbt'),
             'id_penilai' => Yii::t('app', 'Penilai'),
+            'id_penilai_2' => Yii::t('app', 'Penilai 2'),
         ];
     }
 
@@ -85,6 +86,16 @@ class JabatanPegawai extends \yii\db\ActiveRecord
     public function getPenilai()
     {
         return $this->hasOne(DataPegawai::className(), ['id_pegawai' => 'id_penilai']);
+    }
+
+    /**
+     * Gets query for [[Pegawai]].
+     *
+     * @return \yii\db\ActiveQuery|DataPegawaiQuery
+     */
+    public function getPenilai2()
+    {
+        return $this->hasOne(DataPegawai::className(), ['id_pegawai' => 'id_penilai_2']);
     }
 
     /**

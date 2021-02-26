@@ -209,6 +209,13 @@ $this->registerJs("
 								echo '-';
 							}
 					?></a></li>
+					<li class="list-group-item"><b>Penilai Kedua</b><a class="pull-right"><?php 
+						if($jab_pegawai != null){
+								echo $jab_pegawai->penilai2->nama;
+							}else{
+								echo '-';
+							}
+					?></a></li>
 				</ul>
 			</div>
 		</div>

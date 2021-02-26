@@ -206,9 +206,16 @@ $this->registerJs("
 						?>
 						</a></li>
 					<li class="list-group-item"><b>Target</b><a class="pull-right"><?php echo $target;?></a></li>
-					<li class="list-group-item"><b>Penilai</b><a class="pull-right"><?php 
+					<li class="list-group-item"><b>Penilai Pertama</b><a class="pull-right"><?php 
 						if($jab_pegawai != null){
 								echo $jab_pegawai->penilai->nama;
+							}else{
+								echo '-';
+							}
+					?></a></li>
+					<li class="list-group-item"><b>Penilai Kedua</b><a class="pull-right"><?php 
+						if($jab_pegawai != null){
+								echo $jab_pegawai->penilai2->nama;
 							}else{
 								echo '-';
 							}
