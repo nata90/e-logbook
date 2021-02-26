@@ -634,7 +634,13 @@ class SiteController extends Controller
             // enhanced bootstrap css built by Krajee for mPDF formatting 
             'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
             // any css to be embedded if required
-            'cssInline' => '.kv-heading-1{font-size:18px}', 
+            'cssInline' => '.kv-heading-1{font-size:18px}
+            @media all{
+                .page-break {display: none;}
+            }
+            @media print{
+                .page-break{display: block;page-break-before: always;}
+            }', 
              // set mPDF properties on the fly
             'options' => ['title' => 'Krajee Report Title'],
              // call mPDF methods on the fly

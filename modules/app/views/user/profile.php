@@ -74,7 +74,7 @@ JS
                     <input type="file" id="imgupload" name="uploadFile" style="display:none"/> 
                     <button type="button" class="btn bg-purple margin" id="upload-profil">Upload</button>
                 </div>
-                <div class="col-xs-2" id="target-layer">
+                <div class="col-xs-3" id="target-layer">
                     <?php if($user->photo_profile != '-'){ ?>
                         <img src="<?php echo Yii::$app->request->baseUrl;?>/profpic/<?php echo $user->photo_profile;?>" class="profile-user-img img-responsive" alt="User Image"/>
                     <?php }else{ 

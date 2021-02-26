@@ -65,10 +65,10 @@ class LogPresensiSearch extends LogPresensi
         $query->andFilterWhere([
             'verifymode' => $this->verifymode,
             'inoutmode' => $this->inoutmode,
+            'pin' => $this->pin,
         ]);
 
         $query->andFilterWhere(['like', 'sn', $this->sn])
-            ->andFilterWhere(['like', 'pin', $this->pin])
             ->andFilterWhere(['like', 'att_id', $this->att_id])
             ->andFilterWhere(['like', 'device_ip', $this->device_ip]);
 
@@ -76,7 +76,7 @@ class LogPresensiSearch extends LogPresensi
             $explode = explode('-',$this->range_date);
             $date_start = date('Y-m-d', strtotime(trim($explode[0])));
             $date_end = date('Y-m-d', strtotime(trim($explode[1])));
-            $query->andFilterWhere(['between', 'scan_date', $date_start, $date_end]);
+            $query->andFilterWhere(['between', 'scan_date', $date_start.' 00:00:00', $date_end.' 23:59:59']);
         }
 
         $query->orderBy('scan_date DESC');
