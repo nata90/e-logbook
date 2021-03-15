@@ -12,6 +12,7 @@ use app\modules\pegawai\models\JabatanPegawai;
 class JabatanPegawaiSearch extends JabatanPegawai
 {
     public $nama;
+
     /**
      * {@inheritdoc}
      */

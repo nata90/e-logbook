@@ -245,6 +245,41 @@ class KinerjaSearch extends Kinerja
         return $dataProvider;
     }
 
+    public function searchRekapPerPegawai(){
+
+        $query = Kinerja::find()->leftJoin('tugas', 'kinerja.id_tugas = tugas.id_tugas')->leftJoin('kategori', 'tugas.id_kategori = kategori.id_kategori');
+
+        $query->select(['kategori.nama_kategori AS nama_kategori','SUM(kinerja.jumlah) AS jumlah', 'kategori.poin_kategori AS poin_kategori']);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andWhere(['kinerja.approval'=>1]);
+        $query->andWhere(['kinerja.id_pegawai'=>$this->id_pegawai]);
+
+        if($this->range_date != null){
+            $explode = explode('-',$this->range_date);
+            $date_start = date('Y-m-d', strtotime(trim($explode[0])));
+            $date_end = date('Y-m-d', strtotime(trim($explode[1])));
+            $query->andFilterWhere(['between', 'tanggal_kinerja', $date_start, $date_end]);
+        }
+        
+
+        $query->groupBy('tugas.id_kategori');
+
+
+
+        return $dataProvider;
+    }
+
     public function searchTugas(){
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);

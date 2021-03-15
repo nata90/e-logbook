@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\modules\app\models\AppUser;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\logbook\models\Kinerja;
 $this->title = Yii::t('app', 'Dashboard');
 $this->registerJsFile(Yii::$app->request->BaseUrl . '/js/chart.js');
 $this->registerJs('var url_cek_profile = "' . Url::to(['app/user/cekprofile']) . '";');
@@ -404,8 +405,44 @@ $this->registerJs("
 	                            }
 	                        ],
 	                        [
-	                        	'label'=>'',
+	                            'label'=>'Jumlah Kegiatan',
+	                            'format'=>'raw',
+	                            'contentOptions' => ['class' => 'text-center'],
+	                            'headerOptions' => ['class' => 'text-center'],
+	                            'value'=>function($model){
+
+	                            	$total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
+
+	                                return $total_kegiatan['jumlah'];
+	                            },
+	                        ],
+	                        [
+	                            'label'=>'Total Poin',
+	                            'format'=>'raw',
+	                            'contentOptions' => ['class' => 'text-center'],
+	                            'headerOptions' => ['class' => 'text-center'],
+	                            'value'=>function($model){
+	                                $total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
+
+	                                return  $total_kegiatan['poin'];
+	                            },
+	                        ],
+	                        [
+	                            'label'=>'Persen Capaian',
+	                            'format'=>'raw',
+	                            'contentOptions' => ['class' => 'text-center'],
+	                            'headerOptions' => ['class' => 'text-center'],
+	                            'value'=>function($model){
+	                                $total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
+
+	                                return  round($total_kegiatan['persen'],2);
+	                            },
+	                        ],
+	                        [
+	                        	'label'=>'Download',
 	                        	'format'=>'raw',
+	                        	'contentOptions' => ['class' => 'text-center'],
+	                            'headerOptions' => ['class' => 'text-center'],
 	                            'value'=>function($model){
 	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs logbook-peg" url="'.Url::to(['site/excellogbook', 'id'=>$model->id_pegawai]).'">Logbook (.xls)</button>';
 	                            }

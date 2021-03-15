@@ -4,7 +4,13 @@ namespace app\modules\logbook\models;
 
 use Yii;
 use app\modules\pegawai\models\DataPegawai;
+use app\modules\pegawai\models\JabatanPegawai;
+use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\app\models\AppSetting;
+use app\modules\app\models\AppUser;
+use app\modules\logbook\models\KinerjaSearch;
+use app\modules\logbook\models\Target;
+use yii\web\Session;
 
 /**
  * This is the model class for table "{{%kinerja}}".
@@ -146,5 +152,50 @@ class Kinerja extends \yii\db\ActiveRecord
     public static function find()
     {
         return new KinerjaQuery(get_called_class());
+    }
+
+    public static function getTotalKegiatan($pegawai_id){
+
+        $session = new Session;
+        $session->open();
+        $range_date = $session['rangedate'];
+
+        $searchModel = new KinerjaSearch();
+        $searchModel->range_date = $range_date;
+        $searchModel->id_pegawai = $pegawai_id;
+
+        $dataProvider5 = $searchModel->searchRekapPerPegawai(Yii::$app->request->queryParams);
+        $total_rekap = 0;
+        $total_jumlah = 0;
+        if($dataProvider5 != null){
+            foreach($dataProvider5->models as $m)
+            {
+
+               $total_rekap += $m->jumlah * $m->poin_kategori;;
+               $total_jumlah = $m->jumlah + $total_jumlah;
+            }
+        }
+
+        $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$pegawai_id,'status_jbt'=>1])->one();
+        $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$pegawai_id,'status_peg'=>1])->one();
+        $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+
+        if($model_target != null){
+            $target = $model_target->nilai_target;
+        }else{
+            $target = '-';
+        }
+
+        if($target == 0 || $target == '-'){
+            $persen = '<span class="label label-danger">not set</span>';
+        }else{
+            $persen = ($total_jumlah/$target) * 100;
+        }
+
+        $return['jumlah'] = $total_jumlah;
+        $return['poin'] = $total_rekap;
+        $return['persen'] = $persen;
+
+        return $return;
     }
 }
