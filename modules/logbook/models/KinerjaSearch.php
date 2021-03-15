@@ -124,7 +124,7 @@ class KinerjaSearch extends Kinerja
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 100,
+                'pageSize' => 500,
             ],
         ]);
 
@@ -254,6 +254,9 @@ class KinerjaSearch extends Kinerja
         $query->select(['tugas.nama_tugas AS nama_tugas','SUM(kinerja.jumlah) AS jumlah', 'kategori.poin_kategori AS poin_kategori']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 500,
+            ],
         ]);
 
         $this->load($params);

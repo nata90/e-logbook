@@ -38,15 +38,106 @@
 				<?php $no++;} ?>
 			</table>
 			<table style="font-size:12px;border-collapse:collapse;margin-top: 20px;">
+				
 				<tr>
-					<td width="200">Pegawai Yang Dinilai</td>
+					<td></td>
+					<td width="200"></td>
 					<td width="200"></td>
 					<td>Klaten, <?php echo date('d F Y');?></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td width="200">Pegawai Yang Dinilai</td>
+					<td width="200"></td>
+					<td>Atasan Penilai</td>
 					<td width="200"></td>
 					<td>Atasan Pejabat Penilai</td>
 				</tr>
 				<tr>
 					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
 					<td width="200"></td>
 					<td></td>
 					<td width="200"></td>
@@ -61,12 +152,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -75,12 +160,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -89,12 +168,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -103,12 +176,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -117,12 +184,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -131,12 +192,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -145,12 +200,6 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td width="200"></td>
-					<td></td>
-					<td width="200"></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td></td>
 					<td width="200"></td>
 					<td></td>
@@ -158,6 +207,47 @@
 					<td></td>
 				</tr>
 				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+					<td width="200"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
 					<td><?php echo $user->pegawai->nama;?></td>
 					<td width="200"></td>
 					<td>
@@ -177,19 +267,20 @@
 					</td>
 				</tr>
 				<tr>
-					<td>NIK/NIP. <?php echo $user->pegawai->nip;?></td>
+					<td></td>
+					<td>NIK/NIP <?php echo $user->pegawai->nip;?></td>
 					<td width="200"></td>
 					<td>
 						<?php 
 							if($penilai!= null){
-								echo 'NIP. '.$penilai->penilai->nip;
+								echo 'NIP '.$penilai->penilai->nip;
 							}
 						?>
 					</td>
 					<td width="200"></td>
 					<td><?php 
 							if($penilai!= null){
-								echo 'NIP. '.$penilai->penilai2->nip;
+								echo 'NIP '.$penilai->penilai2->nip;
 							}
 						?></td>
 				</tr>

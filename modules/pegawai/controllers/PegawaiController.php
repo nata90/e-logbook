@@ -149,6 +149,9 @@ class PegawaiController extends Controller
     public function actionSetjabatan($id){
         //$model = new JabatanPegawai;
         $model = JabatanPegawai::find()->where(['id_pegawai'=>$id, 'status_jbt'=>1])->one();
+        if($model == null){
+            $model = new JabatanPegawai;
+        }
         $model->id_pegawai = $id;
 
         //$jabatan_aktif = JabatanPegawai::find()->where(['id_pegawai'=>$id, 'status_jbt'=>1])->one();
