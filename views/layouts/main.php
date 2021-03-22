@@ -39,6 +39,11 @@ if (Yii::$app->controller->action->id === 'login') {
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-red sidebar-mini">
+        <audio id="myAudio">
+          <source src="<?php echo Yii::$app->request->baseUrl.'/notifikasi/notifikasi.mp3'?>" type="audio/ogg">
+          <source src="<?php echo Yii::$app->request->baseUrl.'/notifikasi/notifikasi.ogg'?>" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
          <?php 
             Modal::begin([
                     'header'=>'<span id="header-info"></span>',

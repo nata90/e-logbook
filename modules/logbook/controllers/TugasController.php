@@ -77,7 +77,7 @@ class TugasController extends Controller
         $list_unit_kerja = ArrayHelper::map(UnitKerja::find()->orderBy('nama_unit_kerja ASC')->all(),'id_unit_kerja','nama_unit_kerja');
 
         $filter = Html::activeDropDownList($searchModel, 'id_unit_kerja',$list_unit_kerja,['class'=>'form-control','prompt'=>'']);
-        if($user->id_group == 3){
+        if($user->id_group == 3 || $user->id_group == 4 || $user->id_group == 2){
             if($peg_unit_kerja != null){
                 $searchModel->id_unit_kerja = $peg_unit_kerja->id_unit_kerja;
             }else{
@@ -94,7 +94,8 @@ class TugasController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'list_kategori'=>$list_kategori,
-            'list_unit_kerja'=>$list_unit_kerja
+            'list_unit_kerja'=>$list_unit_kerja,
+            'filter'=>$filter
         ]);
     }
 

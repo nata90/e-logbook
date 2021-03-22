@@ -280,11 +280,11 @@ $this->registerJs("
 	<div class="col-md-12">
 		<div class="nav-tabs-custom">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Logbook Pribadi</a></li>
-				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Per Kategori</a></li>
-				<li><a href="#tab_4" data-toggle="tab" aria-expanded="true">Rekap Per Tugas</a></li>
-				<li><a href="#tab_3" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
-				<li><a href="#tab_5" data-toggle="tab" aria-expanded="true">Presensi</a></li>
+				<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">LOGBOOK PRIBADI</a></li>
+				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">REKAP PER KATEGORI</a></li>
+				<li><a href="#tab_4" data-toggle="tab" aria-expanded="true">REKAP PER TUGAS</a></li>
+				<li><a href="#tab_3" data-toggle="tab" aria-expanded="true">KINERJA STAFF</a></li>
+				<li><a href="#tab_5" data-toggle="tab" aria-expanded="true">PRESENSI</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1">
@@ -417,7 +417,18 @@ $this->registerJs("
 	                            },
 	                        ],
 	                        [
-	                            'label'=>'Total Poin',
+	                            'label'=>'Target Poin',
+	                            'format'=>'raw',
+	                            'contentOptions' => ['class' => 'text-center'],
+	                            'headerOptions' => ['class' => 'text-center'],
+	                            'value'=>function($model){
+	                                $total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
+
+	                                return  $total_kegiatan['target'];
+	                            },
+	                        ],      
+	                        [
+	                            'label'=>'Capaian Poin',
 	                            'format'=>'raw',
 	                            'contentOptions' => ['class' => 'text-center'],
 	                            'headerOptions' => ['class' => 'text-center'],
@@ -433,9 +444,20 @@ $this->registerJs("
 	                            'contentOptions' => ['class' => 'text-center'],
 	                            'headerOptions' => ['class' => 'text-center'],
 	                            'value'=>function($model){
-	                                $total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
+	                            	$total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
+	                                if($total_kegiatan['target'] == 0){
+	                                	return '<span class="label label-danger">Target not set</span>';
+	                                }else{
+	                                	$persen = ($total_kegiatan['poin']/$total_kegiatan['target'])*100;
 
-	                                return  round($total_kegiatan['persen'],2);
+	                                	$persen_final =  round($persen,2);
+
+	                                	if($persen_final < 100){
+	                                		return '<span class="label label-warning">'.$persen_final.'%</span>';
+	                                	}else{
+	                                		return '<span class="label label-success">'.$persen_final.'%</span>';
+	                                	}
+	                                }
 	                            },
 	                        ],
 	                        [

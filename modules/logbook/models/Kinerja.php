@@ -187,7 +187,7 @@ class Kinerja extends \yii\db\ActiveRecord
         }
 
         if($target == 0 || $target == '-'){
-            $persen = '<span class="label label-danger">not set</span>';
+            $persen = 0;
         }else{
             $persen = ($total_jumlah/$target) * 100;
         }
@@ -195,6 +195,7 @@ class Kinerja extends \yii\db\ActiveRecord
         $return['jumlah'] = $total_jumlah;
         $return['poin'] = $total_rekap;
         $return['persen'] = $persen;
+        $return['target'] = $target;
 
         return $return;
     }

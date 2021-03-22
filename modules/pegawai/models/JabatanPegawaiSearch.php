@@ -42,7 +42,7 @@ class JabatanPegawaiSearch extends JabatanPegawai
      */
     public function search($params)
     {
-        $query = JabatanPegawai::find()->leftJoin('data_pegawai', 'jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai');
+        $query = JabatanPegawai::find()->leftJoin('data_pegawai', 'jabatan_pegawai.id_pegawai = data_pegawai.id_pegawai')->leftJoin('jabatan', 'jabatan_pegawai.id_jabatan = jabatan.id_jabatan');
 
         // add conditions that should always apply here
 
@@ -69,6 +69,7 @@ class JabatanPegawaiSearch extends JabatanPegawai
         ]);
 
         $query->andFilterWhere(['like', 'data_pegawai.nama', $this->nama]);
+        $query->orderBy(['jabatan.nama_jabatan'=>SORT_ASC]);
 
         return $dataProvider;
     }
