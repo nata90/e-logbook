@@ -103,7 +103,7 @@ JS
             <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'tmp_lahir')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'pin')->textInput() ?>
+            <?= $form->field($model, 'pin')->textInput(['disabled'=>true]) ?>
 
             <?= $form->field($model, 'tgl_lahir')->widget(\yii\jui\DatePicker::class,[
                         'options'=>['class'=>'form-control'],

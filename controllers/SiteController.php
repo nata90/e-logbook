@@ -653,4 +653,32 @@ class SiteController extends Controller
         // return the pdf output as per the destination setting
         return $pdf->render();
     }
+
+    public function actionRekappresensi(){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+
+        $session = new Session;
+        $session->open();
+        $range_date = $session['rangedate'];
+
+
+        $id_peg = Yii::$app->request->get('id', 0);
+        $model_peg = DataPegawai::find()->where(['id_pegawai'=>$id_peg])->one();
+
+        $searchModelPresensi = new LogPresensiSearch();
+        $searchModelPresensi->range_date = $range_date;
+
+        $searchModelPresensi->pin = $model_peg->pin;
+        $dataProviderPresensi = $searchModelPresensi->search(Yii::$app->request->queryParams);
+
+        $return['title'] = 'Presensi '.$model_peg->nama;
+        $return['html'] = $this->renderPartial('rekap_presensi',[
+            'dataProviderPresensi'=>$dataProviderPresensi
+        ]);
+
+        return $return;
+
+        
+    }
 }

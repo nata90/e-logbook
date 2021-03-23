@@ -32,7 +32,14 @@ use yii\helpers\Json;
             
             <?= $form->field($model, 'nip')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'pin')->textInput() ?>
+            <?php 
+                $action = Yii::$app->controller->action->id;
+                if($action == 'update'){
+                    echo $form->field($model, 'pin')->textInput(['disabled'=>true]);
+                }else{
+                    echo $form->field($model, 'pin')->textInput();
+                }
+            ?>
 
             <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 

@@ -121,6 +121,19 @@ $this->registerJs("
 		});
       }
     });
+
+    $(document).on('click', '.presensi-peg', function () {
+        var url_presensi = $(this).attr('url')
+        
+        $.ajax({
+            type: 'get',
+            url: url_presensi,
+            dataType: 'json',
+            success: function(v){
+                show_modal('<strong>'+v.title+'</strong>',v.html,v.footer);
+            }
+        });
+    });
 ");
 ?>
 <div class="row">
@@ -280,11 +293,11 @@ $this->registerJs("
 	<div class="col-md-12">
 		<div class="nav-tabs-custom">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">LOGBOOK PRIBADI</a></li>
-				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">REKAP PER KATEGORI</a></li>
-				<li><a href="#tab_4" data-toggle="tab" aria-expanded="true">REKAP PER TUGAS</a></li>
-				<li><a href="#tab_3" data-toggle="tab" aria-expanded="true">KINERJA STAFF</a></li>
-				<li><a href="#tab_5" data-toggle="tab" aria-expanded="true">PRESENSI</a></li>
+				<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Logbook Pribadi</a></li>
+				<li><a href="#tab_2" data-toggle="tab" aria-expanded="true">Rekap Per Kategori</a></li>
+				<li><a href="#tab_4" data-toggle="tab" aria-expanded="true">Rekap Per Tugas</a></li>
+				<li><a href="#tab_3" data-toggle="tab" aria-expanded="true">Kinerja Staff</a></li>
+				<li><a href="#tab_5" data-toggle="tab" aria-expanded="true">Presensi</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1">
@@ -459,6 +472,15 @@ $this->registerJs("
 	                                	}
 	                                }
 	                            },
+	                        ],
+	                        [
+	                        	'label'=>'Presensi',
+	                        	'format'=>'raw',
+	                            'contentOptions' => ['class' => 'text-center'],
+	                            'headerOptions' => ['class' => 'text-center'],
+	                            'value'=>function($model){
+	                                return '<button type="button" class="btn bg-orange btn-flat margin btn-xs presensi-peg" url="'.Url::to(['site/rekappresensi', 'id'=>$model->id_pegawai]).'">Presensi</button>';
+	                            }
 	                        ],
 	                        [
 	                        	'label'=>'Download',
