@@ -22,6 +22,7 @@ use app\modules\pegawai\models\DataPegawai;
 use app\modules\pegawai\models\Jabatan;
 use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\pegawai\models\LogPresensiSearch;
+use app\modules\pegawai\models\PegawaiPresensi;
 use app\modules\logbook\models\Kinerja;
 use app\modules\logbook\models\Target;
 use app\modules\base\models\TbMenu;
@@ -680,5 +681,69 @@ class SiteController extends Controller
         return $return;
 
         
+    }
+
+    public function actionError(){
+        $error = Yii::app()->errorHandler->error;
+        if ($error)
+            $this->render('error', array('error'=>$error));
+        else
+            throw new CHttpException(404, 'Page not found.');
+    }
+
+    public function actionSinkronpegawai(){
+        $model = PegawaiPresensi::find()->all();
+
+        if($model != null){
+            foreach($model as $val){
+                $cek_nip = DataPegawai::find()->where(['nip'=>$val->pegawai_nip])->one();
+                $cek_pin = DataPegawai::find()->where(['pin'=>$val->pegawai_pin])->one();
+
+                if($cek_nip == null && $cek_pin == null){
+                    $connection = \Yii::$app->db;
+
+                    $transaction = $connection->beginTransaction();
+                    try {
+                        $new_pegawai = new DataPegawai;
+                        $new_pegawai->nip = $val->pegawai_nip;
+                        $new_pegawai->pin = $val->pegawai_pin;
+                        $new_pegawai->nama = $val->pegawai_nama;
+                        $new_pegawai->tmp_lahir = '-';
+                        $new_pegawai->tgl_lahir = date('Y-m-d');
+                        $new_pegawai->jenis_peg = 0;
+                        $new_pegawai->status_peg = 0;
+
+                        if($val->gender == 1){
+                            $gender = 0;
+                        }else{
+                            $gender = 1;
+                        }
+                        $new_pegawai->gender = $gender;
+                        $new_pegawai->email = '-';
+                        if($new_pegawai->save()){
+                            $model_user = new AppUser();
+                            $model_user->scenario = AppUser::SCENARIO_ADD;
+                            $model_user->username = $new_pegawai->nip;
+                            $model_user->password = $new_pegawai->pin;
+                            $model_user->pegawai_id = $new_pegawai->id_pegawai;
+                            $model_user->pegawai_nama = $new_pegawai->nama;
+                            $model_user->accessToken = '-';
+                            $model_user->id_group = 2;
+                            $model_user->active = 1;
+                            $model_user->photo_profile = '-';
+                            if($model_user->save()){
+                                $transaction->commit();
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        
+                        $transaction->rollBack();
+                        throw $e;
+                    }
+                }
+                
+            }
+        }
+
     }
 }
