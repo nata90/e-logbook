@@ -141,7 +141,7 @@ class KinerjaSearch extends Kinerja
             'id_kinerja' => $this->id_kinerja,
             'id_pegawai' => $this->id_pegawai,
             'jumlah' => $this->jumlah,
-            'approval' => $this->approval,
+            'approval' => 1,
             'user_approval' => $this->user_approval,
             'tgl_approval' => $this->tgl_approval,
             'create_date' => $this->create_date,
