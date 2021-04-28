@@ -237,7 +237,7 @@ $this->registerJs("
 	<div class="col-md-5">
 		<div class="col-md-12">
 			<div class="info-box bg-yellow">
-				<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+				<span class="info-box-icon"><i class="ion-ios-paper"></i></span>
 				<div class="info-box-content">
 					<span class="info-box-text">Logbook</span>
 					<span class="info-box-number"><?php echo $total_logbook;?></span>
@@ -250,7 +250,7 @@ $this->registerJs("
 		</div>
 		<div class="col-md-12">
 			<div class="info-box bg-green">
-				<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+				<span class="info-box-icon"><i class="ion-arrow-graph-up-right"></i></span>
 				<div class="info-box-content">
 					<span class="info-box-text">Target</span>
 					<span class="info-box-number"><?php echo $target;?></span>
@@ -263,7 +263,7 @@ $this->registerJs("
 		</div>
 		<div class="col-md-12">
 			<div class="info-box bg-red">
-				<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+				<span class="info-box-icon"><i class="ion-android-walk"></i></span>
 				<div class="info-box-content">
 					<span class="info-box-text">Hari Kerja</span>
 					<span class="info-box-number"><?php echo $hari_kerja;?></span>
@@ -488,7 +488,9 @@ $this->registerJs("
 	                        	'contentOptions' => ['class' => 'text-center'],
 	                            'headerOptions' => ['class' => 'text-center'],
 	                            'value'=>function($model){
-	                                return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs logbook-peg" url="'.Url::to(['site/excellogbook', 'id'=>$model->id_pegawai]).'">Logbook (.xls)</button>';
+	                                //return '<button type="button" class="btn bg-olive btn-flat margin btn-xs rekap-peg" url="'.Url::to(['site/excelrekap', 'id'=>$model->id_pegawai]).'">Rekap (.xls)</button>&nbsp<button type="button" class="btn bg-maroon btn-flat margin btn-xs logbook-peg" url="'.Url::to(['site/excellogbook', 'id'=>$model->id_pegawai]).'">Logbook (.xls)</button>';
+
+	                                return '<button id="pdf-staff" type="button" class="btn bg-navy btn-flat margin btn-xs presensi-peg" url="'.Url::to(['site/pdfstaff', 'id'=>$model->id_pegawai]).'">Rekap (.pdf)</button>';
 	                            }
 	                        ]
 	                    ],

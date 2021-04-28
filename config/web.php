@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $db_presensi = require __DIR__ . '/db_presensi.php';
+$db_logbook_test = require __DIR__ . '/db_logbook_test.php';
 
 $config = [
     'id' => 'basic',
@@ -68,6 +69,7 @@ $config = [
         
         'db' => $db,
         'db_presensi' => $db_presensi,
+        'db_logbook_test' => $db_logbook_test,
         'assetManager' => [
             'bundles' => [
                 // 'yii\web\JqueryAsset' => [

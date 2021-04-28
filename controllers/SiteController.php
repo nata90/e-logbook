@@ -23,8 +23,10 @@ use app\modules\pegawai\models\Jabatan;
 use app\modules\pegawai\models\PegawaiUnitKerja;
 use app\modules\pegawai\models\LogPresensiSearch;
 use app\modules\pegawai\models\PegawaiPresensi;
+use app\modules\pegawai\models\TugasTest;
 use app\modules\logbook\models\Kinerja;
 use app\modules\logbook\models\Target;
+//use app\modules\logbook\models\Tugas;
 use app\modules\base\models\TbMenu;
 use yii2tech\spreadsheet\Spreadsheet;
 use yii\data\ArrayDataProvider;
@@ -191,7 +193,6 @@ class SiteController extends Controller
                 'dataProviderPresensi'=>$dataProviderPresensi
             ]);
         }else{
-
 
             $searchModel = new KinerjaSearch();
             $searchModel->range_date = $range_date;
@@ -655,6 +656,70 @@ class SiteController extends Controller
         return $pdf->render();
     }
 
+    public function actionPdfstaff(){
+
+        $id_pegawai = Yii::$app->request->get('id', 0);
+        $user = AppUser::find()->where(['pegawai_id'=>$id_pegawai])->one();
+
+        $penilai = JabatanPegawai::find()->where(['id_pegawai'=>$id_pegawai, 'status_jbt'=>1])->one();
+
+        $session = new Session;
+        $session->open();
+        $range_date = $session['rangedate'];
+
+        $searchModel = new KinerjaSearch();
+        $searchModel->range_date = $range_date;
+        $searchModel->id_pegawai = $id_pegawai;
+
+        $explode = explode(' - ',$range_date);
+
+        $dataProvider = $searchModel->searchStaff(Yii::$app->request->queryParams);
+        $dataProvider_2 = $searchModel->searchTugasstaff(Yii::$app->request->queryParams);
+
+        // get your HTML raw content without any layouts or scripts
+        $content = $this->renderPartial('pdf_report',[
+            'dataProvider'=>$dataProvider,
+            'dataProvider_2'=>$dataProvider_2,
+            'user'=>$user,
+            'penilai'=>$penilai
+        ]);
+        
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_LANDSCAPE, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}
+            @media all{
+                .page-break {display: none;}
+            }
+            @media print{
+                .page-break{display: block;page-break-before: always;}
+            }', 
+             // set mPDF properties on the fly
+            'options' => ['title' => 'Krajee Report Title'],
+             // call mPDF methods on the fly
+            'methods' => [ 
+                'SetHeader'=>['URAIAN KEGIATAN HARIAN(LOGBOOK) PERIODE '.date('d/m/Y', strtotime($explode[0])).' - '.date('d/m/Y', strtotime($explode[1]))], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+        
+        // return the pdf output as per the destination setting
+        return $pdf->render();
+    }
+
     public function actionRekappresensi(){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
@@ -678,9 +743,7 @@ class SiteController extends Controller
             'dataProviderPresensi'=>$dataProviderPresensi
         ]);
 
-        return $return;
-
-        
+        return $return;      
     }
 
     public function actionError(){
@@ -745,5 +808,21 @@ class SiteController extends Controller
             }
         }
 
+    }
+
+
+    public function actionSinkrontugas(){
+        $model_tugas_test = TugasTest::find()->where(['id_unit_kerja'=>'02401'])->all();
+
+        foreach($model_tugas_test as $val){
+            echo $val->id_kategori.'----'.$val->nama_tugas.'<br/>';
+
+            $model = Tugas::find()->where(['id_tugas'=>$val->id_tugas])->one();
+
+            if($model != null){
+                $model->id_kategori = $val->id_kategori;
+                $model->save(false);
+            }
+        }
     }
 }

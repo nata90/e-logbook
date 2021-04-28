@@ -1,2 +1,6 @@
 # ifconfig ens160 192.168.0.103 netmask 255.255.254.0
 # route add default gw 192.168.0.161
+
+//setting ip default ubuntu server
+ls /etc/netplan/
+nano /etc/netplan/50-cloud-init.yaml

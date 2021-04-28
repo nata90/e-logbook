@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'css/handsontable.min.css',
         'css/jquery.toast.min.css',
         'css/daterangepicker.css',
+        'css/ionicons/css/ionicons.min.css',
     ];
     public $js = [
         'js/jquery-sortable.js',

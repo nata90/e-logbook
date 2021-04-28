@@ -64,7 +64,7 @@ class JabatanPegawaiSearch extends JabatanPegawai
         // grid filtering conditions
         $query->andFilterWhere([
             'id_jbt_pegawai' => $this->id_jbt_pegawai,
-            'id_jabatan' => $this->id_jabatan,
+            'jabatan_pegawai.id_jabatan' => $this->id_jabatan,
             'id_pegawai' => $this->id_pegawai,
             'id_penilai' => $this->id_penilai,
             'status_jbt' => $this->status_jbt,

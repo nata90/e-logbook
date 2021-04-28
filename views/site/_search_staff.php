@@ -41,6 +41,11 @@ $this->registerJs(<<<JS
         window.open(url_rekap);
     });
 
+    $(document).on("click", "#pdf-staff", function () {
+        var url = $(this).attr('url');
+        window.open(url);
+    });
+
 
 JS
 );
