@@ -44,7 +44,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout','index','excelrekap','login','excellogbook'],
+                'only' => ['logout','index','excelrekap','login','excellogbook','pdfrekaplogbook','pdfstaff'],
                 'denyCallback' => function ($rule, $action) {
                     if(Yii::$app->user->isGuest){
                         return $this->goHome();

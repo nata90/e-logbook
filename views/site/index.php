@@ -451,7 +451,7 @@ $this->registerJs("
 	                                $total_kegiatan = Kinerja::getTotalKegiatan($model->id_pegawai);
 
 	                                return  $total_kegiatan['target'];
-	                            },
+	                            }
 	                        ],
 	                        
 	                        [

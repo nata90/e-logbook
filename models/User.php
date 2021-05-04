@@ -14,7 +14,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $authKey;
     public $accessToken;
 
-    /*private static $users = [
+    private static $users = [
         '100' => [
             'id' => '100',
             'username' => 'admin',
@@ -29,7 +29,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             'authKey' => 'test101key',
             'accessToken' => '101-token',
         ],
-    ];*/
+    ];
 
     /**
      * {@inheritdoc}
@@ -43,6 +43,18 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 
      public static function findIdentity($id){
         return AppUser::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        //return AppUser::findOne(['accessToken'=>$token]);
+        foreach (self::$users as $user) {
+            if ($user['id'] === (string) $token->getClaim('uid')) {
+                return new static($user);
+            }
+        }
+
+        return null;
     }
 
     public static function findByUsername($username){
@@ -85,8 +97,5 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         return $this->password === md5($password.$authkey);
     }
 
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return AppUser::findOne(['accessToken'=>$token]);
-    }
+    
 }

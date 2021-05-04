@@ -144,6 +144,13 @@ class AppUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return AppUser::findOne(['accessToken'=>$token]);
+        //return AppUser::findOne(['accessToken'=>$token]);
+        foreach (self::$users as $user) {
+            if ($user['id'] === (string) $token->getClaim('uid')) {
+                return new static($user);
+            }
+        }
+
+        return null;
     }
 }
