@@ -2,7 +2,7 @@
 
 class ContactFormCest 
 {
-    public function _before(\FunctionalTester $I)
+    /*public function _before(\FunctionalTester $I)
     {
         $I->amOnPage(['site/contact']);
     }
@@ -53,5 +53,5 @@ class ContactFormCest
         $I->seeEmailIsSent();
         $I->dontSeeElement('#contact-form');
         $I->see('Thank you for contacting us. We will respond to you as soon as possible.');        
-    }
+    }*/
 }
