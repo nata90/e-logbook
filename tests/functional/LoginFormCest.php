@@ -2,7 +2,7 @@
 
 class LoginFormCest
 {
-    /*public function _before(\FunctionalTester $I)
+    public function _before(\FunctionalTester $I)
     {
         $I->amOnRoute('site/login');
     }
@@ -14,7 +14,7 @@ class LoginFormCest
     }
 
     // demonstrates `amLoggedInAs` method
-    public function internalLoginById(\FunctionalTester $I)
+    /*public function internalLoginById(\FunctionalTester $I)
     {
         $I->amLoggedInAs(100);
         $I->amOnPage('/');
