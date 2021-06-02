@@ -110,11 +110,11 @@ class DataPegawai extends \yii\db\ActiveRecord
     }
 
     public function getLackOfProfile($id_pegawai){
-        $error_message = array();
+        $error_message = 'array()';
         //cek unit kerja
         $model_unit = PegawaiUnitKerja::find()->where(['id_pegawai'=>$id_pegawai, 'status_peg'=>1])->one();
 
-        if($model == null){
+        if($model_unit == null){
             $error_message[] = 'Anda belum memiliki unit kerja';
         }
 

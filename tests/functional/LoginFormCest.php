@@ -2,16 +2,16 @@
 
 class LoginFormCest
 {
-    public function _before(\FunctionalTester $I)
-    {
-        $I->amOnRoute('site/login');
-    }
+    // public function _before(\FunctionalTester $I)
+    // {
+    //     $I->amOnRoute('site/login');
+    // }
 
-    public function openLoginPage(\FunctionalTester $I)
-    {
-        $I->see('Login', 'h1');
+    // public function openLoginPage(\FunctionalTester $I)
+    // {
+    //     $I->see('Login', 'h1');
 
-    }
+    // }
 
     // demonstrates `amLoggedInAs` method
     /*public function internalLoginById(\FunctionalTester $I)
