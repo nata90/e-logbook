@@ -112,7 +112,7 @@ class TbMenu extends \yii\db\ActiveRecord
             $class = '';
         }
 
-        
+        $html = '';
 
         if($model != null){
             $html = '<ol '.$class.'>';
@@ -151,33 +151,38 @@ class TbMenu extends \yii\db\ActiveRecord
         $id_user = Yii::$app->user->id;
         $user = AppUser::findOne($id_user);
 
-        $menu = AppGroupMenu::find()->where(['id_group'=>$user->id_group, 'active'=>1])->all();
+        $arr_return = ['-'];
+        if($user != null){
+            $menu = AppGroupMenu::find()->where(['id_group'=>$user->id_group, 'active'=>1])->all();
 
         
-        $controller = Yii::$app->controller->id;
+            $controller = Yii::$app->controller->id;
 
-        $arr_return = ['-'];
-        $list_menu = [];
-        if($menu != null){
-            foreach($menu as $val){
-                $explode = explode('/',$val->menu->url);
-                if($val->menu->module == '-'){
-                    if($explode[1] === $controller){
-                        $action = $explode[2];
-                        $arr_return[$val->id_menu] = $action;
+            
+            $list_menu = [];
+            if($menu != null){
+                foreach($menu as $val){
+                    $explode = explode('/',$val->menu->url);
+                    if(isset($explode) && count($explode) > 1){
+                        if($val->menu->module == '-'){
+                        
+                            if($explode[1] === $controller){
+                                $action = $explode[2];
+                                $arr_return[$val->id_menu] = $action;
+                            }
+                        }else{
+                            if($explode[2] === $controller){
+                                $action = $explode[3];
+                                $arr_return[$val->id_menu] = $action;
+                            }    
+                        }
                     }
-                }else{
-                    if($explode[2] === $controller){
-                        $action = $explode[3];
-                        $arr_return[$val->id_menu] = $action;
-                   }
-                    
+    
                 }
-
                 
             }
-            
         }
+        
 
         return $arr_return;
     }

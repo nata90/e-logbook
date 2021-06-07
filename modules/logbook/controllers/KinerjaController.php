@@ -88,7 +88,7 @@ class KinerjaController extends Controller
             'dataProvider' => $dataProvider,
             'listData'=>$listData,
             'listPegawai'=>$listPegawai,
-            'date_range'=>$date_range
+            'date_range'=>$range_date
         ]);
     }
 
