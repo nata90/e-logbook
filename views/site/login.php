@@ -1,63 +1,82 @@
 <?php
-use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = 'Sign In';
-/*$this->registerJs("
-    window.location.replace('http://192.168.0.103/elogbook');
-");*/
-$fieldOptions1 = [
-    'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
-];
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 
-$fieldOptions2 = [
-    'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
-];
+$this->title = 'Login';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<div class="login-box">
-    <div class="login-logo">
-        <a href="#"><b>E-</b>Logbook</a>
-    </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <?php //<p class="login-box-msg">Sign in to start your session</p> ?>
-
-        <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
-
-        <?= $form
-            ->field($model, 'username', $fieldOptions1)
-            ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
-
-        <?= $form
-            ->field($model, 'password', $fieldOptions2)
-            ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
-
-        <div class="row">
-            <div class="col-xs-8">
-                <?php /*echo $form->field($model, 'rememberMe')->checkbox()*/ ?>
+<div class="site-login">
+    <!-- <h1><?//= Html::encode($this->title) ?></h1> -->
+    <div class="col-md-4 col-sm-6 ml-auto mr-auto"><!-- col-lg-4  -->
+        <div class="card card-login card-hidden">
+            <div class="card-header card-header-rose text-center"  data-background-color="orange">
+                <h4 class="card-title">E-LOGBOOK</h4>
+                <?php /*<div class="social-line">
+                    <a href="#" class="btn btn-just-icon btn-link btn-white">
+                        <i class="fa fa-facebook-square"></i>
+                    </a>
+                    <a href="#" class="btn btn-just-icon btn-link btn-white">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-just-icon btn-link btn-white">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                </div>*/ ?>
             </div>
-            <!-- /.col -->
-            <div class="col-xs-4">
-                <?= Html::submitButton('Sign in', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+            <?php $form = ActiveForm::begin([
+                    'id' => 'login-form',
+//                    'fieldConfig' => [
+//                        'template' => "{input}\n{hint}\n{error}",
+//                    ],
+                ]); ?>
+            <div class="card-body ">
+                <span class="bmd-form-group">
+                        <?= $form->field($model, 'username',['template'=>'
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="material-icons">face</i>
+                                </span>
+                            </div>
+                            {input}
+                        </div>
+                        '
+                        ])->textInput(["placeholder"=>"Username..."])->label(false) ?>
+                  <!--   <label class="bmd-label-floating">Username</label>
+                    <input type="text" class="form-control"> -->
+                </span>
+                <span class="bmd-form-group">
+                        <?= $form->field($model, 'password',['template'=>'
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="material-icons">lock_outline</i>
+                                </span>
+                            </div>
+                            {input}
+                        </div>
+                        '
+                        ])->passwordInput(["class"=>"form-control","placeholder"=>"Password..."]) ?>
+                        <!-- <input type="password" class="form-control" placeholder="Password..."> -->
+                </span>
+                <?php /*<span class="bmd-form-group">
+                    <div class="input-group">
+                        <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                    </div>
+                </span>*/ ?>
             </div>
-            <!-- /.col -->
+           <div class="card-footer justify-content-center">
+                <?= Html::submitButton('Login', ['class' => 'btn btn-green btn-block btn-border', 'name' => 'login-button']) ?>
+           </div>
+           <div class="card-footer">
+           </div>
+           <?php ActiveForm::end(); ?>
         </div>
-
-
-        <?php ActiveForm::end(); ?>
-
-        <?php /*<a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Register a new membership</a>*/ ?>
-
     </div>
-    <!-- /.login-box-body -->
-</div><!-- /.login-box -->
+</div>
+
