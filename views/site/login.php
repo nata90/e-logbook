@@ -44,6 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </span>
                             </div>
                             {input}
+                            
+                        </div>
+                        <div style="float:right;">
+                            {error}
                         </div>
                         '
                         ])->textInput(["placeholder"=>"Username..."])->label(false) ?>
@@ -59,6 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </span>
                             </div>
                             {input}
+                        </div>
+                        <div style="float:right;">
+                            {error}
                         </div>
                         '
                         ])->passwordInput(["class"=>"form-control","placeholder"=>"Password..."]) ?>
