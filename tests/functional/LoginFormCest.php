@@ -31,6 +31,13 @@ class LoginFormCest
         $I->see('Incorrect username or password.');
     }
 
+    public function internalLoginById(\FunctionalTester $I)
+    {
+        $I->amLoggedInAs(14);
+        $I->amOnPage('/');
+        $I->see('Logout');
+    }
+
     // demonstrates `amLoggedInAs` method
     /*public function internalLoginById(\FunctionalTester $I)
     {
