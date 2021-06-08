@@ -1,6 +1,7 @@
 <?php
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/test_db.php';
+$db_presensi = require __DIR__ . '/db_presensi.php';
 
 /**
  * Application configuration shared by all test types
@@ -15,6 +16,7 @@ return [
     'language' => 'en-US',
     'components' => [
         'db' => $db,
+        'db_presensi' => $db_presensi,
         'mailer' => [
             'useFileTransport' => true,
         ],

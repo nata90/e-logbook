@@ -167,7 +167,7 @@ JS
             </div>
 
              <div class="box-footer">
-                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success pull-right', 'name'=>'updateprofile']) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

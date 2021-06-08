@@ -36,6 +36,14 @@ class LoginFormCest
         $I->amLoggedInAs(14);
         $I->amOnPage('/');
         $I->see('Logout');
+        $I->see('Rahanata, S.Kom ( Programmer )');
+    }
+
+    public function internalLoginByInstance(\FunctionalTester $I)
+    {
+        $I->amLoggedInAs(\app\models\User::findByUsername('2016010536'));
+        $I->amOnPage('/');
+        $I->see('Logout');
     }
 
     // demonstrates `amLoggedInAs` method

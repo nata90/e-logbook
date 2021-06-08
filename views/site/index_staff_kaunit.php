@@ -207,7 +207,7 @@ $this->registerJs("
 					<li class="list-group-item"><b>NIP / NIK</b><a class="pull-right"><?php echo $user->pegawai->nip;?></a></li>
 					<li class="list-group-item"><b>Jabatan</b><a class="pull-right">
 						<?php 
-						if($jab_pegawai != null){
+						if($jab_pegawai->jabatan != null){
 							echo $jab_pegawai->jabatan->nama_jabatan;
 						}else{
 							echo '-';
@@ -217,14 +217,14 @@ $this->registerJs("
 						</a></li>
 					<li class="list-group-item"><b>Target</b><a class="pull-right"><?php echo $target;?></a></li>
 					<li class="list-group-item"><b>Penilai</b><a class="pull-right"><?php 
-						if($jab_pegawai != null){
+						if($jab_pegawai->penilai != null){
 								echo $jab_pegawai->penilai->nama;
 							}else{
 								echo '-';
 							}
 					?></a></li>
 					<li class="list-group-item"><b>Penilai Kedua</b><a class="pull-right"><?php 
-						if($jab_pegawai != null){
+						if($jab_pegawai->penilai2 != null){
 								echo $jab_pegawai->penilai2->nama;
 							}else{
 								echo '-';
