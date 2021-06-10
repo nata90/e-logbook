@@ -187,7 +187,12 @@ JS
                                         $html = '';
                                         if($model->pegawai->jabatanPegawais != null){
                                             foreach($model->pegawai->jabatanPegawais as $val){
-                                                $html .= $val->penilai->nama;
+                                                if($val->penilai != null){
+                                                    $html .= $val->penilai->nama;
+                                                }else{
+                                                    $html .= '-';
+                                                }
+                                                
                                             }
                                         }else{
                                             $html .= '-';
@@ -204,7 +209,11 @@ JS
                                         $html = '';
                                         if($model->pegawai->jabatanPegawais != null){
                                             foreach($model->pegawai->jabatanPegawais as $val){
-                                                $html .= $val->penilai2->nama;
+                                                if($val->penilai2 != null){
+                                                    $html .= $val->penilai2->nama;
+                                                }else{
+                                                    $html .= '-';
+                                                }
                                             }
                                         }else{
                                             $html .= '-';

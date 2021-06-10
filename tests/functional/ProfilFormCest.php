@@ -21,8 +21,7 @@ class ProfilFormCest
     public function saveProfilePage(\FunctionalTester $I)
     {
         $I->see('Profile');
-        $I->click('updateprofile');
-        $I->wait(3); // wait for button to be clicked
+        $I->submitForm('#form-profile', []);
 
         $I->expectTo('see success message');
         $I->see('Data pegawai Rahanata, S.Kom berhasil diupdate');

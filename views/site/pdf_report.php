@@ -252,7 +252,7 @@
 					<td width="200"></td>
 					<td>
 						<?php 
-							if($penilai!= null){
+							if($penilai->penilai != null){
 								echo $penilai->penilai->nama;
 							}
 						?>
@@ -260,7 +260,7 @@
 					<td width="200"></td>
 					<td>
 						<?php 
-							if($penilai!= null){
+							if($penilai->penilai2 != null){
 								echo $penilai->penilai2->nama;
 							}
 						?>
@@ -272,14 +272,14 @@
 					<td width="200"></td>
 					<td>
 						<?php 
-							if($penilai!= null){
+							if($penilai->penilai != null){
 								echo 'NIP '.$penilai->penilai->nip;
 							}
 						?>
 					</td>
 					<td width="200"></td>
 					<td><?php 
-							if($penilai!= null){
+							if($penilai->penilai2 != null){
 								echo 'NIP '.$penilai->penilai2->nip;
 							}
 						?></td>
