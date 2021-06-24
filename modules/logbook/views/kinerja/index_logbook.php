@@ -211,9 +211,7 @@ JS
 	<div class="col-md-12">
 		<div class="box box-danger box-solid">
 			<div class="box-header with-border">
-				<h3 class="box-title">
-					Input Kinerja Pegawai
-				</h3>
+				<h3 class="box-title">Input Kinerja Pegawai</h3>
 			</div>
 			<div class="box-body">
 				<div class="row">

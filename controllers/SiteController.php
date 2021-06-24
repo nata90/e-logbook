@@ -807,7 +807,7 @@ class SiteController extends Controller
                 
             }
         }
-
+        file_put_contents('/var/www/html/elogbook/log/cron_update_pegawai.txt','running');
     }
 
 

@@ -35,7 +35,7 @@ class UnitkerjaController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index','create','update','listpegawai','addpegawai','getidunit','deletepegawai','getidunit'],
+                'only' => ['index','create','update','listpegawai','addpegawai','getidunit','deletepegawai','getidunit','monitoringsatker'],
                 'denyCallback' => function ($rule, $action) {
                     if(Yii::$app->user->isGuest){
                         return $this->goHome();
