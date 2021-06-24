@@ -148,7 +148,12 @@ class SiteController extends Controller
 
             $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id,'status_jbt'=>1])->one();
             $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id,'status_peg'=>1])->one();
-            $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+            if($jab_pegawai != null && $peg_unit_kerja != null){
+                $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+            }else{
+                $model_target = null;
+            }
+            
 
             if($model_target != null){
                 $target = $model_target->nilai_target;
@@ -244,7 +249,12 @@ class SiteController extends Controller
 
             $jab_pegawai = JabatanPegawai::find()->where(['id_pegawai'=>$user->pegawai_id,'status_jbt'=>1])->one();
             $peg_unit_kerja = PegawaiUnitKerja::find()->where(['id_pegawai'=>$user->pegawai_id,'status_peg'=>1])->one();
-            $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+            if($jab_pegawai != null && $peg_unit_kerja != null){
+                $model_target = Target::find()->where(['id_jabatan'=>$jab_pegawai->id_jabatan,'id_unit_kerja'=>$peg_unit_kerja->id_unit_kerja, 'status_target'=>1])->one();
+            }else{
+                $model_target = null;
+            }
+           
 
             if($model_target != null){
                 $target = $model_target->nilai_target;
