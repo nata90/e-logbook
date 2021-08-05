@@ -152,7 +152,7 @@ JS
                     <label class="control-label">Target</label>
                 </label>
                 <div class="col-xs-8" style="padding-top:5px;">
-                    <label class="control-label"><?php echo $model_target->nilai_target==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_target->nilai_target).'</span>';?></label>
+                    <label class="control-label"><?php echo $model_target==null?'<span class="label label-danger">NOT SET</span>':'<span class="label label-success">'.strtoupper($model_target->nilai_target).'</span>';?></label>
                 </div>
             </div>
 
