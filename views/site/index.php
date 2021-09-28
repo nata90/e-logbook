@@ -263,7 +263,7 @@ $this->registerJs("
 					<div class="progress">
 						<div class="progress-bar" style="width: <?php echo $persen_logbook;?>%"></div>
 					</div>
-					<span class="progress-description"><?php echo $approve_logbook;?> disetujui, <?php echo $notapprove_logbook;?> belum disetujui (<?php echo $persen_logbook;?>%)</span>
+					<span class="progress-description"><?php echo $approve_logbook;?> disetujui</span>
 				</div>
 			</div>
 		</div>

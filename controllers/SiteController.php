@@ -129,11 +129,13 @@ class SiteController extends Controller
             }
             
 
-            $total_logbook = $dataProvider->getCount();
-            $approve_logbook = $dataProvider2->getCount();
-            $notapprove_logbook = $dataProvider3->getCount();
+            $total_logbook = $dataProvider->getTotalCount();
+            $approve_logbook = $dataProvider2->getTotalCount();
+            $notapprove_logbook = $dataProvider3->getTotalCount();
 
-            $hari_kerja = $dataProvider4->getCount();
+            $hari_kerja = $dataProvider4->getTotalCount();
+
+            
 
             $search_staff = new JabatanPegawaiSearch();
             $search_staff->id_penilai = $user->pegawai_id;
@@ -228,11 +230,11 @@ class SiteController extends Controller
             }
             
 
-            $total_logbook = $dataProvider->getCount();
-            $approve_logbook = $dataProvider2->getCount();
-            $notapprove_logbook = $dataProvider3->getCount();
+            $total_logbook = $dataProvider->getTotalCount();
+            $approve_logbook = $dataProvider2->getTotalCount();
+            $notapprove_logbook = $dataProvider3->getTotalCount();
 
-            $hari_kerja = $dataProvider4->getCount();
+            $hari_kerja = $dataProvider4->getTotalCount();
 
             $search_staff = new JabatanPegawaiSearch();
             $search_staff->status_jbt = 1;
