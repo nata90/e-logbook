@@ -191,7 +191,16 @@ $this->registerJs("
 			<div class="box-body box-profile">
 				<?php 
 					if($user->photo_profile != '-'){
-						echo '<img src="'.Yii::$app->request->baseUrl.'/profpic/'.$user->photo_profile.'" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+						if(file_exists(Yii::$app->basePath.'/web/profpic/'.$user->photo_profile)){
+							echo '<img src="'.Yii::$app->request->baseUrl.'/profpic/'.$user->photo_profile.'" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+						}else{
+							if($user->pegawai->gender == 0){
+								echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar5.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+							}else{
+								echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar3.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
+							}
+						}
+						
 					}else{
 						if($user->pegawai->gender == 0){
 		                    echo '<img src="'.Yii::$app->request->baseUrl.'/images/avatar5.png" class="profile-user-img img-responsive img-circle" alt="User Image"/>';
