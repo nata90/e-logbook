@@ -210,7 +210,7 @@ class UnitkerjaController extends Controller
             $rows['id_unit'] = $bagian.'01';
         }
 
-        echo Json::encode($rows);
+        return Json::encode($rows);
     }
 
     public function actionListpegawai($id){
@@ -255,7 +255,7 @@ class UnitkerjaController extends Controller
             $rows['msg'] = $model2->pegawai->nama." berhasil ditambahkan di unit kerja ".$model2->unitKerja->nama_unit_kerja;
         }
 
-        echo Json::encode($rows);
+        return Json::encode($rows);
     }
 
     public function actionMonitoringsatker(){
